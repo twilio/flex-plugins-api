@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "twilio-ts"
+  ],
+  "rules": {
+    "import/no-unused-modules": "off",
+    "import/no-named-as-default-member": "off",
+    "prefer-destructuring": "off",
+    "@typescript-eslint/ban-ts-ignore": "off"
+  }
+}

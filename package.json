@@ -1,0 +1,53 @@
+{
+  "name": "flex-plugins-api-toolkit",
+  "version": "0.0.1",
+  "description": "Flex Plugins API Toolkit",
+  "homepage": "https://github.com/twilio/flex-plugins-api-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/twilio/flex-plugins-api-toolkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twilio/flex-plugins-api-toolkit.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "contributors": [
+    "Kousha Talebian <ktalebian@twilio.com>"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc --build --pretty tsconfig.build.json",
+    "lint": "eslint --ext ts src/",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "coverage": "jest --coverage"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "chalk": "^4.0.0",
+    "util": "^0.12.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.4",
+    "eslint": "^6.8.0",
+    "eslint-config-twilio-ts": "^1.23.0",
+    "husky": "^4.2.5",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  }
+}
