@@ -9,7 +9,6 @@ export interface PluginVersionResource {
   private: boolean;
   changelog: string;
   date_created: string;
-  url: string;
 }
 
 export interface PluginVersionResourcePage extends PaginationMeta {
@@ -72,9 +71,5 @@ export default class PluginVersionsClient {
    */
   public async create(pluginId: string, object: CreatePluginVersionResource): Promise<PluginVersionResource> {
     return this.client.post<PluginVersionResource>(PluginVersionsClient.getUrl(pluginId), object);
-  }
-
-  getBaseUrl(): string {
-    return 'Plugins';
   }
 }

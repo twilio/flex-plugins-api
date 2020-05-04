@@ -9,7 +9,6 @@ export interface PluginResource {
   friendly_name: string;
   date_created: string;
   date_updated: string;
-  url: string;
 }
 
 export interface PluginResourcePage extends PaginationMeta {
@@ -47,9 +46,9 @@ export default class PluginsClient {
   /**
    * Fetches the list of {@link PluginResource}
    */
-  public list = async (): Promise<PluginResourcePage> => {
+  public async list(): Promise<PluginResourcePage> {
     return this.client.get<PluginResourcePage>(PluginsClient.getUrl());
-  };
+  }
 
   /**
    * Fetches an instance of the {@link PluginResource}

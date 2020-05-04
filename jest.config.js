@@ -6,6 +6,10 @@ module.exports = {
   transform: {
     '^.+\\.js?$': '<rootDir>/node_modules/babel-jest',
   },
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/src/*/index.ts',
+    '<rootDir>/src/exceptions/*.ts',
+  ],
   coveragePathIgnorePatterns: ['/node_modules/'],
 };

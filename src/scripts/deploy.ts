@@ -2,7 +2,7 @@ import PluginsClient, { CreatePluginResource } from '../clients/plugins';
 import PluginVersionsClient, { CreatePluginVersionResource } from '../clients/pluginVersions';
 import { Script } from '.';
 
-interface DeployOption {
+export interface DeployOption {
   name: string;
   url: string;
   version: string;
@@ -12,7 +12,7 @@ interface DeployOption {
   isPrivate?: boolean;
 }
 
-interface Plugin {
+export interface Plugin {
   pluginSid: string;
   pluginVersionSid: string;
   name: string;
