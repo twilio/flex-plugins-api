@@ -6,6 +6,8 @@
     "import/no-unused-modules": "off",
     "import/no-named-as-default-member": "off",
     "prefer-destructuring": "off",
-    "@typescript-eslint/ban-ts-ignore": "off"
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "lines-between-class-members": "off",
+    "@typescript-eslint/camelcase": "off",
   }
 }
