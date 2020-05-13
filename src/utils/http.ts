@@ -1,5 +1,4 @@
-import qs from 'querystring';
-
+import qs from 'qs';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import logger from './logger';
@@ -60,7 +59,16 @@ export default class Http {
 
     // Transform data to urlencoded
     if (req.method?.toLocaleLowerCase() === 'post' && typeof req.data === 'object') {
-      req.data = qs.stringify(req.data);
+      // This is formatting array of objects into a format Twilio Public API can consume
+      const data = Object.keys(req.data).map((key) => {
+        if (!Array.isArray(req.data[key])) {
+          return { [key]: req.data[key] };
+        }
+
+        return { [key]: req.data[key].map(JSON.stringify) };
+      });
+
+      req.data = qs.stringify(Object.assign({}, ...data), { encode: false, arrayFormat: 'repeat' });
     }
 
     return req;

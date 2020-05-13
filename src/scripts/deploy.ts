@@ -31,7 +31,7 @@ export type DeployScript = Script<DeployOption, Plugin>;
  * @param pluginClient        the Public API {@link PluginsClient}
  * @param pluginVersionClient the Public API {@link PluginVersionsClient}
  */
-export default function (pluginClient: PluginsClient, pluginVersionClient: PluginVersionsClient): DeployScript {
+export default function deploy(pluginClient: PluginsClient, pluginVersionClient: PluginVersionsClient): DeployScript {
   return async (option: DeployOption): Promise<Plugin> => {
     // Upsert Plugin
     const upsertOption: CreatePluginResource = {
