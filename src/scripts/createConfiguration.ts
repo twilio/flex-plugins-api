@@ -49,7 +49,7 @@ export default function createConfiguration(
     const list: string[] = option.plugins;
     // Fetch existing installed plugins
     if (option.fromConfiguration) {
-      // TODO: Add support for active once Release client is created
+      // TODO: Add support for fromConfiguration: 'active' once Release client is created
       const items = await configuredPluginClient.list(option.fromConfiguration);
       const existingPlugins = items.plugins
         .filter((plugin) => list.every((p) => p.indexOf(`${plugin.unique_name}@`) === -1))
