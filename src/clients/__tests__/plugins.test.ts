@@ -6,7 +6,6 @@ describe('PluginsClient', () => {
   const httpClient = new PluginServiceHttpClient('username', 'password');
   const get = jest.spyOn(httpClient, 'get');
   const post = jest.spyOn(httpClient, 'post');
-
   const client = new PluginsClient(httpClient);
 
   beforeEach(() => {

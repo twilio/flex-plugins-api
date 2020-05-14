@@ -12,7 +12,7 @@ describe('PluginVersionsClient', () => {
     jest.resetAllMocks();
   });
 
-  it('should list plugins', async () => {
+  it('should list plugin versions', async () => {
     get.mockResolvedValue('list');
 
     const result = await client.list('pluginId');
@@ -22,7 +22,17 @@ describe('PluginVersionsClient', () => {
     expect(get).toHaveBeenCalledWith('Plugins/pluginId/Versions');
   });
 
-  it('should get plugin', async () => {
+  it('should get the latest version', async () => {
+    get.mockResolvedValue({ plugin_versions: ['version1', 'version2'] });
+
+    const result = await client.latest('pluginId');
+
+    expect(result).toEqual('version1');
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(get).toHaveBeenCalledWith('Plugins/pluginId/Versions');
+  });
+
+  it('should get plugin versions', async () => {
     get.mockResolvedValue('item');
 
     const result = await client.get('pluginId', 'versionId');
@@ -32,7 +42,7 @@ describe('PluginVersionsClient', () => {
     expect(get).toHaveBeenCalledWith('Plugins/pluginId/Versions/versionId');
   });
 
-  it('should create plugin', async () => {
+  it('should create plugin version', async () => {
     post.mockResolvedValue('created');
 
     const payload = { Version: '1.2.3', PluginUrl: 'https://twilio.com' };

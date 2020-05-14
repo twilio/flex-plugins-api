@@ -12,7 +12,7 @@ export interface PluginVersionResource {
 }
 
 export interface PluginVersionResourcePage extends PaginationMeta {
-  plugins: PluginVersionResource[];
+  plugin_versions: PluginVersionResource[];
 }
 
 /**
@@ -53,6 +53,16 @@ export default class PluginVersionsClient {
    */
   public async list(pluginId: string): Promise<PluginVersionResourcePage> {
     return this.client.get<PluginVersionResourcePage>(PluginVersionsClient.getUrl(pluginId));
+  }
+
+  /**
+   * Fetches the latest {@link PluginVersionResourcePage} by calling the List endpoint and returns the first entry.
+   * @param pluginId the plugin identifier
+   */
+  public async latest(pluginId: string): Promise<PluginVersionResource> {
+    const list = await this.list(pluginId);
+
+    return list.plugin_versions[0];
   }
 
   /**

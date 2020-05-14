@@ -126,6 +126,27 @@ describe('HttpClient', () => {
 
       expect(transformed.data).toEqual('payload=value');
     });
+
+    it('should transform nested array of object', () => {
+      const req: AxiosRequestConfig = {
+        method: 'post',
+        data: {
+          payload: 'value',
+          arr: ['item1', 'item2'],
+          objArr: [
+            { name: 'item1', phase: 0 },
+            { name: 'item2', phase: 1 },
+          ],
+        },
+      };
+
+      // @ts-ignore
+      const transformed = HttpClient.transformRequest(req);
+
+      expect(transformed.data).toEqual(
+        'payload=value&arr=item1&arr=item2&objArr={"name":"item1","phase":0}&objArr={"name":"item2","phase":1}',
+      );
+    });
   });
 
   describe('transformResponse', () => {
