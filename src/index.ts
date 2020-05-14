@@ -1,7 +1,11 @@
-import { PluginServiceHTTPClient, PluginsClient, PluginVersionsClient } from './clients';
+import {
+  PluginServiceHTTPClient,
+  PluginsClient,
+  PluginVersionsClient,
+  ConfigurationsClient,
+  ConfiguredPluginsClient,
+} from './clients';
 import { createConfigurationScript, CreateConfigurationScript, DeployScript, deployScript } from './scripts';
-import ConfigurationsClient from './clients/configurations';
-import ConfiguredPluginsClient from './clients/configuredPlugins';
 
 export default class Toolkit {
   public readonly deploy: DeployScript;

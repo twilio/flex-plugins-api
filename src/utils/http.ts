@@ -65,7 +65,16 @@ export default class Http {
           return { [key]: req.data[key] };
         }
 
-        return { [key]: req.data[key].map(JSON.stringify) };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const value = req.data[key].map((v: any) => {
+          if (typeof v !== 'object') {
+            return v;
+          }
+
+          return JSON.stringify(v);
+        });
+
+        return { [key]: value };
       });
 
       req.data = qs.stringify(Object.assign({}, ...data), { encode: false, arrayFormat: 'repeat' });
