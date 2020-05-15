@@ -31,7 +31,7 @@ describe('ReleasesClient', () => {
     expect(get).toHaveBeenCalledWith('Releases');
   });
 
-  it('should get releases', async () => {
+  it('should get a release', async () => {
     get.mockResolvedValue('item');
 
     const result = await client.get('releaseId');
@@ -41,7 +41,7 @@ describe('ReleasesClient', () => {
     expect(get).toHaveBeenCalledWith('Releases/releaseId');
   });
 
-  it('should create releases', async () => {
+  it('should create a release', async () => {
     post.mockResolvedValue('created');
 
     const payload = { ConfigurationId: '1.0.0' };
