@@ -5,11 +5,20 @@ import {
   ConfigurationsClient,
   ConfiguredPluginsClient,
 } from './clients';
-import { createConfigurationScript, CreateConfigurationScript, DeployScript, deployScript } from './scripts';
+import {
+  createConfigurationScript,
+  CreateConfigurationScript,
+  DeployScript,
+  deployScript,
+  releaseScript,
+  ReleaseScript,
+} from './scripts';
+import ReleasesClient from './clients/releases';
 
 export default class Toolkit {
   public readonly deploy: DeployScript;
   public readonly createConfiguration: CreateConfigurationScript;
+  public readonly release: ReleaseScript;
 
   constructor(username: string, password: string) {
     const httpClient = new PluginServiceHTTPClient(username, password);
@@ -17,6 +26,7 @@ export default class Toolkit {
     const pluginVersionsClient = new PluginVersionsClient(httpClient);
     const configurationsClient = new ConfigurationsClient(httpClient);
     const configuredPluginsClient = new ConfiguredPluginsClient(httpClient);
+    const releasesClient = new ReleasesClient(httpClient);
 
     this.deploy = deployScript(pluginClient, pluginVersionsClient);
     this.createConfiguration = createConfigurationScript(
@@ -25,5 +35,6 @@ export default class Toolkit {
       configurationsClient,
       configuredPluginsClient,
     );
+    this.release = releaseScript(releasesClient);
   }
 }

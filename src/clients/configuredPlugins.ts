@@ -16,6 +16,10 @@ export interface ConfiguredPluginResourcePage extends PaginationMeta {
   plugins: ConfiguredPluginResource[];
 }
 
+/**
+ * Configured Plugin Configuration Public API Http client for the Configuration resource
+ * @link https://www.twilio.com/docs/flex/plugins/api/plugin-configuration
+ */
 export default class ConfiguredPluginsClient {
   private readonly client: PluginServiceHttpClient;
 
@@ -38,7 +42,7 @@ export default class ConfiguredPluginsClient {
   }
 
   /**
-   * Fetches the list of {@link PluginVersionResourcePage}
+   * Fetches the list of {@link ConfiguredPluginResourcePage}
    * @param configId the config identifier
    */
   public async list(configId: string): Promise<ConfiguredPluginResourcePage> {
@@ -46,7 +50,7 @@ export default class ConfiguredPluginsClient {
   }
 
   /**
-   * Fetches an instance of the {@link PluginVersionResource}
+   * Fetches an instance of the {@link ConfiguredPluginResource}
    * @param configId the config identifier
    * @param id the plugin identifier
    */
