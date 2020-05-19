@@ -76,7 +76,7 @@ export default class PluginVersionsClient {
 
   /**
    * Creates a new {@link PluginVersionResource}
-   * @param pluginId the Plugin identifier
+   * @param pluginId the plugin identifier
    * @param object  the {@link CreatePluginVersionResource} request
    */
   public async create(pluginId: string, object: CreatePluginVersionResource): Promise<PluginVersionResource> {
