@@ -20,8 +20,8 @@ describe('Environment', () => {
 
   describe('realm', () => {
     it('should return realm', () => {
-      process.env.REALM = 'test';
-      expect(env.getRealm()).toEqual('test');
+      process.env.REALM = 'dev';
+      expect(env.getRealm()).toEqual('dev');
     });
 
     it('should return undefined', () => {

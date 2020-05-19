@@ -10,7 +10,16 @@ describe('PluginServiceHttp', () => {
   });
 
   describe('getRealm', () => {
+    it('should return the realm passed to it', () => {
+      jest.spyOn(env, 'getRealm');
+
+      // @ts-ignore
+      expect(PluginServiceHttp.getRealm('stage')).toEqual('.stage');
+      expect(env.getRealm).not.toHaveBeenCalled();
+    });
+
     it('should return prod realm if no realm provided', () => {
+      // @ts-ignore
       jest.spyOn(env, 'getRealm').mockReturnValue('');
 
       // @ts-ignore
@@ -18,6 +27,7 @@ describe('PluginServiceHttp', () => {
     });
 
     it('should return prod realm if invalid realm provided', () => {
+      // @ts-ignore
       jest.spyOn(env, 'getRealm').mockReturnValue('foo');
 
       // @ts-ignore
