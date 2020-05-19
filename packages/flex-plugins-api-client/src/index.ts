@@ -24,4 +24,9 @@ export {
   ConfiguredPluginResource,
   ConfiguredPluginResourcePage,
 } from './clients/configuredPlugins';
-export { default as ReleasesClient, ReleaseResource, ReleaseResourcePage, CreateReleaseResource } from './clients/releases';
+export {
+  default as ReleasesClient,
+  ReleaseResource,
+  ReleaseResourcePage,
+  CreateReleaseResource,
+} from './clients/releases';
