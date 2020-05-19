@@ -24,6 +24,16 @@
         "question",
         "review"
       ]
+    },
+    {
+      "login": "ahcai",
+      "name": "Alice Cai",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4912483?v=4",
+      "profile": "https://github.com/ahcai",
+      "contributions": [
+        "ideas",
+        "review"
+      ]
     }
   ],
   "skipCi": true
