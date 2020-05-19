@@ -1,27 +1,27 @@
-export { default as PluginServiceHTTPClient } from './client';
+export { default as PluginServiceHTTPClient } from './clients/client';
 export {
   default as PluginsClient,
   PluginResource,
   PluginResourcePage,
   UpdatePluginResource,
   CreatePluginResource,
-} from './plugins';
+} from './clients/plugins';
 export {
   default as PluginVersionsClient,
   PluginVersionResource,
   PluginVersionResourcePage,
   CreatePluginVersionResource,
-} from './pluginVersions';
+} from './clients/pluginVersions';
 export {
   default as ConfigurationsClient,
   ConfigurationResource,
   ConfigurationResourcePage,
   CreateConfiguredPlugin,
   CreateConfigurationResource,
-} from './configurations';
+} from './clients/configurations';
 export {
   default as ConfiguredPluginsClient,
   ConfiguredPluginResource,
   ConfiguredPluginResourcePage,
-} from './configuredPlugins';
-export { default as ReleasesClient, ReleaseResource, ReleaseResourcePage, CreateReleaseResource } from './releases';
+} from './clients/configuredPlugins';
+export { default as ReleasesClient, ReleaseResource, ReleaseResourcePage, CreateReleaseResource } from './clients/releases';
