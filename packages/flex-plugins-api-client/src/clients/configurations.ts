@@ -34,6 +34,11 @@ export default class ConfigurationsClient {
     this.client = client;
   }
 
+  /**
+   * Helper method to generate the URI for Configurations
+   *
+   * @param configId  the configuration identifier
+   */
   private static getUrl(configId?: string) {
     if (configId) {
       return `Configurations/${configId}`;
@@ -43,7 +48,7 @@ export default class ConfigurationsClient {
   }
 
   /**
-   * Fetchs a list of {@link ConfigurationResource}
+   * Fetches a list of {@link ConfigurationResource}
    */
   public async list(): Promise<ConfigurationResourcePage> {
     return this.client.get<ConfigurationResourcePage>(ConfigurationsClient.getUrl());

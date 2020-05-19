@@ -15,6 +15,10 @@ export interface Release {
 
 export type ReleaseScript = Script<ReleaseOption, Release>;
 
+/**
+ * The .release script. This script will create a new Release
+ * @param releaseClient        the Public API {@link ReleasesClient}
+ */
 export default function release(releaseClient: ReleasesClient) {
   return async (option: ReleaseOption): Promise<Release> => {
     const createOption = {

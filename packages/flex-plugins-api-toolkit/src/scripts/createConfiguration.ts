@@ -34,8 +34,13 @@ export interface Configuration {
 
 export type CreateConfigurationScript = Script<CreateConfigurationOption, Configuration>;
 
-// TODO: Dedupe for plugins with a mix of Sid and UniqueName
-
+/**
+ * The .createConfiguration script. This script will create a Configuration
+ * @param pluginClient        the Public API {@link PluginsClient}
+ * @param pluginVersionClient the Public API {@link PluginVersionsClient}
+ * @param configurationClient the Public API {@link ConfigurationsClient}
+ * @param configuredPluginClient the Public API {@link ConfiguredPluginsClient}
+ */
 export default function createConfiguration(
   pluginClient: PluginsClient,
   pluginVersionClient: PluginVersionsClient,
