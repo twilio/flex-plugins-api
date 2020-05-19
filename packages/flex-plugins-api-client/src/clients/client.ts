@@ -38,7 +38,7 @@ export default class PluginServiceHttp extends HttpClient {
    * Returns the realm if provided
    */
   private static getRealm = (realm?: Realm) => {
-    if (realm) {
+    if (realm && PluginServiceHttp.realms.includes(realm)) {
       return `.${realm}`;
     }
 
