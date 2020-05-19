@@ -1,0 +1,30 @@
+{
+  "projectName": "flex-plugina-api",
+  "projectOwner": "twilio",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
+  "files": [
+    "CONTRIBUTORS.md"
+  ],
+  "contributorsPerLine": 6,
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "ktalebian",
+      "name": "Kousha Talebian",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2308915?s=460&v=4",
+      "profile": "https://www.linkedin.com/in/koushatalebian",
+      "contributions": [
+        "code",
+        "bug",
+        "doc",
+        "ideas",
+        "question",
+        "review"
+      ]
+    }
+  ],
+  "skipCi": true
+}

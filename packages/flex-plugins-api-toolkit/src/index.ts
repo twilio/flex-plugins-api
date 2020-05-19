@@ -16,7 +16,7 @@ import {
   ReleaseScript,
 } from './scripts';
 
-export default class Toolkit {
+export default class FlexPluginsAPIToolkit {
   public readonly deploy: DeployScript;
   public readonly createConfiguration: CreateConfigurationScript;
   public readonly release: ReleaseScript;
