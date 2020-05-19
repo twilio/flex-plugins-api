@@ -1,4 +1,5 @@
-import { TwilioApiError } from '../exceptions';
+import { TwilioApiError } from 'flex-plugins-api-utils';
+
 import PluginServiceHttpClient, { PaginationMeta } from './client';
 
 export interface PluginResource {

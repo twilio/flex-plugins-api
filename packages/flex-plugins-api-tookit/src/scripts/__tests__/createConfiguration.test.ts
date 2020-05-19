@@ -1,14 +1,20 @@
+import {
+  ConfigurationResource,
+  ConfigurationsClient,
+  ConfiguredPluginResource,
+  ConfiguredPluginsClient,
+  PluginResource,
+  PluginsClient,
+  PluginServiceHTTPClient,
+  PluginVersionResource,
+  PluginVersionsClient,
+} from 'flex-plugins-api-client';
+import { TwilioError } from 'flex-plugins-api-utils';
+
 import createConfigurationScript from '../createConfiguration';
-import { PluginsClient, PluginVersionsClient, ConfigurationsClient, ConfiguredPluginsClient } from '../../clients';
-import PluginServiceHttpClient from '../../clients/client';
-import TwilioError from '../../exceptions/twilioError';
-import { PluginVersionResource } from '../../clients/pluginVersions';
-import { ConfigurationResource } from '../../clients/configurations';
-import { PluginResource } from '../../clients/plugins';
-import { ConfiguredPluginResource } from '../../clients/configuredPlugins';
 
 describe('CreateConfigurationScript', () => {
-  const httpClient = new PluginServiceHttpClient('username', 'password');
+  const httpClient = new PluginServiceHTTPClient('username', 'password');
   const pluginsClient = new PluginsClient(httpClient);
   const versionsClient = new PluginVersionsClient(httpClient);
   const configurationsClient = new ConfigurationsClient(httpClient);

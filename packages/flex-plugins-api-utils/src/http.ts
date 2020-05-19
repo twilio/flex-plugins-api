@@ -2,7 +2,7 @@ import qs from 'qs';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import logger from './logger';
-import { TwilioApiError } from '../exceptions';
+import { TwilioApiError } from './exceptions';
 
 export interface AuthConfig {
   username: string;

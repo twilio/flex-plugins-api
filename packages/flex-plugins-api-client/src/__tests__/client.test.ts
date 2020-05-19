@@ -1,5 +1,6 @@
+import { env } from 'flex-plugins-api-utils';
+
 import PluginServiceHttp from '../client';
-import { env } from '../../utils';
 
 jest.mock('../../utils/logger');
 

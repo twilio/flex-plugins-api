@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
 import HttpClient, { HttpConfig } from '../http';
-import { TwilioApiError } from '../../exceptions';
+import { TwilioApiError } from '../exceptions';
 
 describe('HttpClient', () => {
   const config: HttpConfig = {

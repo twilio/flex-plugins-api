@@ -1,5 +1,6 @@
+import { ReleasesClient } from 'flex-plugins-api-client';
+
 import { Script } from '.';
-import { ReleasesClient } from '../clients';
 
 export interface ReleaseOption {
   version: string;

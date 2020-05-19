@@ -1,4 +1,4 @@
-import { env, logger, HttpClient } from '../utils';
+import { env, logger, HttpClient } from 'flex-plugins-api-utils';
 
 export interface PaginationMeta {
   meta: {

@@ -1,22 +1,22 @@
 {
-  "name": "flex-plugins-api-toolkit",
+  "name": "flex-plugins-api-client",
   "version": "0.0.1",
-  "description": "Flex Plugins API Toolkit",
+  "description": "Flex Plugins API Client",
   "keywords": [
     "flex",
     "flex plugins",
     "flex plugins api",
-    "flex plugins api toolkit",
-    "flex plugins toolkit",
+    "flex plugins api client",
+    "flex plugins client",
     "plugins"
   ],
-  "homepage": "https://github.com/twilio/flex-plugins-api-toolkit#readme",
+  "homepage": "https://github.com/twilio/flex-plugins-api-client#readme",
   "bugs": {
-    "url": "https://github.com/twilio/flex-plugins-api-toolkit/issues"
+    "url": "https://github.com/twilio/flex-plugins-api-client/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/twilio/flex-plugins-api-toolkit.git"
+    "url": "git+https://github.com/twilio/flex-plugins-api-client.git"
   },
   "license": "MIT",
   "author": "Kousha Talebian <k@ousha.me>",
@@ -35,8 +35,8 @@
     "lint": "eslint --ext ts src/",
     "lint:fix": "npm run lint -- --fix",
     "prepublish": "npm run build",
-    "test": "cd ../.. && jest packages/flex-plugins-api-toolkit",
-    "test:watch": "cd ../.. && jest packages/flex-plugins-api-toolkit --watch"
+    "test": "cd ../.. && jest packages/flex-plugins-api-client",
+    "test:watch": "cd ../.. && jest packages/flex-plugins-api-client --watch"
   },
   "directories": {
     "lib": "src",
@@ -49,9 +49,7 @@
     }
   },
   "dependencies": {
-    "flex-plugins-api-utils": "^0.0.1",
-    "flex-plugins-api-client": "^0.0.1"
+    "flex-plugins-api-utils": "0.0.1"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
