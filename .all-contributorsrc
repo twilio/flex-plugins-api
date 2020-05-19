@@ -31,7 +31,10 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/4912483?v=4",
       "profile": "https://github.com/ahcai",
       "contributions": [
-        "ideas",
+        "code",
+        "doc",
+        "bug",
+        "question",
         "review"
       ]
     }
