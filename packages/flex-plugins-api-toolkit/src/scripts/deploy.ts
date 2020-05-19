@@ -1,5 +1,10 @@
-import PluginsClient, { CreatePluginResource } from '../clients/plugins';
-import PluginVersionsClient, { CreatePluginVersionResource } from '../clients/pluginVersions';
+import {
+  CreatePluginResource,
+  CreatePluginVersionResource,
+  PluginsClient,
+  PluginVersionsClient,
+} from 'flex-plugins-api-client';
+
 import { Script } from '.';
 
 export interface DeployOption {

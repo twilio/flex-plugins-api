@@ -1,9 +1,9 @@
+import { PluginServiceHTTPClient, PluginsClient, PluginVersionsClient } from 'flex-plugins-api-client';
+
 import deployScript, { DeployOption } from '../deploy';
-import { PluginsClient, PluginVersionsClient } from '../../clients';
-import PluginServiceHttpClient from '../../clients/client';
 
 describe('DeployScript', () => {
-  const httpClient = new PluginServiceHttpClient('username', 'password');
+  const httpClient = new PluginServiceHTTPClient('username', 'password');
   const pluginsClient = new PluginsClient(httpClient);
   const versionsClient = new PluginVersionsClient(httpClient);
 

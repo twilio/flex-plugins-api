@@ -1,10 +1,15 @@
+import { TwilioError } from 'flex-plugins-api-utils';
+import {
+  ConfigurationsClient,
+  ConfiguredPluginsClient,
+  CreateConfigurationResource,
+  CreateConfiguredPlugin,
+  PluginsClient,
+  PluginVersionsClient,
+} from 'flex-plugins-api-client';
+
 import { Plugin } from './deploy';
 import { Script } from '.';
-import TwilioError from '../exceptions/twilioError';
-import PluginsClient from '../clients/plugins';
-import PluginVersionsClient from '../clients/pluginVersions';
-import ConfigurationsClient, { CreateConfigurationResource, CreateConfiguredPlugin } from '../clients/configurations';
-import ConfiguredPluginsClient from '../clients/configuredPlugins';
 
 const pluginRegex = /^(?<name>[\w-]*)@(?<version>[\w\.-]*)$/;
 

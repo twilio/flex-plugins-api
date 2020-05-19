@@ -4,7 +4,9 @@ import {
   PluginVersionsClient,
   ConfigurationsClient,
   ConfiguredPluginsClient,
-} from './clients';
+  ReleasesClient,
+} from 'flex-plugins-api-client';
+
 import {
   createConfigurationScript,
   CreateConfigurationScript,
@@ -13,7 +15,6 @@ import {
   releaseScript,
   ReleaseScript,
 } from './scripts';
-import ReleasesClient from './clients/releases';
 
 export default class Toolkit {
   public readonly deploy: DeployScript;

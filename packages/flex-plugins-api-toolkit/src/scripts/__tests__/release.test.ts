@@ -1,10 +1,9 @@
-import releaseScript from '../release';
-import { ReleasesClient } from '../../clients';
-import PluginServiceHttpClient from '../../clients/client';
-import { ReleaseResource } from '../../clients/releases';
+import { PluginServiceHTTPClient, ReleaseResource, ReleasesClient } from 'flex-plugins-api-client';
 
-describe('DeployScript', () => {
-  const httpClient = new PluginServiceHttpClient('username', 'password');
+import releaseScript from '../release';
+
+describe('ReleaseScript', () => {
+  const httpClient = new PluginServiceHTTPClient('username', 'password');
   const releaseClient = new ReleasesClient(httpClient);
 
   const create = jest.spyOn(releaseClient, 'create');

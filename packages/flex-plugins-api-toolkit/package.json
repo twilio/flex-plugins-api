@@ -1,0 +1,57 @@
+{
+  "name": "flex-plugins-api-toolkit",
+  "version": "0.0.1",
+  "description": "Flex Plugins API Toolkit",
+  "keywords": [
+    "flex",
+    "flex plugins",
+    "flex plugins api",
+    "flex plugins api toolkit",
+    "flex plugins toolkit",
+    "plugins"
+  ],
+  "homepage": "https://github.com/twilio/flex-plugins-api-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/twilio/flex-plugins-api-toolkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twilio/flex-plugins-api-toolkit.git"
+  },
+  "license": "MIT",
+  "author": "Kousha Talebian <k@ousha.me>",
+  "contributors": [
+    "Kousha Talebian <k@ousha.me>"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "lint": "eslint --ext ts src/",
+    "lint:fix": "npm run lint -- --fix",
+    "prepublish": "npm run build",
+    "test": "cd ../.. && jest packages/flex-plugins-api-toolkit",
+    "test:watch": "cd ../.. && jest packages/flex-plugins-api-toolkit --watch"
+  },
+  "directories": {
+    "lib": "src",
+    "test": "__tests__"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
+  },
+  "dependencies": {
+    "flex-plugins-api-utils": "^0.0.1",
+    "flex-plugins-api-client": "^0.0.1"
+  },
+  "devDependencies": {
+  }
+}

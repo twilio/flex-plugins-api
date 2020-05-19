@@ -1,7 +1,8 @@
-import PluginServiceHttp from '../client';
-import { env } from '../../utils';
+import { env } from 'flex-plugins-api-utils';
 
-jest.mock('../../utils/logger');
+import PluginServiceHttp from '../client';
+
+jest.mock('flex-plugins-api-utils/dist/logger');
 
 describe('PluginServiceHttp', () => {
   beforeEach(() => {

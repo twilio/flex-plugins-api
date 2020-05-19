@@ -1,6 +1,7 @@
+import { TwilioApiError } from 'flex-plugins-api-utils';
+
 import PluginsClient from '../plugins';
 import PluginServiceHttpClient from '../client';
-import { TwilioApiError } from '../../exceptions';
 
 describe('PluginsClient', () => {
   const httpClient = new PluginServiceHttpClient('username', 'password');
