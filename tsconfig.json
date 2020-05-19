@@ -27,12 +27,9 @@
       "jest"
     ]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/__tests__/**/*.test.ts"
-  ],
   "exclude": [
     "node_modules",
+    "**/*.test.ts",
     "dist"
   ]
 }
