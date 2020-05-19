@@ -55,10 +55,11 @@ export default class Http {
    * @param req
    */
   private static transformRequest(req: AxiosRequestConfig): AxiosRequestConfig {
-    logger.debug(`Making a ${req.method?.toUpperCase()} to ${req.baseURL}/${req.url}`);
+    const method = req.method ? req.method : 'GET';
+    logger.debug(`Making a ${method.toUpperCase()} to ${req.baseURL}/${req.url}`);
 
     // Transform data to urlencoded
-    if (req.method?.toLocaleLowerCase() === 'post' && typeof req.data === 'object') {
+    if (method.toLocaleLowerCase() === 'post' && typeof req.data === 'object') {
       // This is formatting array of objects into a format Twilio Public API can consume
       const data = Object.keys(req.data).map((key) => {
         if (!Array.isArray(req.data[key])) {
