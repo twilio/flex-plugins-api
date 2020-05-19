@@ -1,6 +1,6 @@
 {
   "name": "flex-plugins-api-client",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Flex Plugins API Client",
   "keywords": [
     "flex",
@@ -49,7 +49,6 @@
     }
   },
   "dependencies": {
-    "flex-plugins-api-utils": "0.0.1"
-  },
-  "devDependencies": {}
+    "flex-plugins-api-utils": "^0.1.0"
+  }
 }

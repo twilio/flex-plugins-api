@@ -1,6 +1,6 @@
 {
   "name": "flex-plugins-api-toolkit",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Flex Plugins API Toolkit",
   "keywords": [
     "flex",
@@ -49,9 +49,7 @@
     }
   },
   "dependencies": {
-    "flex-plugins-api-utils": "^0.0.1",
-    "flex-plugins-api-client": "^0.0.1"
-  },
-  "devDependencies": {
+    "flex-plugins-api-client": "^0.1.0",
+    "flex-plugins-api-utils": "^0.1.0"
   }
 }
