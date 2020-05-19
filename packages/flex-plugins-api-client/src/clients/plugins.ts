@@ -36,6 +36,11 @@ export default class PluginsClient {
     this.client = client;
   }
 
+  /**
+   * Helper method to generate the URI for Plugins
+   *
+   * @param pluginId  the plugin identifier
+   */
   private static getUrl(pluginId?: string) {
     if (pluginId) {
       return `Plugins/${pluginId}`;

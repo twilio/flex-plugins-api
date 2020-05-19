@@ -15,10 +15,6 @@ export interface PluginVersionResourcePage extends PaginationMeta {
   plugin_versions: PluginVersionResource[];
 }
 
-/**
- * Plugin Public API Http client for the PluginVersion resource
- * @link https://www.twilio.com/docs/flex/plugins/api/plugin-version
- */
 export interface CreatePluginVersionResource {
   Version: string;
   PluginUrl: string;
@@ -26,6 +22,10 @@ export interface CreatePluginVersionResource {
   Changelog?: string;
 }
 
+/**
+ * Plugin Public API Http client for the PluginVersion resource
+ * @link https://www.twilio.com/docs/flex/plugins/api/plugin-version
+ */
 export default class PluginVersionsClient {
   private readonly client: PluginServiceHttpClient;
 
@@ -76,7 +76,7 @@ export default class PluginVersionsClient {
 
   /**
    * Creates a new {@link PluginVersionResource}
-   * @param pluginId the plugin idenitifer
+   * @param pluginId the Plugin identifier
    * @param object  the {@link CreatePluginVersionResource} request
    */
   public async create(pluginId: string, object: CreatePluginVersionResource): Promise<PluginVersionResource> {
