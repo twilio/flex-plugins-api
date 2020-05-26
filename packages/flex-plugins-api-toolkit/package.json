@@ -1,6 +1,6 @@
 {
   "name": "flex-plugins-api-toolkit",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Flex Plugins API Toolkit",
   "keywords": [
     "flex",
@@ -49,8 +49,8 @@
     }
   },
   "dependencies": {
-    "flex-plugins-api-client": "^0.3.1",
-    "flex-plugins-api-utils": "^0.3.1"
+    "flex-plugins-api-client": "^0.4.0",
+    "flex-plugins-api-utils": "^0.4.0"
   },
   "gitHead": "58a29ff6cd88c72561af45c2fe53b4996d3b2ccc"
 }
