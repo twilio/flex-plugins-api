@@ -59,7 +59,7 @@ export default class ReleasesClient {
    * @param releaseId the release identifier
    */
   public async get(releaseId: string): Promise<ReleaseResource> {
-    return this.client.get<ReleaseResource>(ReleasesClient.getUrl(releaseId));
+    return this.client.get<ReleaseResource>(ReleasesClient.getUrl(releaseId), { cacheable: true });
   }
 
   /**

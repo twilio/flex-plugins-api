@@ -28,7 +28,7 @@ describe('ConfigurationsClient', () => {
 
     expect(result).toEqual('item');
     expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Configurations/configId');
+    expect(get).toHaveBeenCalledWith('Configurations/configId', { cacheable: true });
   });
 
   it('should create configurations', async () => {

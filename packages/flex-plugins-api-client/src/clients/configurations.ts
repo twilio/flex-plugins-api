@@ -59,7 +59,7 @@ export default class ConfigurationsClient {
    * @param configId  the configuration identifier
    */
   public async get(configId: string): Promise<ConfigurationResource> {
-    return this.client.get<ConfigurationResource>(ConfigurationsClient.getUrl(configId));
+    return this.client.get<ConfigurationResource>(ConfigurationsClient.getUrl(configId), { cacheable: true });
   }
 
   /**

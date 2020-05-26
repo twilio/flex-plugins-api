@@ -28,7 +28,7 @@ describe('HttpClient', () => {
 
       expect(response).toEqual('the-result');
       expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith('the-uri');
+      expect(get).toHaveBeenCalledWith('the-uri', {});
     });
   });
 
@@ -57,7 +57,7 @@ describe('HttpClient', () => {
 
       expect(result).toEqual([data]);
       expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith('the-uri');
+      expect(get).toHaveBeenCalledWith('the-uri', undefined);
     });
   });
 
@@ -151,8 +151,13 @@ describe('HttpClient', () => {
 
   describe('transformResponse', () => {
     it('should transform response', () => {
+      const response = {
+        data: '123',
+        config: {},
+        request: {},
+      };
       // @ts-ignore
-      expect(HttpClient.transformResponse({ data: '123' })).toEqual('123');
+      expect(HttpClient.transformResponse(response)).toEqual('123');
     });
   });
 
@@ -192,6 +197,31 @@ describe('HttpClient', () => {
         expect((e as TwilioApiError).status).toEqual(err.response.data.status);
         done();
       }
+    });
+  });
+
+  describe('getRequestOption', () => {
+    it('should return empty object', () => {
+      const httpClient = new HttpClient(config);
+
+      // @ts-ignore
+      expect(httpClient.getRequestOption()).toEqual({});
+    });
+
+    it('should return default maxAge', () => {
+      const httpClient = new HttpClient(config);
+
+      // @ts-ignore
+      const maxAge = httpClient.cacheAge;
+      // @ts-ignore
+      expect(httpClient.getRequestOption({ cacheable: true })).toEqual({ cache: { maxAge } });
+    });
+
+    it('should return requested maxAge', () => {
+      const httpClient = new HttpClient(config);
+
+      // @ts-ignore
+      expect(httpClient.getRequestOption({ cacheable: true, cacheAge: 123 })).toEqual({ cache: { maxAge: 123 } });
     });
   });
 });

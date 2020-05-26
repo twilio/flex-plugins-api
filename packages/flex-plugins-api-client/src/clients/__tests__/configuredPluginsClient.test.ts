@@ -17,7 +17,7 @@ describe('ConfiguredPluginsClient', () => {
 
     expect(result).toEqual('list');
     expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Configurations/configId/Plugins');
+    expect(get).toHaveBeenCalledWith('Configurations/configId/Plugins', { cacheable: true });
   });
 
   it('should get configured plugin', async () => {
@@ -27,6 +27,6 @@ describe('ConfiguredPluginsClient', () => {
 
     expect(result).toEqual('item');
     expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Configurations/configId/Plugins/pluginId');
+    expect(get).toHaveBeenCalledWith('Configurations/configId/Plugins/pluginId', { cacheable: true });
   });
 });
