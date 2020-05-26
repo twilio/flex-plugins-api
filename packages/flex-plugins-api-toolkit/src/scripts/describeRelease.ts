@@ -23,7 +23,7 @@ interface DescribeRelease extends Release {
   configuration: DescribeConfiguration;
 }
 
-export type DescribeReleaseScript = Script<DescribeRelease, DescribeReleaseOption>;
+export type DescribeReleaseScript = Script<DescribeReleaseOption, DescribeRelease>;
 
 /**
  * The .describeRelease script. This script describes a release.
@@ -43,11 +43,18 @@ export default function describeRelease(
   return async (option: DescribeReleaseOption) => {
     const release = await releasesClient.get(option.sid);
 
-    return internalDescribeConfiguration(
+    const configuration = await internalDescribeConfiguration(
       pluginClient,
       pluginVersionClient,
       configurationClient,
       configuredPluginClient,
     )({ version: release.configuration_sid }, release);
+
+    return {
+      sid: release.sid,
+      configurationSid: release.configuration_sid,
+      configuration,
+      dateCreated: release.date_created,
+    };
   };
 }

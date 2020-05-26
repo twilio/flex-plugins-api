@@ -22,7 +22,7 @@ export interface DescribePluginVersion extends PluginVersion {
   plugin: Plugin;
 }
 
-export type DescribePluginVersionScript = Script<DescribePluginVersionOption, DescribePluginVersion | null>;
+export type DescribePluginVersionScript = Script<DescribePluginVersionOption, DescribePluginVersion>;
 
 /**
  * The .describePluginVersion script. This script describes a plugin version.

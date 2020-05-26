@@ -31,7 +31,7 @@ export interface DescribeConfiguration extends Configuration {
   plugins: ConfiguredPlugins[];
 }
 
-export type DescribeConfigurationScript = Script<DescribeConfiguration, DescribeConfigurationOption>;
+export type DescribeConfigurationScript = Script<DescribeConfigurationOption, DescribeConfiguration>;
 
 /**
  * Internal method for returning configuration
@@ -49,7 +49,7 @@ export function internalDescribeConfiguration(
   return async (option: DescribeConfigurationOption, release: ReleaseResource) => {
     const configuration = await configurationClient.get(option.version);
 
-    const isActive = release && release.configuration_sid === configuration.sid;
+    const isActive = Boolean(release && release.configuration_sid === configuration.sid);
     const list = (await configuredPluginClient.list(option.version)).plugins;
     const pluginsPromise = list.map(async (p) => pluginClient.get(p.plugin_sid));
     const versionsPromise = list.map(async (p) => pluginVersionClient.get(p.plugin_sid, p.plugin_version_sid));
