@@ -14,6 +14,14 @@ import {
   CreateConfigurationScript,
   DeployScript,
   deployScript,
+  describeConfigurationScript,
+  DescribeConfigurationScript,
+  describePluginScript,
+  DescribePluginScript,
+  describePluginVersionScript,
+  DescribePluginVersionScript,
+  describeReleaseScript,
+  DescribeReleaseScript,
   releaseScript,
   ReleaseScript,
 } from './scripts';
@@ -26,6 +34,10 @@ export default class FlexPluginsAPIToolkit {
   public readonly deploy: DeployScript;
   public readonly createConfiguration: CreateConfigurationScript;
   public readonly release: ReleaseScript;
+  public readonly describePlugin: DescribePluginScript;
+  public readonly describePluginVersion: DescribePluginVersionScript;
+  public readonly describeConfiguration: DescribeConfigurationScript;
+  public readonly describeRelease: DescribeReleaseScript;
 
   constructor(username: string, password: string, options?: FlexPluginsAPIToolkitOptions) {
     // Optional realm environment
@@ -49,5 +61,31 @@ export default class FlexPluginsAPIToolkit {
       configuredPluginsClient,
     );
     this.release = releaseScript(releasesClient);
+    this.describePlugin = describePluginScript(
+      pluginClient,
+      pluginVersionsClient,
+      configuredPluginsClient,
+      releasesClient,
+    );
+    this.describePluginVersion = describePluginVersionScript(
+      pluginClient,
+      pluginVersionsClient,
+      configuredPluginsClient,
+      releasesClient,
+    );
+    this.describeConfiguration = describeConfigurationScript(
+      pluginClient,
+      pluginVersionsClient,
+      configurationsClient,
+      configuredPluginsClient,
+      releasesClient,
+    );
+    this.describeRelease = describeReleaseScript(
+      pluginClient,
+      pluginVersionsClient,
+      configurationsClient,
+      configuredPluginsClient,
+      releasesClient,
+    );
   }
 }

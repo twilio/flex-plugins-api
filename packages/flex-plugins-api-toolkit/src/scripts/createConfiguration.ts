@@ -8,12 +8,12 @@ import {
   PluginVersionsClient,
 } from 'flex-plugins-api-client';
 
-import { Plugin } from './deploy';
+import { DeployPlugin } from './deploy';
 import { Script } from '.';
 
 const pluginRegex = /^(?<name>[\w-]*)@(?<version>[\w\.-]*)$/;
 
-export interface InstalledPlugin extends Plugin {
+export interface InstalledPlugin extends DeployPlugin {
   phase: number;
 }
 

@@ -17,7 +17,7 @@ export interface DeployOption {
   isPrivate?: boolean;
 }
 
-export interface Plugin {
+export interface DeployPlugin {
   pluginSid: string;
   pluginVersionSid: string;
   name: string;
@@ -29,7 +29,7 @@ export interface Plugin {
   isPrivate: boolean;
 }
 
-export type DeployScript = Script<DeployOption, Plugin>;
+export type DeployScript = Script<DeployOption, DeployPlugin>;
 
 /**
  * The .deploy script. This script will upsert a Plugin and then creates a new PluginVersion
@@ -37,7 +37,7 @@ export type DeployScript = Script<DeployOption, Plugin>;
  * @param pluginVersionClient the Public API {@link PluginVersionsClient}
  */
 export default function deploy(pluginClient: PluginsClient, pluginVersionClient: PluginVersionsClient): DeployScript {
-  return async (option: DeployOption): Promise<Plugin> => {
+  return async (option: DeployOption): Promise<DeployPlugin> => {
     // Upsert Plugin
     const upsertOption: CreatePluginResource = {
       UniqueName: option.name,
