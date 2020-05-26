@@ -38,7 +38,7 @@ describe('ReleasesClient', () => {
 
     expect(result).toEqual('item');
     expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Releases/releaseId');
+    expect(get).toHaveBeenCalledWith('Releases/releaseId', { cacheable: true });
   });
 
   it('should create a release', async () => {

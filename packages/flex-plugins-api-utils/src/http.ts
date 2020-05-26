@@ -1,8 +1,14 @@
 import qs from 'qs';
+import { setupCache } from 'axios-cache-adapter';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import logger from './logger';
 import { TwilioApiError } from './exceptions';
+
+interface RequestOption {
+  cacheable?: boolean;
+  cacheAge?: number;
+}
 
 export interface AuthConfig {
   username: string;
@@ -16,8 +22,12 @@ export interface HttpConfig {
 
 export default class Http {
   protected readonly client: AxiosInstance;
+  protected readonly cacheAge: number;
 
   constructor(config: HttpConfig) {
+    this.cacheAge = 15 * 60 * 1000;
+    const cache = setupCache({ maxAge: 0 });
+
     this.client = axios.create({
       baseURL: config.baseURL,
       auth: {
@@ -27,6 +37,7 @@ export default class Http {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
+      adapter: cache.adapter,
     });
 
     this.client.interceptors.request.use(Http.transformRequest);
@@ -85,12 +96,19 @@ export default class Http {
   }
 
   /**
-   * Transformss the response object
+   * Transforms the response object
    * @param resp
    */
   private static transformResponse(resp: AxiosResponse) {
     const data = resp.data;
-    logger.debug(`Request resulted in ${resp.status} with data\n${Http.prettyPrint(data)}`);
+
+    const servedFromCache = resp.request.fromCache === true ? '(served from cache) ' : '';
+    const pretty = Http.prettyPrint(data);
+    const url = `${resp.config.baseURL}/${resp.config.url}`;
+    const method = resp.request.method || '';
+    logger.debug(
+      `${method} request to ${url} ${servedFromCache}responded with statusCode ${resp.status} and data\n${pretty}\n`,
+    );
 
     return data;
   }
@@ -113,18 +131,20 @@ export default class Http {
 
   /**
    * List API endpoint; makes a GET request and returns an array of R
-   * @param uri   the uri endpoint
+   * @param uri     the uri endpoint
+   * @param option  the request option
    */
-  public async list<R>(uri: string): Promise<R[]> {
-    return this.get<R[]>(uri);
+  public async list<R>(uri: string, option?: RequestOption): Promise<R[]> {
+    return this.get<R[]>(uri, option);
   }
 
   /**
    * Makes a GET request to return an instance
    * @param uri   the uri endpoint
+   * @param option  the request option
    */
-  public async get<R>(uri: string): Promise<R> {
-    return this.client.get(uri);
+  public async get<R>(uri: string, option?: RequestOption): Promise<R> {
+    return this.client.get(uri, this.getRequestOption(option));
   }
 
   /**
@@ -143,5 +163,25 @@ export default class Http {
    */
   public async delete(uri: string): Promise<void> {
     return this.client.delete(uri);
+  }
+
+  /**
+   * Returns a {@link AxiosRequestConfig} configuration
+   * @param option  request configuration
+   */
+  private getRequestOption(option?: RequestOption) {
+    const opt: AxiosRequestConfig = {};
+
+    if (!option) {
+      return opt;
+    }
+
+    if (option.cacheable) {
+      opt.cache = {
+        maxAge: option.cacheAge || this.cacheAge,
+      };
+    }
+
+    return opt;
   }
 }

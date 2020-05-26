@@ -46,7 +46,7 @@ export default class ConfiguredPluginsClient {
    * @param configId the config identifier
    */
   public async list(configId: string): Promise<ConfiguredPluginResourcePage> {
-    return this.client.get<ConfiguredPluginResourcePage>(ConfiguredPluginsClient.getUrl(configId));
+    return this.client.get<ConfiguredPluginResourcePage>(ConfiguredPluginsClient.getUrl(configId), { cacheable: true });
   }
 
   /**
@@ -55,6 +55,6 @@ export default class ConfiguredPluginsClient {
    * @param id the plugin identifier
    */
   public async get(configId: string, id: string): Promise<ConfiguredPluginResource> {
-    return this.client.get<ConfiguredPluginResource>(ConfiguredPluginsClient.getUrl(configId, id));
+    return this.client.get<ConfiguredPluginResource>(ConfiguredPluginsClient.getUrl(configId, id), { cacheable: true });
   }
 }

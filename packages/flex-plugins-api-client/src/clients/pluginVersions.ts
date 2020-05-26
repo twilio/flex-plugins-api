@@ -71,7 +71,7 @@ export default class PluginVersionsClient {
    * @param id the plugin version identifier
    */
   public async get(pluginId: string, id: string): Promise<PluginVersionResource> {
-    return this.client.get<PluginVersionResource>(PluginVersionsClient.getUrl(pluginId, id));
+    return this.client.get<PluginVersionResource>(PluginVersionsClient.getUrl(pluginId, id), { cacheable: true });
   }
 
   /**
