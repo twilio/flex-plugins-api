@@ -56,7 +56,7 @@ This endpoint fetches the provided plugin.
 
 This endpoint creates a new plugin.
 
-#### update(pluginId, updateObjct)
+#### update(pluginId, updateObject)
 
 This endpoint updates a plugin.
 
