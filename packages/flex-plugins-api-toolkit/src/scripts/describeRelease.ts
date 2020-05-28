@@ -9,17 +9,18 @@ import {
 import { Script } from '.';
 import { DescribeConfiguration, internalDescribeConfiguration } from './describeConfiguration';
 
-interface DescribeReleaseOption {
+export interface DescribeReleaseOption {
   sid: string;
 }
 
 interface Release {
   sid: string;
   configurationSid: string;
+  isActive: boolean;
   dateCreated: string;
 }
 
-interface DescribeRelease extends Release {
+export interface DescribeRelease extends Release {
   configuration: DescribeConfiguration;
 }
 
@@ -42,6 +43,7 @@ export default function describeRelease(
 ): DescribeReleaseScript {
   return async (option: DescribeReleaseOption) => {
     const release = await releasesClient.get(option.sid);
+    const active = await releasesClient.active();
 
     const configuration = await internalDescribeConfiguration(
       pluginClient,
@@ -53,6 +55,7 @@ export default function describeRelease(
     return {
       sid: release.sid,
       configurationSid: release.configuration_sid,
+      isActive: active.sid === release.sid,
       configuration,
       dateCreated: release.date_created,
     };

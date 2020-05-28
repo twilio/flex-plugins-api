@@ -11,7 +11,7 @@ import { TwilioError } from 'flex-plugins-api-utils';
 import { Script } from '.';
 import { DeployPlugin } from './deploy';
 
-interface DescribeConfigurationOption {
+export interface DescribeConfigurationOption {
   version: string;
 }
 
