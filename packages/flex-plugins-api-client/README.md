@@ -38,7 +38,9 @@ const pluginsVersionClient = new PluginVersionsClient(httpClient);
 ```
 ## Clients
 
-The available clients are listed below. All endpoints return a promise.
+The available clients are listed below. All endpoints return a promise. 
+
+**Note**: If you are using the JWE token for authentication, then _all_ identifiers (such as `pluginId`, `versionId`, etc) _must_ be the sid of the resource only.
 
 ### PluginsClient
 
@@ -50,7 +52,7 @@ This endpoint lists all plugins.
 
 #### get(pluginId)
 
-This endpoint fetches the provided plugin.
+This endpoint fetches the provided plugin. The `pluginId` can either be the unique name or the plugin sid.
 
 #### create(requestObject)
 
@@ -58,7 +60,7 @@ This endpoint creates a new plugin.
 
 #### update(pluginId, updateObject)
 
-This endpoint updates a plugin.
+This endpoint updates a plugin. The `pluginId` can either be the unique name or the plugin sid.
 
 #### upsert(upsertObject)
 
@@ -70,19 +72,19 @@ This is the HTTP client for [plugin versions](https://www.twilio.com/docs/flex/p
 
 #### list(pluginId)
 
-This endpoint lists all plugin versions of the given plugin.
+This endpoint lists all plugin versions of the given plugin. The `pluginId` can either be the unique name or the plugin sid.
 
 #### latest(pluginId)
 
-This endpoints returns the latest plugin version (by the date created) of the given plugin.
+This endpoint returns the latest plugin version (by the date created) of the given plugin. The `pluginId` can either be the unique name or the plugin sid.
 
 #### get(pluginId, versionId)
 
-This endpoint fetches the provided plugin version.
+This endpoint fetches the provided plugin version. The `pluginId` can either be the unique name or the plugin sid and the `versionId` can either be the version or the plugin version sid.
 
 #### create(pluginId, requestObject)
 
-This endpoint creates a new plugin version.
+This endpoint creates a new plugin version. The `pluginId` can either be the unique name or the plugin sid.
 
 ### ConfigurationsClient
 
@@ -94,7 +96,7 @@ This endpoint lists all configurations.
 
 #### get(configId)
 
-This endpoint fetches the provided configuration.
+This endpoint fetches the provided configuration. The `configId` can either be version of the configuration sid.
 
 #### create(requestObject)
 
@@ -106,11 +108,11 @@ This is the HTTP client for [configured plugins](https://www.twilio.com/docs/fle
 
 #### list(configId)
 
-This endpoint lists all configured plugins.
+This endpoint lists all configured plugins. The `configId` can either be version of the configuration sid.
 
 #### get(configId, pluginId)
 
-This endpoint fetches the provided configured plugins.
+This endpoint fetches the provided configured plugins. The `configId` can either be version of the configuration sid and the `pluginId` can either be the unique name or the plugin sid.
 
 ### ReleasesClient
 
@@ -126,7 +128,7 @@ This endpoint returns the currently active release.
 
 #### get(releaseId)
 
-This endpoint fetches the provided release.
+This endpoint fetches the provided release. The `releaseId` is the release sid.
 
 #### create(requestObject)
 
