@@ -16,6 +16,7 @@ interface DescribeReleaseOption {
 interface Release {
   sid: string;
   configurationSid: string;
+  isActive: boolean;
   dateCreated: string;
 }
 
@@ -42,6 +43,7 @@ export default function describeRelease(
 ): DescribeReleaseScript {
   return async (option: DescribeReleaseOption) => {
     const release = await releasesClient.get(option.sid);
+    const active = await releasesClient.active();
 
     const configuration = await internalDescribeConfiguration(
       pluginClient,
@@ -53,6 +55,7 @@ export default function describeRelease(
     return {
       sid: release.sid,
       configurationSid: release.configuration_sid,
+      isActive: active.sid === release.sid,
       configuration,
       dateCreated: release.date_created,
     };
