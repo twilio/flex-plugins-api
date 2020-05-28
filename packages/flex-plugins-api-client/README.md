@@ -4,22 +4,23 @@
 
 # Flex Plugins API Client
 
-This package provides a NodeJS client for using the [Public API endpoints](https://www.twilio.com/docs/flex/plugins/api).
+This package provides a NodeJS HTTP client for using the [Public API endpoints](https://www.twilio.com/docs/flex/plugins/api).
 
 ## Installation
 
 Install this package using:
 
 ```bash
+# Using npm
 npm i -S flex-plugins-api-client
 
-# Or use yarn
+# Using yarn
 yarn add flex-plugins-api-client
 ``` 
 
 ## Usage
 
-Instantiate a `PluginServiceHttp` client by providing username/password (which can be AccountSid/AuthToken or API Key/Secret). Then instantiate each required client by passing this HTTP client to it:
+Instantiate a `PluginServiceHttpClient` client by providing username/password (AccountSid/AuthToken, API Key/Secret, or JWE token). Then instantiate each client (corresponding to different resources) by passing this HTTP client to it:
 
 ```js
 import {

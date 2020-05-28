@@ -24,7 +24,7 @@ export interface CreateConfigurationOption {
   fromConfiguration?: 'active' | string;
 }
 
-export interface Configuration {
+export interface CreateConfiguration {
   configurationSid: string;
   version: string;
   description: string;
@@ -32,7 +32,7 @@ export interface Configuration {
   dateCreated: string;
 }
 
-export type CreateConfigurationScript = Script<CreateConfigurationOption, Configuration>;
+export type CreateConfigurationScript = Script<CreateConfigurationOption, CreateConfiguration>;
 
 /**
  * The .createConfiguration script. This script will create a Configuration
@@ -47,7 +47,7 @@ export default function createConfiguration(
   configurationClient: ConfigurationsClient,
   configuredPluginClient: ConfiguredPluginsClient,
 ): CreateConfigurationScript {
-  return async (option: CreateConfigurationOption): Promise<Configuration> => {
+  return async (option: CreateConfigurationOption): Promise<CreateConfiguration> => {
     const pluginsValid = option.plugins.every((plugin) => {
       const match = plugin.match(pluginRegex);
       return match && match.groups && match.groups.name && match.groups.version;

@@ -9,7 +9,7 @@ import {
 import { Script } from '.';
 import { DescribeConfiguration, internalDescribeConfiguration } from './describeConfiguration';
 
-interface DescribeReleaseOption {
+export interface DescribeReleaseOption {
   sid: string;
 }
 
@@ -20,7 +20,7 @@ interface Release {
   dateCreated: string;
 }
 
-interface DescribeRelease extends Release {
+export interface DescribeRelease extends Release {
   configuration: DescribeConfiguration;
 }
 
