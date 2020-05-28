@@ -33,7 +33,9 @@ const toolkit = new FlexPluginsAPIToolkit(process.env.USERNAME, process.env.PASS
 
 ## Methods
 
-The toolkit provides the following commands.
+The toolkit provides the following commands. 
+
+*Note*: If you are using the JWE token for authentication, then _all_ identifiers (such as `name`, `version`, etc) _must_ be the sid of the resource only.
 
 ### .deploy(option)
 
