@@ -84,7 +84,7 @@ interface CreateConfigurationOption {
 }
 ```
 
-The `plugins` field is an array of plugins formatted as `pluginName@version`. It is the list of plugins and their corresponding versions that you want to include in this plugin (you can use Sids or unique name/version):
+where the `plugins` field is an array of plugins formatted as `pluginName@version`. It is the list of plugins and their corresponding versions that you want to include in this plugin (you can use Sids or unique name/version):
 
 ```ts
 const option = {
@@ -132,7 +132,8 @@ interface ReleaseOption {
   version: string;
 }
 ```
-where `version` is the identifier of the configuration (can be Sid or the version). 
+
+where `version` is the identifier of the configuration which can be either the version or its sid.
 
 The command returns a promise of type:
 
@@ -156,6 +157,8 @@ interface DescribePluginOption {
   name: string;
 }
 ```
+
+where the  `name` is either the plugin's unique name or its sid.
 
 The command returns a promise of type:
 
@@ -195,6 +198,8 @@ interface DescribePluginVersionOption {
 }
 ```
 
+where the `name` is either the plugin's unique name or its sid; the version is either the plugin version's version or its sid.
+
 The command returns a promise of type:
 
 ```ts
@@ -230,6 +235,8 @@ interface DescribeConfigurationOption {
   version: string;
 }
 ```
+
+where the `version` is either the configuration's version or its sid.
 
 The command returns a promise of type:
 
