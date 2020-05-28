@@ -101,7 +101,7 @@ const option = {
 The command returns a promise of type:
 
 ```ts
-export interface Configuration {
+export interface CreateConfiguration {
   configurationSid: string;
   version: string;
   description: string;
