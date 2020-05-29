@@ -2,4 +2,4 @@ coverage:
   precision: 2
   round: nearest
   ignore:
-    - "src/**/index.ts"
+    - "packages/**/src/index.ts"
