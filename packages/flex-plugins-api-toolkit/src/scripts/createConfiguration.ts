@@ -76,6 +76,9 @@ export default function createConfiguration(
 
         const versionResource =
           version === 'latest' ? await pluginVersionClient.latest(name) : await pluginVersionClient.get(name, version);
+        if (!versionResource) {
+          throw new TwilioError(`No plugin version was found for ${plugin}`);
+        }
 
         return { plugin_version: versionResource.sid, phase: 3 };
       }),

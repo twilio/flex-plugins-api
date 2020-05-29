@@ -55,7 +55,7 @@ export default function describeRelease(
     return {
       sid: release.sid,
       configurationSid: release.configuration_sid,
-      isActive: active.sid === release.sid,
+      isActive: Boolean(active && active.sid === release.sid),
       configuration,
       dateCreated: release.date_created,
     };
