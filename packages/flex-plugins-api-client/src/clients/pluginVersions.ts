@@ -59,7 +59,7 @@ export default class PluginVersionsClient {
    * Fetches the latest {@link PluginVersionResourcePage} by calling the List endpoint and returns the first entry.
    * @param pluginId the plugin identifier
    */
-  public async latest(pluginId: string): Promise<PluginVersionResource> {
+  public async latest(pluginId: string): Promise<PluginVersionResource | null> {
     const list = await this.list(pluginId);
 
     return list.plugin_versions[0];

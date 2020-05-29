@@ -30,6 +30,23 @@ interface FlexPluginsAPIToolkitOptions {
   realm?: Realm;
 }
 
+export {
+  DeployOption,
+  DeployPlugin,
+  CreateConfigurationOption,
+  CreateConfiguration,
+  ReleaseOption,
+  Release,
+  DescribePluginOption,
+  DescribePlugin,
+  DescribePluginVersionOption,
+  DescribePluginVersion,
+  DescribeConfigurationOption,
+  DescribeConfiguration,
+  DescribeReleaseOption,
+  DescribeRelease,
+} from './scripts';
+
 export default class FlexPluginsAPIToolkit {
   public readonly deploy: DeployScript;
   public readonly createConfiguration: CreateConfigurationScript;

@@ -46,7 +46,7 @@ export function internalDescribeConfiguration(
   configurationClient: ConfigurationsClient,
   configuredPluginClient: ConfiguredPluginsClient,
 ) {
-  return async (option: DescribeConfigurationOption, release: ReleaseResource) => {
+  return async (option: DescribeConfigurationOption, release: ReleaseResource | null) => {
     const configuration = await configurationClient.get(option.version);
 
     const isActive = Boolean(release && release.configuration_sid === configuration.sid);
