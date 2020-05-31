@@ -55,6 +55,15 @@ export default class ConfigurationsClient {
   }
 
   /**
+   * Fetches the latest {@link ConfigurationResource}
+   */
+  public async latest(): Promise<ConfigurationResource | null> {
+    const list = await this.list();
+
+    return list.configurations[0];
+  }
+
+  /**
    * Fetches an instance of the {@link ConfigurationResource}
    * @param configId  the configuration identifier
    */

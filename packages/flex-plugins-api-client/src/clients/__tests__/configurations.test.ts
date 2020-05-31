@@ -41,4 +41,14 @@ describe('ConfigurationsClient', () => {
     expect(post).toHaveBeenCalledTimes(1);
     expect(post).toHaveBeenCalledWith('Configurations', payload);
   });
+
+  it('should get the latest version', async () => {
+    get.mockResolvedValue({ configurations: ['config1', 'config2'] });
+
+    const result = await client.latest();
+
+    expect(result).toEqual('config1');
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(get).toHaveBeenCalledWith('Configurations');
+  });
 });
