@@ -84,7 +84,7 @@ describe('PluginsClient', () => {
     });
 
     it('should create a new plugin', async () => {
-      get.mockRejectedValue(new TwilioApiError(404, 'message', 'info', 404));
+      get.mockRejectedValue(new TwilioApiError(404, 'message', 404, 'info'));
       post.mockResolvedValue('created-plugin');
 
       const payload = { UniqueName: 'the-name' };
@@ -98,7 +98,7 @@ describe('PluginsClient', () => {
     });
 
     it('should throw an exception', async (done) => {
-      const exception = new TwilioApiError(400, 'message', 'info', 400);
+      const exception = new TwilioApiError(400, 'message', 400, 'info');
       get.mockRejectedValue(exception);
 
       try {
