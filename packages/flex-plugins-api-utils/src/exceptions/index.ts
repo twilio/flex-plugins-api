@@ -1,2 +1,2 @@
-export { default as TwilioError } from './twilioError';
-export { default as TwilioApiError } from './twilioApiError';
+export { TwilioError } from 'flex-plugins-utils-exception';
+export { TwilioApiError } from 'flex-plugins-utils-exception';

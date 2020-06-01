@@ -122,7 +122,7 @@ export default class Http {
     if (Http.isTwilioError(err)) {
       const data = err.response.data;
       logger.debug(`Request errored with data\n${Http.prettyPrint(data)}`);
-      return Promise.reject(new TwilioApiError(data.code, data.message, data.more_info, data.status));
+      return Promise.reject(new TwilioApiError(data.code, data.message, data.status, data.more_info));
     }
 
     logger.debug(`Request errored with message ${err.message}`);
