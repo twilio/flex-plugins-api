@@ -1,4 +1,3 @@
-
 language: node_js
 
 node_js:
@@ -9,7 +8,7 @@ before_script:
 
 script:
   - npm run lint
-  - CI=true npm run test:ci
+  - npm run test:ci
 
 after_success:
   - codecov --token="$CODECOV_TOKEN"
