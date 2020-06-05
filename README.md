@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-    <a href="https://travis-ci.com/twilio/flex-plugin-builder">
+    <a href="https://travis-ci.com/twilio/flex-plugins-api">
         <img src="https://travis-ci.com/twilio/flex-plugins-api.svg?branch=master" title="Build Status" />
     </a>
-    <a href="https://codecov.io/gh/twilio/flex-plugin-builder">
+    <a href="https://codecov.io/gh/twilio/flex-plugins-api">
         <img src="https://codecov.io/gh/twilio/flex-plugins-api/branch/master/graph/badge.svg" title="Code Coverage" />
     </a>
     <a href="#contributors">
