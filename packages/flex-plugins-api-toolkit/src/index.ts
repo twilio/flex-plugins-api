@@ -45,6 +45,7 @@ export {
   DescribeConfiguration,
   DescribeReleaseOption,
   DescribeRelease,
+  InstalledPlugin,
 } from './scripts';
 
 export default class FlexPluginsAPIToolkit {
