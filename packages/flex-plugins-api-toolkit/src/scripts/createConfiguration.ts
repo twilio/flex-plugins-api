@@ -6,6 +6,7 @@ import {
   CreateConfiguredPlugin,
   PluginsClient,
   PluginVersionsClient,
+  ReleasesClient,
 } from 'flex-plugins-api-client';
 
 import { DeployPlugin } from './deploy';
@@ -18,7 +19,8 @@ export interface InstalledPlugin extends DeployPlugin {
 }
 
 export interface CreateConfigurationOption {
-  plugins: string[];
+  addPlugins: string[];
+  removePlugins?: string[];
   version: string;
   description?: string;
   fromConfiguration?: 'active' | string;
@@ -46,9 +48,10 @@ export default function createConfiguration(
   pluginVersionClient: PluginVersionsClient,
   configurationClient: ConfigurationsClient,
   configuredPluginClient: ConfiguredPluginsClient,
+  releasesClient: ReleasesClient,
 ): CreateConfigurationScript {
   return async (option: CreateConfigurationOption): Promise<CreateConfiguration> => {
-    const pluginsValid = option.plugins.every((plugin) => {
+    const pluginsValid = option.addPlugins.every((plugin) => {
       const match = plugin.match(pluginRegex);
       return match && match.groups && match.groups.name && match.groups.version;
     });
@@ -56,32 +59,52 @@ export default function createConfiguration(
       throw new TwilioError('Plugins must be of the format pluginName@version');
     }
 
-    const list: string[] = option.plugins;
+    const removeList: string[] = (option.removePlugins && option.removePlugins) || [];
+    const list: string[] = option.addPlugins;
+    if (option.fromConfiguration === 'active') {
+      const release = await releasesClient.active();
+      if (release) {
+        option.fromConfiguration = release.configuration_sid;
+      } else {
+        delete option.fromConfiguration;
+      }
+    }
+
     // Fetch existing installed plugins
     if (option.fromConfiguration) {
-      // TODO: Add support for fromConfiguration: 'active' once Release client is created
       const items = await configuredPluginClient.list(option.fromConfiguration);
       const existingPlugins = items.plugins
         .filter((plugin) => list.every((p) => p.indexOf(`${plugin.unique_name}@`) === -1))
         .map((p) => `${p.unique_name}@${p.version}`);
       list.push(...existingPlugins);
     }
+
     const plugins: CreateConfiguredPlugin[] = await Promise.all(
-      list.map(async (plugin) => {
-        const match = plugin.match(pluginRegex);
-        // @ts-ignore
-        const { name, version } = match.groups;
-        // This checks plugin exists
-        await pluginClient.get(name);
+      list
+        .map((plugin) => {
+          // @ts-ignore
+          const { name, version } = plugin.match(pluginRegex).groups;
+          return {
+            name,
+            version,
+            plugin,
+          };
+        })
+        .filter(({ name }) => !removeList.includes(name))
+        .map(async ({ name, version, plugin }) => {
+          // This checks plugin exists
+          await pluginClient.get(name);
 
-        const versionResource =
-          version === 'latest' ? await pluginVersionClient.latest(name) : await pluginVersionClient.get(name, version);
-        if (!versionResource) {
-          throw new TwilioError(`No plugin version was found for ${plugin}`);
-        }
+          const versionResource =
+            version === 'latest'
+              ? await pluginVersionClient.latest(name)
+              : await pluginVersionClient.get(name, version);
+          if (!versionResource) {
+            throw new TwilioError(`No plugin version was found for ${plugin}`);
+          }
 
-        return { plugin_version: versionResource.sid, phase: 3 };
-      }),
+          return { plugin_version: versionResource.sid, phase: 3 };
+        }),
     );
 
     // Create a Configuration
