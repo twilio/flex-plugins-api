@@ -6,6 +6,7 @@ export {
   CreateConfigurationScript,
   CreateConfigurationOption,
   CreateConfiguration,
+  InstalledPlugin,
 } from './createConfiguration';
 export { default as releaseScript, ReleaseScript, ReleaseOption, Release } from './release';
 export {
