@@ -79,23 +79,39 @@ The command takes an argument object of the format:
 
 ```ts
 interface CreateConfigurationOption {
-  plugins: string[];
+  addPlugins: string[];
   version: string;
+  removePlugins?: string[];
   description?: string;
   fromConfiguration?: 'active' | string;
 }
 ```
 
-where the `plugins` field is an array of plugins formatted as `pluginName@version`. It is the list of plugins and their corresponding versions that you want to include in this plugin (you can use Sids or unique name/version):
+where the `addPlugins` field is an array of plugins formatted as `pluginName@version`. It is the list of plugins, and their corresponding versions that you want to include in this plugin (you can use Sids or unique name/version):
 
 ```ts
 const option = {
-  plugins: [
+  addPlugins: [
     'plugin-sample@1.0.0',
     'FPxxx@1.0.0',
     'another-plugin@FVxxx',
     'FPxxy@FVxxy'
   ],
+  ...
+}
+```
+
+The option `removePlugins` is useful when you want to create a new configuration from an existing configuration but then remove some plugins. This parameter is an array of plugin names only:
+
+```ts
+const option = {
+  addPlugins: [
+    'plugin-sample@1.0.0',
+    'FPxxx@1.0.0',
+    'another-plugin@FVxxx',
+    'FPxxy@FVxxy'
+  ],
+  removePlugins: ['pluginName'],
   ...
 }
 ```
