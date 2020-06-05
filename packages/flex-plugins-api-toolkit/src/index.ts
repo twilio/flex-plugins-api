@@ -76,6 +76,7 @@ export default class FlexPluginsAPIToolkit {
       pluginVersionsClient,
       configurationsClient,
       configuredPluginsClient,
+      releasesClient,
     );
     this.release = releaseScript(releasesClient);
     this.describePlugin = describePluginScript(
