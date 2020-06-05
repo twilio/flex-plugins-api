@@ -42,12 +42,6 @@
     "lib": "src",
     "test": "__tests__"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run test"
-    }
-  },
   "dependencies": {
     "axios": "^0.19.2",
     "axios-cache-adapter": "^2.5.0",

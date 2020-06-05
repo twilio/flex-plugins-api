@@ -42,12 +42,6 @@
     "lib": "src",
     "test": "__tests__"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run test"
-    }
-  },
   "dependencies": {
     "flex-plugins-api-client": "^0.8.0",
     "flex-plugins-api-utils": "^0.8.0"
