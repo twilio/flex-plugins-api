@@ -42,7 +42,7 @@ export default class PluginServiceHttp extends HttpClient {
       return `.${realm}`;
     }
 
-    realm = env.getRealm();
+    realm = env.getRealm() as Realm;
     if (!realm) {
       return '';
     }
