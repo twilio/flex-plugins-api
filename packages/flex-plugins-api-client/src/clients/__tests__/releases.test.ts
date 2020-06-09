@@ -22,13 +22,13 @@ describe('ReleasesClient', () => {
   });
 
   it('should get the active release', async () => {
-    get.mockResolvedValue({ releases: ['release1', 'release2'] });
+    get.mockResolvedValue('release1');
 
     const result = await client.active();
 
     expect(result).toEqual('release1');
     expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Releases');
+    expect(get).toHaveBeenCalledWith('Releases/Active');
   });
 
   it('should get a release', async () => {

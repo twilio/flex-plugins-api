@@ -49,9 +49,7 @@ export default class ReleasesClient {
    * Fetches the active {@link ReleaseResource}
    */
   public async active(): Promise<ReleaseResource | null> {
-    const list = await this.list();
-
-    return list.releases[0];
+    return this.client.get<ReleaseResource>(ReleasesClient.getUrl('Active'));
   }
 
   /**
