@@ -6,6 +6,7 @@ import {
   ConfiguredPluginsClient,
   ReleasesClient,
 } from 'flex-plugins-api-client';
+import cloneDeep from 'lodash.clonedeep';
 import { Realm } from 'flex-plugins-api-utils/dist/env';
 import { PluginServiceHttpOption } from 'flex-plugins-api-client/dist/clients/client';
 
@@ -24,6 +25,7 @@ import {
   DescribeReleaseScript,
   releaseScript,
   ReleaseScript,
+  Script,
 } from './scripts';
 
 interface FlexPluginsAPIToolkitOptions {
@@ -71,40 +73,43 @@ export default class FlexPluginsAPIToolkit {
     const configuredPluginsClient = new ConfiguredPluginsClient(httpClient);
     const releasesClient = new ReleasesClient(httpClient);
 
-    this.deploy = deployScript(pluginClient, pluginVersionsClient);
-    this.createConfiguration = createConfigurationScript(
-      pluginClient,
-      pluginVersionsClient,
-      configurationsClient,
-      configuredPluginsClient,
-      releasesClient,
+    this.deploy = this.cloneArgs(deployScript(pluginClient, pluginVersionsClient));
+    this.createConfiguration = this.cloneArgs(
+      createConfigurationScript(
+        pluginClient,
+        pluginVersionsClient,
+        configurationsClient,
+        configuredPluginsClient,
+        releasesClient,
+      ),
     );
-    this.release = releaseScript(releasesClient);
-    this.describePlugin = describePluginScript(
-      pluginClient,
-      pluginVersionsClient,
-      configuredPluginsClient,
-      releasesClient,
+    this.release = this.cloneArgs(releaseScript(releasesClient));
+    this.describePlugin = this.cloneArgs(
+      describePluginScript(pluginClient, pluginVersionsClient, configuredPluginsClient, releasesClient),
     );
-    this.describePluginVersion = describePluginVersionScript(
-      pluginClient,
-      pluginVersionsClient,
-      configuredPluginsClient,
-      releasesClient,
+    this.describePluginVersion = this.cloneArgs(
+      describePluginVersionScript(pluginClient, pluginVersionsClient, configuredPluginsClient, releasesClient),
     );
-    this.describeConfiguration = describeConfigurationScript(
-      pluginClient,
-      pluginVersionsClient,
-      configurationsClient,
-      configuredPluginsClient,
-      releasesClient,
+    this.describeConfiguration = this.cloneArgs(
+      describeConfigurationScript(
+        pluginClient,
+        pluginVersionsClient,
+        configurationsClient,
+        configuredPluginsClient,
+        releasesClient,
+      ),
     );
-    this.describeRelease = describeReleaseScript(
-      pluginClient,
-      pluginVersionsClient,
-      configurationsClient,
-      configuredPluginsClient,
-      releasesClient,
+    this.describeRelease = this.cloneArgs(
+      describeReleaseScript(
+        pluginClient,
+        pluginVersionsClient,
+        configurationsClient,
+        configuredPluginsClient,
+        releasesClient,
+      ),
     );
   }
+
+  // Clones the arguments before passing them to the script
+  private cloneArgs = <O, R>(script: Script<O, R>) => async (option: O) => script(cloneDeep(option));
 }
