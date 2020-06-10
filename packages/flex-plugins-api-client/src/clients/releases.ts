@@ -49,6 +49,10 @@ export default class ReleasesClient {
    * Fetches the active {@link ReleaseResource}
    */
   public async active(): Promise<ReleaseResource | null> {
+    /*
+     * While we do have Releases/Active, JWE grants do not support non Sid lookup
+     * So we need to fetch list and return first entry
+     */
     const list = await this.list();
 
     return list.releases[0];

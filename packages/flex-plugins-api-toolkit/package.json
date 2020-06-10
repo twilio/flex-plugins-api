@@ -44,7 +44,11 @@
   },
   "dependencies": {
     "flex-plugins-api-client": "^0.10.2",
-    "flex-plugins-api-utils": "^0.10.2"
+    "flex-plugins-api-utils": "^0.10.2",
+    "lodash.clonedeep": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.6"
   },
   "gitHead": "58a29ff6cd88c72561af45c2fe53b4996d3b2ccc"
 }
