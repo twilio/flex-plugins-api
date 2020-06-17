@@ -45,10 +45,10 @@
   "dependencies": {
     "axios": "^0.19.2",
     "axios-cache-adapter": "^2.5.0",
-    "chalk": "^4.0.0",
-    "flex-plugins-utils-env": "^0.7.3",
-    "flex-plugins-utils-exception": "^0.7.0",
-    "flex-plugins-utils-logger": "^0.7.3",
+    "chalk": "^4.1.0",
+    "flex-plugins-utils-env": "^0.9.0",
+    "flex-plugins-utils-exception": "^0.9.0",
+    "flex-plugins-utils-logger": "^0.9.0",
     "qs": "^6.9.4",
     "util": "^0.12.3"
   },
