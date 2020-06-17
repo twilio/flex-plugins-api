@@ -1,6 +1,6 @@
 {
   "name": "flex-plugins-api-toolkit",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "description": "Flex Plugins API Toolkit",
   "keywords": [
     "flex",
@@ -43,8 +43,8 @@
     "test": "__tests__"
   },
   "dependencies": {
-    "flex-plugins-api-client": "^0.10.3",
-    "flex-plugins-api-utils": "^0.10.2",
+    "flex-plugins-api-client": "^0.11.0",
+    "flex-plugins-api-utils": "^0.11.0",
     "lodash.clonedeep": "^4.5.0"
   },
   "devDependencies": {
