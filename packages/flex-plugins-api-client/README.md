@@ -46,7 +46,7 @@ The available clients are listed below. All endpoints return a promise.
 
 This is the HTTP client for [plugins](https://www.twilio.com/docs/flex/plugins/api/plugin) endpoints. Available endpoints are:
 
-#### list()
+#### list(pagination?: Pagination)
 
 This endpoint lists all plugins. 
 
@@ -70,7 +70,7 @@ This endpoint tries to find the plugin by uniqueName. If it is found, then it up
 
 This is the HTTP client for [plugin versions](https://www.twilio.com/docs/flex/plugins/api/plugin-version) endpoints. Available endpoints are:
 
-#### list(pluginId)
+#### list(pluginId, pagination?: Pagination)
 
 This endpoint lists all plugin versions of the given plugin. The `pluginId` can either be the unique name or the plugin sid.
 
@@ -90,7 +90,7 @@ This endpoint creates a new plugin version. The `pluginId` can either be the uni
 
 This is the HTTP client for [configurations](https://www.twilio.com/docs/flex/plugins/api/plugin-configuration) endpoints. Available endpoints are:
 
-#### list()
+#### list(pagination?: Pagination)
 
 This endpoint lists all configurations.
 
@@ -118,7 +118,7 @@ This endpoint fetches the provided configured plugins. The `configId` can either
 
 This is the HTTP client for [releases](https://www.twilio.com/docs/flex/plugins/api/release) endpoints. Available endpoints are:
 
-#### list()
+#### list(pagination?: Pagination)
 
 This endpoint lists all releases.
 
@@ -133,3 +133,35 @@ This endpoint fetches the provided release. The `releaseId` is the release sid.
 #### create(requestObject)
 
 This endpoint creates a new release.
+
+### Pagination
+
+The `list` endpoints can taken an optional `pagination` parameter. The interface for this parameter is and it follows the regular Twilio pagination format:
+
+```ts
+interface Pagination {
+  pageSize?: number;
+  page?: number;
+  pageToken?: string;
+}
+```
+
+The list endpoints return data in the format of:
+
+```
+interface PaginationMeta {
+  meta: {
+    page: number;
+    page_size: number;
+    first_page_url: string;
+    previous_page_url: string;
+    url: string;
+    next_page_url?: string;
+    key: string;
+    next_token?: string;
+    previous_token?: string;
+  };
+}
+``` 
+
+The `next_token` and `previous_token` will be parsed from the `next_page_url` and `previous_page_url` if available and can be used to be passed as `Pagination` parameter to the next `list` call.
