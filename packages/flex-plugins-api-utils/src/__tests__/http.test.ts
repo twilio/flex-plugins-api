@@ -47,20 +47,6 @@ describe('HttpClient', () => {
     });
   });
 
-  describe('list', () => {
-    it('list should call get method', async () => {
-      const client = new HttpClient(config);
-      const data = { result: 'the-result' };
-      const get = jest.spyOn(client, 'get').mockResolvedValue([data]);
-
-      const result = await client.list('the-uri');
-
-      expect(result).toEqual([data]);
-      expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith('the-uri', undefined);
-    });
-  });
-
   describe('delete', () => {
     it('should delete', async () => {
       const httpClient = new HttpClient(config);

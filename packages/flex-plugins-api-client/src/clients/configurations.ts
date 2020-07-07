@@ -1,4 +1,4 @@
-import PluginServiceHttpClient, { PaginationMeta } from './client';
+import PluginServiceHttpClient, { Pagination, PaginationMeta } from './client';
 
 export interface ConfigurationResource {
   sid: string;
@@ -49,9 +49,10 @@ export default class ConfigurationsClient {
 
   /**
    * Fetches a list of {@link ConfigurationResource}
+   * @param pagination the pagination meta data
    */
-  public async list(): Promise<ConfigurationResourcePage> {
-    return this.client.get<ConfigurationResourcePage>(ConfigurationsClient.getUrl());
+  public async list(pagination?: Pagination): Promise<ConfigurationResourcePage> {
+    return this.client.list<ConfigurationResourcePage>(ConfigurationsClient.getUrl(), pagination);
   }
 
   /**

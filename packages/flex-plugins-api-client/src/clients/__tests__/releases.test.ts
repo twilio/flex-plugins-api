@@ -3,6 +3,7 @@ import PluginServiceHttpClient from '../client';
 
 describe('ReleasesClient', () => {
   const httpClient = new PluginServiceHttpClient('username', 'password');
+  const list = jest.spyOn(httpClient, 'list');
   const get = jest.spyOn(httpClient, 'get');
   const post = jest.spyOn(httpClient, 'post');
   const client = new ReleasesClient(httpClient);
@@ -11,24 +12,37 @@ describe('ReleasesClient', () => {
     jest.resetAllMocks();
   });
 
-  it('should list releases', async () => {
-    get.mockResolvedValue('list');
+  it('should list releases without pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
 
     const result = await client.list();
 
     expect(result).toEqual('list');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Releases');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Releases', undefined);
+  });
+
+  it('should list releases with pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
+
+    const result = await client.list({ page: 1 });
+
+    expect(result).toEqual('list');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Releases', { page: 1 });
   });
 
   it('should get the active release', async () => {
-    get.mockResolvedValue({ releases: ['release1', 'release2'] });
+    // @ts-ignore
+    list.mockResolvedValue({ releases: ['release1', 'release2'] });
 
     const result = await client.active();
 
     expect(result).toEqual('release1');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Releases');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Releases', undefined);
   });
 
   it('should get a release', async () => {
