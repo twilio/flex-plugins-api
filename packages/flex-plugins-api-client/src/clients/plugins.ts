@@ -1,6 +1,6 @@
 import { TwilioApiError } from 'flex-plugins-api-utils';
 
-import PluginServiceHttpClient, { PaginationMeta } from './client';
+import PluginServiceHttpClient, { Pagination, PaginationMeta } from './client';
 
 export interface PluginResource {
   sid: string;
@@ -51,9 +51,10 @@ export default class PluginsClient {
 
   /**
    * Fetches the list of {@link PluginResource}
+   * @param pagination the pagination meta data
    */
-  public async list(): Promise<PluginResourcePage> {
-    return this.client.get<PluginResourcePage>(PluginsClient.getUrl());
+  public async list(pagination?: Pagination): Promise<PluginResourcePage> {
+    return this.client.list<PluginResourcePage>(PluginsClient.getUrl(), pagination);
   }
 
   /**

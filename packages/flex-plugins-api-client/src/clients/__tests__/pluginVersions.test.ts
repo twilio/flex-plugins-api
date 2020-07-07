@@ -3,6 +3,7 @@ import PluginServiceHttpClient from '../client';
 
 describe('PluginVersionsClient', () => {
   const httpClient = new PluginServiceHttpClient('username', 'password');
+  const list = jest.spyOn(httpClient, 'list');
   const get = jest.spyOn(httpClient, 'get');
   const post = jest.spyOn(httpClient, 'post');
 
@@ -12,24 +13,37 @@ describe('PluginVersionsClient', () => {
     jest.resetAllMocks();
   });
 
-  it('should list plugin versions', async () => {
-    get.mockResolvedValue('list');
+  it('should list plugin versions without pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
 
     const result = await client.list('pluginId');
 
     expect(result).toEqual('list');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Plugins/pluginId/Versions');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', undefined);
+  });
+
+  it('should list plugin versions with pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
+
+    const result = await client.list('pluginId', { page: 1 });
+
+    expect(result).toEqual('list');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', { page: 1 });
   });
 
   it('should get the latest version', async () => {
-    get.mockResolvedValue({ plugin_versions: ['version1', 'version2'] });
+    // @ts-ignore
+    list.mockResolvedValue({ plugin_versions: ['version1', 'version2'] });
 
     const result = await client.latest('pluginId');
 
     expect(result).toEqual('version1');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Plugins/pluginId/Versions');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', undefined);
   });
 
   it('should get plugin versions', async () => {

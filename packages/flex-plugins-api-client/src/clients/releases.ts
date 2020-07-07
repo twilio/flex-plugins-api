@@ -1,4 +1,4 @@
-import PluginServiceHttpClient, { PaginationMeta } from './client';
+import PluginServiceHttpClient, { Pagination, PaginationMeta } from './client';
 
 export interface ReleaseResource {
   sid: string;
@@ -40,9 +40,10 @@ export default class ReleasesClient {
 
   /**
    * Fetches the list of {@link ReleaseResourcePage}
+   * @param pagination the pagination meta data
    */
-  public async list(): Promise<ReleaseResourcePage> {
-    return this.client.get<ReleaseResourcePage>(ReleasesClient.getUrl());
+  public async list(pagination?: Pagination): Promise<ReleaseResourcePage> {
+    return this.client.list<ReleaseResourcePage>(ReleasesClient.getUrl(), pagination);
   }
 
   /**

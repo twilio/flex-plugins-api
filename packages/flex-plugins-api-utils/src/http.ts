@@ -130,15 +130,6 @@ export default class Http {
   }
 
   /**
-   * List API endpoint; makes a GET request and returns an array of R
-   * @param uri     the uri endpoint
-   * @param option  the request option
-   */
-  public async list<R>(uri: string, option?: RequestOption): Promise<R[]> {
-    return this.get<R[]>(uri, option);
-  }
-
-  /**
    * Makes a GET request to return an instance
    * @param uri   the uri endpoint
    * @param option  the request option

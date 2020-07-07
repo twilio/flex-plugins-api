@@ -3,6 +3,7 @@ import PluginServiceHttpClient from '../client';
 
 describe('ConfigurationsClient', () => {
   const httpClient = new PluginServiceHttpClient('username', 'password');
+  const list = jest.spyOn(httpClient, 'list');
   const get = jest.spyOn(httpClient, 'get');
   const post = jest.spyOn(httpClient, 'post');
   const client = new ConfigurationsClient(httpClient);
@@ -11,14 +12,26 @@ describe('ConfigurationsClient', () => {
     jest.resetAllMocks();
   });
 
-  it('should list configurations', async () => {
-    get.mockResolvedValue('list');
+  it('should list configurations without pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
 
     const result = await client.list();
 
     expect(result).toEqual('list');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Configurations');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Configurations', undefined);
+  });
+
+  it('should list configurations with pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
+
+    const result = await client.list({ page: 1 });
+
+    expect(result).toEqual('list');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Configurations', { page: 1 });
   });
 
   it('should get configurations', async () => {
@@ -43,12 +56,13 @@ describe('ConfigurationsClient', () => {
   });
 
   it('should get the latest version', async () => {
-    get.mockResolvedValue({ configurations: ['config1', 'config2'] });
+    // @ts-ignore
+    list.mockResolvedValue({ configurations: ['config1', 'config2'] });
 
     const result = await client.latest();
 
     expect(result).toEqual('config1');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Configurations');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Configurations', undefined);
   });
 });

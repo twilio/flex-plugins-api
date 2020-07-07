@@ -5,6 +5,7 @@ import PluginServiceHttpClient from '../client';
 
 describe('PluginsClient', () => {
   const httpClient = new PluginServiceHttpClient('username', 'password');
+  const list = jest.spyOn(httpClient, 'list');
   const get = jest.spyOn(httpClient, 'get');
   const post = jest.spyOn(httpClient, 'post');
   const client = new PluginsClient(httpClient);
@@ -13,14 +14,26 @@ describe('PluginsClient', () => {
     jest.resetAllMocks();
   });
 
-  it('should list plugins', async () => {
-    get.mockResolvedValue('list');
+  it('should list plugins without pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
 
     const result = await client.list();
 
     expect(result).toEqual('list');
-    expect(get).toHaveBeenCalledTimes(1);
-    expect(get).toHaveBeenCalledWith('Plugins');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Plugins', undefined);
+  });
+
+  it('should list plugins with pagination', async () => {
+    // @ts-ignore
+    list.mockResolvedValue('list');
+
+    const result = await client.list({ page: 1 });
+
+    expect(result).toEqual('list');
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith('Plugins', { page: 1 });
   });
 
   it('should get plugin', async () => {
