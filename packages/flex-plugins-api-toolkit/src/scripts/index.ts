@@ -1,4 +1,24 @@
+import { Pagination, PaginationMeta } from 'flex-plugins-api-client/dist/clients/client';
+
+// Plugins API resources
+export enum ResourceNames {
+  Plugins = 'plugins',
+  PluginVersions = 'plugin_versions',
+  Configurations = 'configurations',
+  Releases = 'releases',
+}
+
 export type Script<O, R> = (options: O) => Promise<R>;
+
+export interface Page {
+  page?: Pagination;
+}
+
+// The List Resources interface
+export type ListResource<K extends ResourceNames, T> = {
+  [key in K]: T[];
+} &
+  PaginationMeta;
 
 export { default as deployScript, DeployScript, DeployOption, DeployPlugin } from './deploy';
 export {
@@ -9,7 +29,13 @@ export {
   InstalledPlugin,
 } from './createConfiguration';
 export { default as releaseScript, ReleaseScript, ReleaseOption, Release } from './release';
-export { default as listPluginsScript, ListPluginsScripts, ListPlugins } from './listPlugins';
+export {
+  default as listPluginsScript,
+  ListPluginsScripts,
+  ListPluginsOption,
+  ListPlugins,
+  ListPluginsResource,
+} from './listPlugins';
 export {
   default as describePluginScript,
   DescribePluginScript,
@@ -21,6 +47,7 @@ export {
   ListPluginVersionsScripts,
   ListPluginVersionsOption,
   ListPluginVersions,
+  ListPluginVersionsResource,
 } from './listPluginVerions';
 export {
   default as describePluginVersionScript,
@@ -31,7 +58,9 @@ export {
 export {
   default as listConfigurationsScript,
   ListConfigurationsScript,
+  ListConfigurationsOption,
   ListConfigurations,
+  ListConfigurationsResource,
 } from './listConfigurations';
 export {
   default as describeConfigurationScript,
@@ -39,7 +68,13 @@ export {
   DescribeConfigurationOption,
   DescribeConfiguration,
 } from './describeConfiguration';
-export { default as listReleasesScript, ListReleasesScript, ListReleases } from './listReleases';
+export {
+  default as listReleasesScript,
+  ListReleasesScript,
+  ListReleasesOption,
+  ListReleases,
+  ListReleasesResource,
+} from './listReleases';
 export {
   default as describeReleaseScript,
   DescribeReleaseScript,

@@ -1,6 +1,8 @@
 import { ConfiguredPluginsClient, PluginsClient, ReleasesClient } from 'flex-plugins-api-client';
 
-import { Script } from '.';
+import { ListResource, Page, ResourceNames, Script } from '.';
+
+export type ListPluginsOption = Page;
 
 export interface ListPlugins {
   sid: string;
@@ -12,7 +14,8 @@ export interface ListPlugins {
   dateUpdated: string;
 }
 
-export type ListPluginsScripts = Script<{}, ListPlugins[]>;
+export type ListPluginsResource = ListResource<ResourceNames.Plugins, ListPlugins>;
+export type ListPluginsScripts = Script<ListPluginsOption, ListPluginsResource>;
 
 /**
  * The .listPlugins script. This script returns overall information about a Plugin
@@ -24,9 +27,9 @@ export default function listPlugins(
   pluginsClient: PluginsClient,
   configuredPluginsClient: ConfiguredPluginsClient,
   releasesClient: ReleasesClient,
-) {
-  return async (): Promise<ListPlugins[]> => {
-    const [result, release] = await Promise.all([pluginsClient.list(), releasesClient.active()]);
+): ListPluginsScripts {
+  return async (option) => {
+    const [result, release] = await Promise.all([pluginsClient.list(option.page), releasesClient.active()]);
 
     const plugins = result.plugins.map((plugin) => ({
       sid: plugin.sid,
@@ -43,6 +46,9 @@ export default function listPlugins(
       plugins.forEach((plugin) => (plugin.isActive = installedPlugins.some((p) => p.plugin_sid === plugin.sid)));
     }
 
-    return plugins;
+    return {
+      meta: result.meta,
+      plugins,
+    };
   };
 }

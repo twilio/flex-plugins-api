@@ -37,7 +37,7 @@ The toolkit provides the following commands.
 
 **Note**: If you are using the JWE token for authentication, then _all_ identifiers (such as `name`, `version`, etc) _must_ be the sid of the resource only.
 
-### .deploy(option)
+### .deploy(option: DeployOption): Promise\<DeployPlugin>
 
 This command deploys a new plugin version to Plugins API. This wrapper upserts a plugin (i.e., updates the plugin if it exists, otherwise creates a new plugin) and then creates a new version. 
 
@@ -71,7 +71,7 @@ interface DeployPlugin {
 }
 ```
 
-### .createConfiguration(option)
+### .createConfiguration(option: CreateConfigurationOption): Promise\<CreateConfiguration>
 
 This command creates a new configuration and installs a list of provided plugins. 
 
@@ -139,7 +139,7 @@ export interface CreateConfiguration {
 }
 ```
 
-### .release(option)
+### .release(option: ReleaseOption): Promise\<Release>
 
 This command creates a new release and activates the given configuration. 
 
@@ -164,7 +164,7 @@ interface Release {
 }
 ```
 
-### .describePlugin(option)
+### .describePlugin(option: DescribePluginOption): Promise\<DescribePlugin>
 
 This command returns information about a plugin and its versions. 
 
@@ -203,7 +203,7 @@ interface DescribePlugin {
 
 The field `isActive` is set to true if this plugin is part of an active release. The associated version that is part of the active release also has `isActive` set to true.
 
-### .describePluginVersion(option)
+### .describePluginVersion(option: DescribePluginVersionOption): Promise\<DescribePluginVersion>
 
 This command returns information about a plugin version.
 
@@ -242,7 +242,7 @@ interface DescribePluginVersion {
 
 The field `isActive` is set to true if this plugin version is part of an active release. 
 
-### .describeConfiguration(option)
+### .describeConfiguration(option: DescribeConfigurationOption): Promise\<DescribeConfiguration>
 
 This command returns information about a configuration, including a list of plugins included in it.
 
@@ -282,7 +282,7 @@ interface DescribeConfiguration {
 
 The field `isActive` is set to true if this configuration is part of an active release.
 
-### .describeRelease(option)
+### .describeRelease(option: DescribeReleaseOption): Promise\<Release>
 
 This command returns information about a release.
 
@@ -325,3 +325,153 @@ interface Release {
 ```
 
 The field `isActive` is set to true if this release is the active release.
+
+### .listPlugins(option: ListPluginsOption): Promise\<ListPluginsResource>
+
+This command returns a list of plugins. 
+
+The command takes an argument object of the format:
+
+```ts
+interface ListPluginsOption {
+  page?: Pagination;
+}
+```
+
+The command returns a promise of type:
+
+```ts
+interface ListPluginsResource {
+  plugins: Array<{
+    sid: string;
+    name: string;
+    friendlyName: string;
+    description: string;
+    isActive: boolean;
+    dateCreated: string;
+    dateUpdated: string;
+  }>;
+  meta: PaginationMeta;
+}
+```
+
+The field `isActive` is set to true if this plugin is part of an active release.
+
+### .listPluginVersions(option: ListPluginVersionsOption): Promise\<ListPluginVersionsResource>
+
+This command returns a list of plugins. 
+
+The command takes an argument object of the format:
+
+```ts
+interface ListPluginVersionsOption {
+  name: string;
+  page?: Pagination;
+}
+```
+
+The command returns a promise of type:
+
+```ts
+interface ListPluginVersionsResource {
+  plugin_versions: Array<{
+    sid: string;
+    pluginSid: string;
+    version: string;
+    url: string;
+    changelog: string;
+    isPrivate: boolean;
+    isActive: boolean;
+    dateCreated: string;  
+  }>;
+  meta: PaginationMeta;
+}
+```
+
+The field `isActive` is set to true if this plugin version is part of an active release.
+
+### .listConfigurations(option: ListConfigurationsOption): Promise\<ListConfigurationsResource>
+
+This command returns a list of plugins. 
+
+The command takes an argument object of the format:
+
+```ts
+interface ListConfigurationsOption {
+  page?: Pagination;
+}
+```
+
+The command returns a promise of type:
+
+```ts
+interface ListConfigurationsResource {
+  plugins: Array<{
+    sid: string;
+    version: string;
+    description: string;
+    isActive: boolean;
+    dateCreated: string;
+  }>;
+  meta: PaginationMeta;
+}
+```
+
+The field `isActive` is set to true if this configuration is part of an active release.
+
+### .listReleasess(option: ListReleasesOption): Promise\<ListReleasesResource>
+
+This command returns a list of plugins. 
+
+The command takes an argument object of the format:
+
+```ts
+interface ListReleasesOption {
+  page?: Pagination;
+}
+```
+
+The command returns a promise of type:
+
+```ts
+interface ListReleasesResource {
+  plugins: Array<{
+    sid: string;
+    configurationSid: string;
+    dateCreated: string;
+  }>;
+  meta: PaginationMeta;
+}
+```
+
+## Shared Types
+
+The `Pagination` interface is:
+
+```ts
+interface Pagination {
+  pageSize?: number;
+  page?: number;
+  pageToken?: string;
+}
+```
+
+The `PaginationMeta` interface is:
+
+```ts
+interface PaginationMeta {
+  meta: {
+    page: number;
+    page_size: number;
+    first_page_url: string;
+    previous_page_url: string;
+    url: string;
+    next_page_url?: string;
+    key: string;
+    next_token?: string;
+    previous_token?: string;
+  };
+}
+```
+
+where `next_token` and `previous_token` are extracted `PageToken` query parameter from the `next_page_url` and `previous_page_url` parameter respectively. 

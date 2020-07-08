@@ -5,7 +5,7 @@ import {
   ReleasesClient,
 } from 'flex-plugins-api-client';
 
-import listPluginsScript, { ListPlugins } from '../listPlugins';
+import listPluginsScript, { ListPluginsResource } from '../listPlugins';
 import { installedPlugin, meta, plugin, release } from './mockStore';
 
 describe('ListPluginsScriipt', () => {
@@ -24,9 +24,9 @@ describe('ListPluginsScriipt', () => {
     jest.resetAllMocks();
   });
 
-  const assertPlugin = (result: ListPlugins[], isActive: boolean) => {
-    expect(result).toHaveLength(1);
-    expect(result[0]).toEqual({
+  const assertPlugin = (result: ListPluginsResource, isActive: boolean) => {
+    expect(result.plugins).toHaveLength(1);
+    expect(result.plugins[0]).toEqual({
       sid: plugin.sid,
       name: plugin.unique_name,
       friendlyName: plugin.friendly_name,
@@ -35,15 +35,30 @@ describe('ListPluginsScriipt', () => {
       dateCreated: plugin.date_created,
       dateUpdated: plugin.date_updated,
     });
+    expect(result.meta).toEqual(meta);
   };
 
-  it('should list plugins with no release', async () => {
+  it('should list plugins with no release and pagination', async () => {
     listPlugins.mockResolvedValue({ plugins: [plugin], meta });
     active.mockResolvedValue(null);
 
-    const result = await script();
+    const result = await script({});
 
     expect(listPlugins).toHaveBeenCalledTimes(1);
+    expect(listPlugins).toHaveBeenCalledWith(undefined);
+    expect(active).toHaveBeenCalledTimes(1);
+    expect(listConfiguredPlugins).not.toHaveBeenCalled();
+    assertPlugin(result, false);
+  });
+
+  it('should list plugins with no release and with pagination', async () => {
+    listPlugins.mockResolvedValue({ plugins: [plugin], meta });
+    active.mockResolvedValue(null);
+
+    const result = await script({ page: { pageSize: 1 } });
+
+    expect(listPlugins).toHaveBeenCalledTimes(1);
+    expect(listPlugins).toHaveBeenCalledWith({ pageSize: 1 });
     expect(active).toHaveBeenCalledTimes(1);
     expect(listConfiguredPlugins).not.toHaveBeenCalled();
     assertPlugin(result, false);
@@ -57,7 +72,7 @@ describe('ListPluginsScriipt', () => {
     listConfiguredPlugins.mockResolvedValue({ plugins: [_installedPlugins], meta });
     active.mockResolvedValue(release);
 
-    const result = await script();
+    const result = await script({});
 
     expect(listPlugins).toHaveBeenCalledTimes(1);
     expect(active).toHaveBeenCalledTimes(1);
@@ -74,7 +89,7 @@ describe('ListPluginsScriipt', () => {
     listConfiguredPlugins.mockResolvedValue({ plugins: [_installedPlugins], meta });
     active.mockResolvedValue(release);
 
-    const result = await script();
+    const result = await script({});
 
     expect(listPlugins).toHaveBeenCalledTimes(1);
     expect(active).toHaveBeenCalledTimes(1);

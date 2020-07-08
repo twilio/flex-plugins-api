@@ -1,6 +1,6 @@
 import { PluginServiceHTTPClient, ConfigurationsClient, ReleasesClient } from 'flex-plugins-api-client';
 
-import listConfigurationsScript, { ListConfigurations } from '../listConfigurations';
+import listConfigurationsScript, { ListConfigurationsResource } from '../listConfigurations';
 import { configuration, meta, release } from './mockStore';
 
 describe('ListConfigurationsScript', () => {
@@ -17,24 +17,38 @@ describe('ListConfigurationsScript', () => {
     jest.resetAllMocks();
   });
 
-  const assertConfiguration = (result: ListConfigurations[], isActive: boolean) => {
-    expect(result).toHaveLength(1);
-    expect(result[0]).toEqual({
+  const assertConfiguration = (result: ListConfigurationsResource, isActive: boolean) => {
+    expect(result.configurations).toHaveLength(1);
+    expect(result.configurations[0]).toEqual({
       sid: configuration.sid,
       version: configuration.version,
       description: configuration.description,
       isActive,
       dateCreated: configuration.date_created,
     });
+    expect(result.meta).toEqual(meta);
   };
 
-  it('should list configurations with no release', async () => {
+  it('should list configurations with no release and pagination', async () => {
     list.mockResolvedValue({ configurations: [configuration], meta });
     active.mockResolvedValue(null);
 
-    const result = await script();
+    const result = await script({});
 
     expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith(undefined);
+    expect(active).toHaveBeenCalledTimes(1);
+    assertConfiguration(result, false);
+  });
+
+  it('should list configurations with no release and with pagination', async () => {
+    list.mockResolvedValue({ configurations: [configuration], meta });
+    active.mockResolvedValue(null);
+
+    const result = await script({ page: { pageSize: 1 } });
+
+    expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith({ pageSize: 1 });
     expect(active).toHaveBeenCalledTimes(1);
     assertConfiguration(result, false);
   });
@@ -46,9 +60,10 @@ describe('ListConfigurationsScript', () => {
     list.mockResolvedValue({ configurations: [configuration], meta });
     active.mockResolvedValue(_release);
 
-    const result = await script();
+    const result = await script({});
 
     expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith(undefined);
     expect(active).toHaveBeenCalledTimes(1);
     assertConfiguration(result, false);
   });
@@ -60,9 +75,10 @@ describe('ListConfigurationsScript', () => {
     list.mockResolvedValue({ configurations: [configuration], meta });
     active.mockResolvedValue(_release);
 
-    const result = await script();
+    const result = await script({});
 
     expect(list).toHaveBeenCalledTimes(1);
+    expect(list).toHaveBeenCalledWith(undefined);
     expect(active).toHaveBeenCalledTimes(1);
     assertConfiguration(result, true);
   });
