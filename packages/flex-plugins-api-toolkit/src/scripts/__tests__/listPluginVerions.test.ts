@@ -5,7 +5,7 @@ import {
   ReleasesClient,
 } from 'flex-plugins-api-client';
 
-import listPluginVersionsScript, { ListPluginVersions } from '../listPluginVerions';
+import listPluginVersionsScript, { ListPluginVersions, ListPluginVersionsResource } from '../listPluginVerions';
 import { installedPlugin, meta, version, release } from './mockStore';
 
 describe('ListPluginsScriipt', () => {
@@ -25,9 +25,9 @@ describe('ListPluginsScriipt', () => {
     jest.resetAllMocks();
   });
 
-  const assertVersions = (result: ListPluginVersions[], isActive: boolean) => {
-    expect(result).toHaveLength(1);
-    expect(result[0]).toEqual({
+  const assertVersions = (result: ListPluginVersionsResource, isActive: boolean) => {
+    expect(result.plugin_versions).toHaveLength(1);
+    expect(result.plugin_versions[0]).toEqual({
       sid: version.sid,
       pluginSid: version.plugin_sid,
       version: version.version,
@@ -37,16 +37,30 @@ describe('ListPluginsScriipt', () => {
       isActive,
       dateCreated: version.date_created,
     });
+    expect(result.meta).toEqual(meta);
   };
 
-  it('should list versions with no release', async () => {
+  it('should list versions with no release and pagination', async () => {
     listVersions.mockResolvedValue({ plugin_versions: [version], meta });
     active.mockResolvedValue(null);
 
     const result = await script(option);
 
     expect(listVersions).toHaveBeenCalledTimes(1);
-    expect(listVersions).toHaveBeenCalledWith(option.name);
+    expect(listVersions).toHaveBeenCalledWith(option.name, undefined);
+    expect(active).toHaveBeenCalledTimes(1);
+    expect(listConfiguredPlugins).not.toHaveBeenCalled();
+    assertVersions(result, false);
+  });
+
+  it('should list versions with no release and with pagination', async () => {
+    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
+    active.mockResolvedValue(null);
+
+    const result = await script({ ...option, page: { pageSize: 1 } });
+
+    expect(listVersions).toHaveBeenCalledTimes(1);
+    expect(listVersions).toHaveBeenCalledWith(option.name, { pageSize: 1 });
     expect(active).toHaveBeenCalledTimes(1);
     expect(listConfiguredPlugins).not.toHaveBeenCalled();
     assertVersions(result, false);
@@ -63,7 +77,7 @@ describe('ListPluginsScriipt', () => {
     const result = await script(option);
 
     expect(listVersions).toHaveBeenCalledTimes(1);
-    expect(listVersions).toHaveBeenCalledWith(option.name);
+    expect(listVersions).toHaveBeenCalledWith(option.name, undefined);
     expect(active).toHaveBeenCalledTimes(1);
     expect(listConfiguredPlugins).toHaveBeenCalledTimes(1);
     expect(listConfiguredPlugins).toHaveBeenCalledWith(release.configuration_sid);
@@ -81,7 +95,7 @@ describe('ListPluginsScriipt', () => {
     const result = await script(option);
 
     expect(listVersions).toHaveBeenCalledTimes(1);
-    expect(listVersions).toHaveBeenCalledWith(option.name);
+    expect(listVersions).toHaveBeenCalledWith(option.name, undefined);
     expect(active).toHaveBeenCalledTimes(1);
     expect(listConfiguredPlugins).toHaveBeenCalledTimes(1);
     expect(listConfiguredPlugins).toHaveBeenCalledWith(release.configuration_sid);

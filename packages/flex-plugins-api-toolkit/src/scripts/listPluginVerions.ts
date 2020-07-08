@@ -1,8 +1,8 @@
 import { ConfiguredPluginsClient, PluginVersionsClient, ReleasesClient } from 'flex-plugins-api-client';
 
-import { Script } from '.';
+import { ListResource, Page, ResourceNames, Script } from '.';
 
-export interface ListPluginVersionsOption {
+export interface ListPluginVersionsOption extends Page {
   name: string;
 }
 
@@ -17,7 +17,8 @@ export interface ListPluginVersions {
   dateCreated: string;
 }
 
-export type ListPluginVersionsScripts = Script<ListPluginVersionsOption, ListPluginVersions[]>;
+export type ListPluginVersionsResource = ListResource<ResourceNames.PluginVersions, ListPluginVersions>;
+export type ListPluginVersionsScripts = Script<ListPluginVersionsOption, ListPluginVersionsResource>;
 
 /**
  * The .listPluginVersions script. This script returns overall information about a PluginVersion
@@ -29,9 +30,12 @@ export default function listPluginVersions(
   pluginVersionsClient: PluginVersionsClient,
   configuredPluginsClient: ConfiguredPluginsClient,
   releasesClient: ReleasesClient,
-) {
-  return async (option: ListPluginVersionsOption): Promise<ListPluginVersions[]> => {
-    const [result, release] = await Promise.all([pluginVersionsClient.list(option.name), releasesClient.active()]);
+): ListPluginVersionsScripts {
+  return async (option) => {
+    const [result, release] = await Promise.all([
+      pluginVersionsClient.list(option.name, option.page),
+      releasesClient.active(),
+    ]);
 
     const versions = result.plugin_versions.map((version) => ({
       sid: version.sid,
@@ -51,6 +55,9 @@ export default function listPluginVersions(
       );
     }
 
-    return versions;
+    return {
+      plugin_versions: versions,
+      meta: result.meta,
+    };
   };
 }

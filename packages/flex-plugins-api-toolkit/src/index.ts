@@ -56,6 +56,14 @@ export {
   DescribeReleaseOption,
   DescribeRelease,
   InstalledPlugin,
+  ListPluginsOption,
+  ListPluginsResource,
+  ListPluginVersionsOption,
+  ListPluginVersionsResource,
+  ListConfigurationsOption,
+  ListConfigurationsResource,
+  ListReleasesOption,
+  ListReleasesResource,
 } from './scripts';
 
 export default class FlexPluginsAPIToolkit {
