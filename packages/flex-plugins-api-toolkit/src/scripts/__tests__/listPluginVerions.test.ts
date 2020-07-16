@@ -5,7 +5,7 @@ import {
   ReleasesClient,
 } from 'flex-plugins-api-client';
 
-import listPluginVersionsScript, { ListPluginVersions, ListPluginVersionsResource } from '../listPluginVerions';
+import listPluginVersionsScript, { ListPluginVersionsResource } from '../listPluginVerions';
 import { installedPlugin, meta, version, release } from './mockStore';
 
 describe('ListPluginsScriipt', () => {
