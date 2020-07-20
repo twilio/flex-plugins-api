@@ -8,18 +8,20 @@ export interface Pagination {
   pageToken?: string;
 }
 
+export interface Meta {
+  page: number;
+  page_size: number;
+  first_page_url: string;
+  previous_page_url: string | null;
+  url: string;
+  next_page_url?: string;
+  key: string;
+  next_token?: string;
+  previous_token?: string;
+}
+
 export interface PaginationMeta {
-  meta: {
-    page: number;
-    page_size: number;
-    first_page_url: string;
-    previous_page_url: string;
-    url: string;
-    next_page_url?: string;
-    key: string;
-    next_token?: string;
-    previous_token?: string;
-  };
+  meta: Meta;
 }
 
 export interface PluginServiceHttpOption {

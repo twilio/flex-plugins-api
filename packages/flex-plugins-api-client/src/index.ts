@@ -1,4 +1,4 @@
-export { default as PluginServiceHTTPClient, PaginationMeta } from './clients/client';
+export { default as PluginServiceHTTPClient, PaginationMeta, Pagination } from './clients/client';
 export {
   default as PluginsClient,
   PluginResource,
