@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { AxiosRequestConfig } from 'axios';
 
 import HttpClient, { HttpConfig } from '../http';
