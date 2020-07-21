@@ -21,7 +21,7 @@ describe('ListConfigurationsScript', () => {
     expect(result.configurations).toHaveLength(1);
     expect(result.configurations[0]).toEqual({
       sid: configuration.sid,
-      version: configuration.version,
+      name: configuration.name,
       description: configuration.description,
       isActive,
       dateCreated: configuration.date_created,

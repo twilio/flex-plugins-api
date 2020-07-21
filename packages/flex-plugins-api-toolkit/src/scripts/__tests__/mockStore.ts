@@ -39,7 +39,7 @@ export const version: PluginVersionResource = {
 export const configuration: ConfigurationResource = {
   sid: 'FJ123',
   account_sid: 'AC123',
-  version: '3.2.1',
+  name: 'some name',
   description: 'the-description',
   date_created: 'some-date',
 };

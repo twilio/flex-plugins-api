@@ -3,7 +3,7 @@ import PluginServiceHttpClient, { Pagination, PaginationMeta } from './client';
 export interface ConfigurationResource {
   sid: string;
   account_sid: string;
-  version: string;
+  name: string;
   description: string;
   date_created: string;
 }
@@ -18,7 +18,7 @@ export interface CreateConfiguredPlugin {
 }
 
 export interface CreateConfigurationResource {
-  Version: string;
+  Name: string;
   Plugins: CreateConfiguredPlugin[];
   Description?: string;
 }
