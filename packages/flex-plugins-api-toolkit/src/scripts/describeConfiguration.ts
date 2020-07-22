@@ -12,7 +12,7 @@ import { Script } from '.';
 import { DeployPlugin } from './deploy';
 
 export interface DescribeConfigurationOption {
-  version: string;
+  sid: string;
 }
 
 interface ConfiguredPlugins extends DeployPlugin {
@@ -47,10 +47,10 @@ export function internalDescribeConfiguration(
   configuredPluginClient: ConfiguredPluginsClient,
 ) {
   return async (option: DescribeConfigurationOption, release: ReleaseResource | null) => {
-    const configuration = await configurationClient.get(option.version);
+    const configuration = await configurationClient.get(option.sid);
 
     const isActive = Boolean(release && release.configuration_sid === configuration.sid);
-    const list = (await configuredPluginClient.list(option.version)).plugins;
+    const list = (await configuredPluginClient.list(option.sid)).plugins;
     const pluginsPromise = list.map(async (p) => pluginClient.get(p.plugin_sid));
     const versionsPromise = list.map(async (p) => pluginVersionClient.get(p.plugin_sid, p.plugin_version_sid));
     const [plugins, versions] = await Promise.all([
