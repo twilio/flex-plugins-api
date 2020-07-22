@@ -23,12 +23,11 @@ describe('ReleaseScript', () => {
 
   it('should create a release', async () => {
     create.mockResolvedValue(release);
-    const result = await script({ version: '1.2.3' });
+    const result = await script({ configurationSid: release.configuration_sid });
 
     expect(create).toHaveBeenCalledTimes(1);
-    expect(create).toHaveBeenCalledWith({ ConfigurationId: '1.2.3' });
+    expect(create).toHaveBeenCalledWith({ ConfigurationId: release.configuration_sid });
     expect(result).toEqual({
-      version: '1.2.3',
       configurationSid: release.configuration_sid,
       releaseSid: release.sid,
       dateCreated: release.date_created,

@@ -80,7 +80,7 @@ The command takes an argument object of the format:
 ```ts
 interface CreateConfigurationOption {
   addPlugins: string[];
-  version: string;
+  name: string;
   removePlugins?: string[];
   description?: string;
   fromConfiguration?: 'active' | string;
@@ -121,7 +121,7 @@ The command returns a promise of type:
 ```ts
 export interface CreateConfiguration {
   configurationSid: string;
-  version: string;
+  name: string;
   description: string;
   dateCreated: string;
   plugins: Array<{
@@ -147,11 +147,9 @@ The command takes an argument object of the format:
 
 ```ts
 interface ReleaseOption {
-  version: string;
+  configurationSid: string;
 }
 ```
-
-where `version` is the identifier of the configuration which can be either the version or its sid.
 
 The command returns a promise of type:
 
@@ -159,7 +157,6 @@ The command returns a promise of type:
 interface Release {
   releaseSid: string;
   configurationSid: string;
-  version: string;
   dateCreated: string;
 }
 ```
@@ -250,18 +247,16 @@ The command takes an argument object of the format:
 
 ```ts
 interface DescribeConfigurationOption {
-  version: string;
+  sid: string;
 }
 ```
-
-where the `version` is either the configuration's version or its sid.
 
 The command returns a promise of type:
 
 ```ts
 interface DescribeConfiguration {
   sid: string;
-  version: string;
+  name: string;
   description: string;
   isActive: boolean;
   dateCreated: string;
@@ -304,7 +299,7 @@ interface Release {
   dateCreated: string;
   configuration: {
     sid: string;
-    version: string;
+    name: string;
     description: string;
     isActive: boolean;
     dateCreated: string;
@@ -408,7 +403,7 @@ The command returns a promise of type:
 interface ListConfigurationsResource {
   plugins: Array<{
     sid: string;
-    version: string;
+    name: string;
     description: string;
     isActive: boolean;
     dateCreated: string;
@@ -419,7 +414,7 @@ interface ListConfigurationsResource {
 
 The field `isActive` is set to true if this configuration is part of an active release.
 
-### .listReleasess(option: ListReleasesOption): Promise\<ListReleasesResource>
+### .listReleases(option: ListReleasesOption): Promise\<ListReleasesResource>
 
 This command returns a list of plugins. 
 

@@ -31,14 +31,14 @@ describe('DescribeConfigurationScript', () => {
     configuredPluginsClient,
     releasesClient,
   );
-  const option = { version: configuration.name };
+  const option = { sid: configuration.sid };
 
   const expectEndpointsCalled = (withPlugins: boolean) => {
     expect(getConfig).toHaveBeenCalledTimes(1);
-    expect(getConfig).toHaveBeenCalledWith(option.version);
+    expect(getConfig).toHaveBeenCalledWith(option.sid);
     expect(getActiveRelease).toHaveBeenCalledTimes(1);
     expect(listInstalledPlugins).toHaveBeenCalledTimes(1);
-    expect(listInstalledPlugins).toHaveBeenCalledWith(option.version);
+    expect(listInstalledPlugins).toHaveBeenCalledWith(option.sid);
 
     if (withPlugins) {
       expect(getPlugin).toHaveBeenCalledTimes(1);
@@ -87,7 +87,7 @@ describe('DescribeConfigurationScript', () => {
       expect(e).toContain('something went wrong');
 
       expect(getConfig).toHaveBeenCalledTimes(1);
-      expect(getConfig).toHaveBeenCalledWith(option.version);
+      expect(getConfig).toHaveBeenCalledWith(option.sid);
       expect(getActiveRelease).toHaveBeenCalledTimes(1);
       expect(getPlugin).not.toHaveBeenCalled();
       expect(getVersion).not.toHaveBeenCalled();
