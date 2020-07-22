@@ -6,7 +6,7 @@ export type ListConfigurationsOption = Page;
 
 export interface ListConfigurations {
   sid: string;
-  version: string;
+  name: string;
   description: string;
   isActive: boolean;
   dateCreated: string;
@@ -29,7 +29,7 @@ export default function listConfigurations(
 
     const configurations = result.configurations.map((configuration) => ({
       sid: configuration.sid,
-      version: configuration.version,
+      name: configuration.name,
       description: configuration.description,
       isActive: Boolean(release && release.configuration_sid === configuration.sid),
       dateCreated: configuration.date_created,

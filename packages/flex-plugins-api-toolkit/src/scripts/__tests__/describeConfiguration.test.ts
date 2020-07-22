@@ -31,7 +31,7 @@ describe('DescribeConfigurationScript', () => {
     configuredPluginsClient,
     releasesClient,
   );
-  const option = { version: configuration.version };
+  const option = { version: configuration.name };
 
   const expectEndpointsCalled = (withPlugins: boolean) => {
     expect(getConfig).toHaveBeenCalledTimes(1);
@@ -53,7 +53,7 @@ describe('DescribeConfigurationScript', () => {
 
   const expectResult = (result: DescribeConfiguration, isActive: boolean, hasPlugins: boolean) => {
     expect(result.sid).toEqual(configuration.sid);
-    expect(result.version).toEqual(configuration.version);
+    expect(result.name).toEqual(configuration.name);
     expect(result.description).toEqual(configuration.description);
     expect(result.isActive).toEqual(isActive);
     expect(result.dateCreated).toEqual(configuration.date_created);

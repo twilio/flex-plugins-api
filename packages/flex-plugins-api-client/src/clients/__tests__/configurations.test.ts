@@ -47,7 +47,7 @@ describe('ConfigurationsClient', () => {
   it('should create configurations', async () => {
     post.mockResolvedValue('created');
 
-    const payload = { Version: '1.0.0', Plugins: [] };
+    const payload = { Name: 'sample name', Plugins: [] };
     const result = await client.create(payload);
 
     expect(result).toEqual('created');

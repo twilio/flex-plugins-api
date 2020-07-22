@@ -21,7 +21,7 @@ interface ConfiguredPlugins extends DeployPlugin {
 
 export interface Configuration {
   sid: string;
-  version: string;
+  name: string;
   description: string;
   dateCreated: string;
 }
@@ -82,7 +82,7 @@ export function internalDescribeConfiguration(
 
     return {
       sid: configuration.sid,
-      version: configuration.version,
+      name: configuration.name,
       description: configuration.description,
       isActive,
       plugins: installedPlugins,
