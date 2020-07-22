@@ -50,7 +50,7 @@ export default function describeRelease(
       pluginVersionClient,
       configurationClient,
       configuredPluginClient,
-    )({ version: release.configuration_sid }, release);
+    )({ sid: release.configuration_sid }, release);
 
     return {
       sid: release.sid,

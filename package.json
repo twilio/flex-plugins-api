@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.5",
     "@types/node": "^14.0.24",
-    "codecov": "^3.7.1",
+    "codecov": "^3.7.2",
     "eslint": "^7.5.0",
     "eslint-config-twilio-ts": "^1.28.0",
     "husky": "^4.2.5",
