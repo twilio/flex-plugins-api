@@ -236,7 +236,7 @@ describe('CreateConfigurationScript', () => {
     expect(listConfiguredPlugins).toHaveBeenCalledWith(configuration.sid);
 
     expect(result).toEqual({
-      configurationSid: configuration.sid,
+      sid: configuration.sid,
       name: configuration.name,
       description: configuration.description,
       plugins: [
@@ -312,7 +312,7 @@ describe('CreateConfigurationScript', () => {
     expect(listConfiguredPlugins).toHaveBeenCalledWith(release.configuration_sid);
 
     expect(result).toEqual({
-      configurationSid: configuration.sid,
+      sid: configuration.sid,
       name: configuration.name,
       description: configuration.description,
       plugins: [
@@ -400,7 +400,7 @@ describe('CreateConfigurationScript', () => {
     expect(listConfiguredPlugins).toHaveBeenCalledWith(release.configuration_sid);
 
     expect(result).toEqual({
-      configurationSid: configuration.sid,
+      sid: configuration.sid,
       name: configuration.name,
       description: configuration.description,
       plugins: [
@@ -480,7 +480,7 @@ describe('CreateConfigurationScript', () => {
     expect(listConfiguredPlugins).toHaveBeenCalledWith(configuration.sid);
 
     expect(result).toEqual({
-      configurationSid: configuration.sid,
+      sid: configuration.sid,
       name: configuration.name,
       description: configuration.description,
       plugins: [
