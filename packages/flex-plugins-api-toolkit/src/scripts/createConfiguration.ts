@@ -21,7 +21,7 @@ export interface InstalledPlugin extends DeployPlugin {
 export interface CreateConfigurationOption {
   addPlugins: string[];
   removePlugins?: string[];
-  sid: string;
+  name?: string;
   description?: string;
   fromConfiguration?: 'active' | string;
 }
@@ -112,7 +112,6 @@ export default function createConfiguration(
     // Create a Configuration
     const createOption: CreateConfigurationResource = {
       Plugins: plugins,
-      Sid: option.sid,
     };
     if (option.description) {
       createOption.Description = option.description;
