@@ -80,7 +80,7 @@ The command takes an argument object of the format:
 ```ts
 interface CreateConfigurationOption {
   addPlugins: string[];
-  name: string;
+  sid: string;
   removePlugins?: string[];
   description?: string;
   fromConfiguration?: 'active' | string;

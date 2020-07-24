@@ -18,7 +18,7 @@ export interface CreateConfiguredPlugin {
 }
 
 export interface CreateConfigurationResource {
-  Name: string;
+  Sid: string;
   Plugins: CreateConfiguredPlugin[];
   Description?: string;
 }
