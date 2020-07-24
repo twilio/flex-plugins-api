@@ -103,6 +103,7 @@ describe('CreateConfigurationScript', () => {
     configuration_sid: configuredPlugin2.configuration_sid,
     date_created: 'the-date',
   };
+  const requestObject = { name: 'the configuraiton name' };
 
   const script = createConfigurationScript(
     pluginsClient,
@@ -118,6 +119,7 @@ describe('CreateConfigurationScript', () => {
 
   it('should throw error if plugins does not contain version', async (done) => {
     const option = {
+      ...requestObject,
       addPlugins: [plugin1.unique_name],
     };
 
@@ -139,6 +141,7 @@ describe('CreateConfigurationScript', () => {
 
   it('should throw an exception if a plugin is not found', async (done) => {
     const option = {
+      ...requestObject,
       addPlugins: [`${plugin1.unique_name}@version1`],
     };
     getPlugin.mockRejectedValue('plugin not found');
@@ -161,6 +164,7 @@ describe('CreateConfigurationScript', () => {
 
   it('should throw an exception if plugin version is not found', async (done) => {
     const option = {
+      ...requestObject,
       addPlugins: [`${plugin1.unique_name}@version1`],
     };
     getVersion.mockRejectedValue('plugin version not found');
@@ -184,6 +188,7 @@ describe('CreateConfigurationScript', () => {
 
   it('should throw an exception create configuration fails', async (done) => {
     const option = {
+      ...requestObject,
       addPlugins: [`${plugin1.unique_name}@version1`],
     };
     getVersion.mockResolvedValue(pluginVersion1);
@@ -201,6 +206,7 @@ describe('CreateConfigurationScript', () => {
       expect(getLatestVersion).not.toHaveBeenCalled();
       expect(create).toHaveBeenCalledTimes(1);
       expect(create).toHaveBeenCalledWith({
+        Name: requestObject.name,
         Plugins: [{ plugin_version: pluginVersion1.sid, phase: 3 }],
       });
       expect(listConfiguredPlugins).not.toHaveBeenCalled();
@@ -212,6 +218,7 @@ describe('CreateConfigurationScript', () => {
   it('should create new configuration', async () => {
     const option = {
       addPlugins: ['plugin1@version1'],
+      ...requestObject,
     };
     getVersion.mockResolvedValue(pluginVersion1);
     create.mockResolvedValue(configuration);
@@ -230,6 +237,7 @@ describe('CreateConfigurationScript', () => {
     expect(getLatestVersion).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
+      Name: requestObject.name,
       Plugins: [{ plugin_version: pluginVersion1.sid, phase: 3 }],
     });
     expect(listConfiguredPlugins).toHaveBeenCalledTimes(1);
@@ -261,6 +269,7 @@ describe('CreateConfigurationScript', () => {
     const option = {
       addPlugins: [`${plugin1.unique_name}@version1`],
       fromConfiguration: 'active',
+      ...requestObject,
     };
     getVersion.mockImplementation(async (id) => {
       if (id === plugin1.sid || id === plugin1.unique_name) {
@@ -302,6 +311,7 @@ describe('CreateConfigurationScript', () => {
     expect(getLatestVersion).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
+      Name: requestObject.name,
       Plugins: [
         { plugin_version: pluginVersion1.sid, phase: 3 },
         { plugin_version: pluginVersion2.sid, phase: 3 },
@@ -349,6 +359,7 @@ describe('CreateConfigurationScript', () => {
     const option = {
       addPlugins: [`${plugin1.unique_name}@version1`],
       fromConfiguration: release.configuration_sid,
+      ...requestObject,
     };
     getVersion.mockImplementation(async (id) => {
       if (id === plugin1.sid || id === plugin1.unique_name) {
@@ -390,6 +401,7 @@ describe('CreateConfigurationScript', () => {
     expect(getLatestVersion).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
+      Name: requestObject.name,
       Plugins: [
         { plugin_version: pluginVersion1.sid, phase: 3 },
         { plugin_version: pluginVersion2.sid, phase: 3 },
@@ -435,6 +447,7 @@ describe('CreateConfigurationScript', () => {
 
   it('should create new configuration from an release that is null', async () => {
     const option = {
+      ...requestObject,
       addPlugins: [`${plugin1.unique_name}@version1`],
       fromConfiguration: 'active',
     };
@@ -474,6 +487,7 @@ describe('CreateConfigurationScript', () => {
     expect(getLatestVersion).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
+      Name: requestObject.name,
       Plugins: [{ plugin_version: pluginVersion1.sid, phase: 3 }],
     });
     expect(listConfiguredPlugins).toHaveBeenCalledTimes(1);
@@ -503,6 +517,7 @@ describe('CreateConfigurationScript', () => {
 
   it('should create fetch plugin version by latest', async (done) => {
     const option = {
+      ...requestObject,
       addPlugins: ['plugin1@latest'],
     };
     getVersion.mockResolvedValue(pluginVersion1);
