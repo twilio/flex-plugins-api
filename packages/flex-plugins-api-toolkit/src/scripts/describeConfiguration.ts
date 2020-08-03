@@ -15,7 +15,7 @@ export interface DescribeConfigurationOption {
   sid: string;
 }
 
-interface ConfiguredPlugins extends DeployPlugin {
+export interface ConfiguredPlugins extends DeployPlugin {
   phase: number;
 }
 
