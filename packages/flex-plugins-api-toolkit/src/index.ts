@@ -145,7 +145,7 @@ export default class FlexPluginsAPIToolkit {
     );
 
     this.diff = this.cloneArgs(
-      diffScript(pluginClient, pluginVersionsClient, configurationsClient, configuredPluginsClient),
+      diffScript(pluginClient, pluginVersionsClient, configurationsClient, configuredPluginsClient, releasesClient),
     );
   }
 

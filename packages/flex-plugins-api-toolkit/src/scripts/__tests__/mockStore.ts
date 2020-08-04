@@ -6,6 +6,8 @@ import {
   ReleaseResource,
 } from 'flex-plugins-api-client';
 
+import { DescribeConfiguration } from '../describeConfiguration';
+
 export const meta = {
   page: 1,
   page_size: 100,
@@ -61,4 +63,13 @@ export const release: ReleaseResource = {
   account_sid: 'AC123',
   configuration_sid: 'FJ123',
   date_created: 'some-date',
+};
+
+export const describeConfiguration: DescribeConfiguration = {
+  sid: 'FJ0000000000000000000000000000000',
+  name: 'configuration-name',
+  description: 'description',
+  isActive: true,
+  plugins: [],
+  dateCreated: 'some-date',
 };

@@ -3,8 +3,9 @@ import {
   ConfiguredPluginsClient,
   PluginsClient,
   PluginVersionsClient,
+  ReleasesClient,
 } from 'flex-plugins-api-client';
-import { TwilioError } from 'flex-plugins-api-utils';
+import { TwilioError, TwilioApiError } from 'flex-plugins-api-utils';
 
 import { Script } from '.';
 import { internalDescribeConfiguration } from './describeConfiguration';
@@ -26,12 +27,14 @@ export type DiffScript = Script<DiffOption, Diff>;
  * @param pluginVersionClient the Public API {@link PluginVersionsClient}
  * @param configurationClient the Public API  {@link ConfigurationsClient}
  * @param configuredPluginClient the Public API {@link ConfiguredPluginsClient}
+ * @param releasesClient the Public API {@link ReleasesClient}
  */
 export default function diff(
   pluginClient: PluginsClient,
   pluginVersionClient: PluginVersionsClient,
   configurationClient: ConfigurationsClient,
   configuredPluginClient: ConfiguredPluginsClient,
+  releasesClient: ReleasesClient,
 ): DiffScript {
   const describeConfiguration = internalDescribeConfiguration(
     pluginClient,
@@ -42,12 +45,25 @@ export default function diff(
 
   /**
    * Finds the diff of two configurations
-   * @param oldSid the old sid of the configuration
-   * @param newSid the new sid of the configuration
+   * @param oldIdentifier the old sid of the configuration
+   * @param newIdentifier the new sid of the configuration
    */
-  const configurationDiff = async (oldSid: string, newSid: string): Promise<Diff> => {
-    const oldConfig = await describeConfiguration({ sid: oldSid }, null);
-    const newConfig = await describeConfiguration({ sid: newSid }, null);
+  const configurationDiff = async (oldIdentifier: string, newIdentifier: string): Promise<Diff> => {
+    if (oldIdentifier === 'active' || newIdentifier === 'active') {
+      const release = await releasesClient.active();
+      if (!release) {
+        throw new TwilioApiError(404, 'No active release exists yet', 404);
+      }
+      if (oldIdentifier === 'active') {
+        oldIdentifier = release.configuration_sid;
+      }
+      if (newIdentifier === 'active') {
+        newIdentifier = release.configuration_sid;
+      }
+    }
+
+    const oldConfig = await describeConfiguration({ sid: oldIdentifier }, null);
+    const newConfig = await describeConfiguration({ sid: newIdentifier }, null);
 
     return findConfigurationsDiff(oldConfig, newConfig);
   };

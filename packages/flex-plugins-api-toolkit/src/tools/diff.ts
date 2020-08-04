@@ -3,29 +3,33 @@ import { ConfiguredPlugins } from '../scripts/describeConfiguration';
 
 export interface Difference<T> {
   path: keyof T;
+  hasDiff: boolean;
   before: unknown;
   after: unknown;
 }
 
+type ConfigurationKeys = Omit<DescribeConfiguration, 'plugins'>;
+
 export type ConfigurationsDiff = {
-  configuration: Difference<Omit<DescribeConfiguration, 'plugins'>>[];
+  configuration: Difference<ConfigurationKeys>[];
   plugins: {
     [key: string]: Difference<ConfiguredPlugins>[];
   };
 };
 
 /**
- * Dynamically sets the type of the value field
- *
- * @param diff  the original diff
- * @param key   the key of the template of the diff to change the type
- * @private
+ * Builds a diff
+ * @param path  the path to the node
+ * @param before  the before value
+ * @param after   the after value
  */
-export const setDiffType = <T, K extends keyof T, U extends T[K]>(
-  diff: Difference<T>,
-  key: K,
-): Difference<T> & { before: U; after: U } => {
-  return diff as Difference<T> & { before: U; after: U };
+export const buildDiff = <T, K extends keyof T, U extends T[K]>(path: keyof T, before: U, after: U): Difference<T> => {
+  return {
+    path,
+    before,
+    after,
+    hasDiff: before !== after,
+  };
 };
 
 /**
@@ -42,62 +46,33 @@ export const findConfigurationsDiff = (
     plugins: {},
   };
 
-  diffs.configuration.push(
-    setDiffType(
-      {
-        path: 'name',
-        before: oldConfig.name,
-        after: newConfig.name,
-      },
-      'name',
-    ),
-  );
-  diffs.configuration.push(
-    setDiffType(
-      {
-        path: 'description',
-        before: oldConfig.description,
-        after: newConfig.description,
-      },
-      'description',
-    ),
-  );
-  diffs.configuration.push(
-    setDiffType(
-      {
-        path: 'isActive',
-        before: oldConfig.isActive,
-        after: newConfig.isActive,
-      },
-      'isActive',
-    ),
-  );
+  buildDiff('name', oldConfig.name, newConfig.name);
 
-  const appendPluginDiff = (beforePlugins: ConfiguredPlugins[], afterPlugins: ConfiguredPlugins[]) => {
-    beforePlugins.forEach((beforePlugin) => {
-      const afterPlugin = afterPlugins.find((p) => p.pluginSid === beforePlugin.pluginSid);
+  diffs.configuration.push(buildDiff('name', oldConfig.name, newConfig.name));
+  diffs.configuration.push(buildDiff('description', oldConfig.description, newConfig.description));
+  diffs.configuration.push(buildDiff('isActive', oldConfig.isActive, newConfig.isActive));
 
-      if (beforePlugin.name === 'plugin-sample') {
-      }
-      // We've already added this, skip
-      if (!diffs.plugins[beforePlugin.name]) {
-        const diff: Difference<ConfiguredPlugins>[] = [];
+  oldConfig.plugins.forEach((oldPlugin) => {
+    const newPlugin = newConfig.plugins.find((p) => p.pluginSid === oldPlugin.pluginSid);
 
-        Object.entries(beforePlugin).forEach(([key, value]) => {
-          diff.push({
-            path: key as keyof ConfiguredPlugins,
-            before: value,
-            after: afterPlugin && afterPlugin[key],
-          });
-        });
+    // We've already added this, skip
+    if (!diffs.plugins[oldPlugin.name]) {
+      diffs.plugins[oldPlugin.name] = Object.entries(oldPlugin).map(([key, value]) => {
+        return buildDiff(key as keyof ConfiguredPlugins, value, newPlugin && newPlugin[key]);
+      });
+    }
+  });
 
-        diffs.plugins[beforePlugin.name] = diff;
-      }
-    });
-  };
+  newConfig.plugins.forEach((newPlugin) => {
+    const oldPlugin = oldConfig.plugins.find((p) => p.pluginSid === newPlugin.pluginSid);
 
-  appendPluginDiff(oldConfig.plugins, newConfig.plugins);
-  appendPluginDiff(newConfig.plugins, oldConfig.plugins);
+    // We've already added this, skip
+    if (!diffs.plugins[newPlugin.name]) {
+      diffs.plugins[newPlugin.name] = Object.entries(newPlugin).map(([key, value]) => {
+        return buildDiff(key as keyof ConfiguredPlugins, oldPlugin && oldPlugin[key], value);
+      });
+    }
+  });
 
   return diffs;
 };
