@@ -438,6 +438,41 @@ interface ListReleasesResource {
 }
 ```
 
+### .diff(option: DiffOption): Promise\<Diff>
+
+This commands returns a diff of two configurations.
+
+The command takes an argument object of the format:
+
+```ts
+export interface DiffOption {
+  resource: 'configuration';
+  oldIdentifier: string;
+  newIdentifier: string;
+}
+```
+
+where `oldIdentifier/newIdentifier` can either be a ConfigurationSid or the string `active`. If `active` is returned, the script finds the ConfigurationSid corresponding to the active Configuration.
+
+The command returns a promise of type:
+
+```ts
+interface Difference<T> {
+  path: keyof T;
+  hasDiff: boolean;
+  before: unknown;
+  after: unknown;
+}
+
+interface ConfigurationsDiff {
+  configuration: Difference<Omit<DescribeConfiguration, 'plugins'>>[];
+  plugins: {
+    [key: string]: Difference<ConfiguredPlugins>[];
+  };
+}
+type Diff = ConfigurationsDiff;
+```
+
 ## Shared Types
 
 The `Pagination` interface is:
@@ -468,4 +503,12 @@ interface PaginationMeta {
 }
 ```
 
-where `next_token` and `previous_token` are extracted `PageToken` query parameter from the `next_page_url` and `previous_page_url` parameter respectively. 
+where `next_token` and `previous_token` are extracted `PageToken` query parameter from the `next_page_url` and `previous_page_url` parameter respectively.
+
+## Tools
+
+This package also exposes the following tools:
+
+### findConfigurationsDiff(oldConfiguration: DescribeConfiguration, newConfiguration: DescribeConfiguration): ConfigurationsDiff
+
+This tool compares two `DescribeConfiguration` and returns the diff between the two. 

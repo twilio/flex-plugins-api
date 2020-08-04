@@ -23,6 +23,8 @@ import {
   DescribePluginVersionScript,
   describeReleaseScript,
   DescribeReleaseScript,
+  diffScript,
+  DiffScript,
   listConfigurationsScript,
   ListConfigurationsScript,
   listPluginsScript,
@@ -64,6 +66,8 @@ export {
   ListConfigurationsResource,
   ListReleasesOption,
   ListReleasesResource,
+  DiffOption,
+  Diff,
 } from './scripts';
 
 export default class FlexPluginsAPIToolkit {
@@ -78,6 +82,7 @@ export default class FlexPluginsAPIToolkit {
   public readonly describeConfiguration: DescribeConfigurationScript;
   public readonly listReleases: ListReleasesScript;
   public readonly describeRelease: DescribeReleaseScript;
+  public readonly diff: DiffScript;
 
   constructor(username: string, password: string, options?: FlexPluginsAPIToolkitOptions) {
     // Optional realm environment
@@ -137,6 +142,10 @@ export default class FlexPluginsAPIToolkit {
         configuredPluginsClient,
         releasesClient,
       ),
+    );
+
+    this.diff = this.cloneArgs(
+      diffScript(pluginClient, pluginVersionsClient, configurationsClient, configuredPluginsClient, releasesClient),
     );
   }
 

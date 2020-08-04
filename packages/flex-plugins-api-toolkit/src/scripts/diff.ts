@@ -1,0 +1,78 @@
+import {
+  ConfigurationsClient,
+  ConfiguredPluginsClient,
+  PluginsClient,
+  PluginVersionsClient,
+  ReleasesClient,
+} from 'flex-plugins-api-client';
+import { TwilioError, TwilioApiError } from 'flex-plugins-api-utils';
+
+import { Script } from '.';
+import { internalDescribeConfiguration } from './describeConfiguration';
+import { ConfigurationsDiff, findConfigurationsDiff } from '../tools/diff';
+
+export interface DiffOption {
+  resource: 'configuration';
+  oldIdentifier: string;
+  newIdentifier: string;
+}
+
+export type Diff = ConfigurationsDiff;
+
+export type DiffScript = Script<DiffOption, Diff>;
+
+/**
+ * The .diff script. This script finds the diff between two resources
+ * @param pluginClient        the Public API {@link PluginsClient}
+ * @param pluginVersionClient the Public API {@link PluginVersionsClient}
+ * @param configurationClient the Public API  {@link ConfigurationsClient}
+ * @param configuredPluginClient the Public API {@link ConfiguredPluginsClient}
+ * @param releasesClient the Public API {@link ReleasesClient}
+ */
+export default function diff(
+  pluginClient: PluginsClient,
+  pluginVersionClient: PluginVersionsClient,
+  configurationClient: ConfigurationsClient,
+  configuredPluginClient: ConfiguredPluginsClient,
+  releasesClient: ReleasesClient,
+): DiffScript {
+  const describeConfiguration = internalDescribeConfiguration(
+    pluginClient,
+    pluginVersionClient,
+    configurationClient,
+    configuredPluginClient,
+  );
+
+  /**
+   * Finds the diff of two configurations
+   * @param oldIdentifier the old sid of the configuration
+   * @param newIdentifier the new sid of the configuration
+   */
+  const configurationDiff = async (oldIdentifier: string, newIdentifier: string): Promise<Diff> => {
+    if (oldIdentifier === 'active' || newIdentifier === 'active') {
+      const release = await releasesClient.active();
+      if (!release) {
+        throw new TwilioApiError(404, 'No active release exists yet', 404);
+      }
+      if (oldIdentifier === 'active') {
+        oldIdentifier = release.configuration_sid;
+      }
+      if (newIdentifier === 'active') {
+        newIdentifier = release.configuration_sid;
+      }
+    }
+
+    const oldConfig = await describeConfiguration({ sid: oldIdentifier }, null);
+    const newConfig = await describeConfiguration({ sid: newIdentifier }, null);
+
+    return findConfigurationsDiff(oldConfig, newConfig);
+  };
+
+  return async (option: DiffOption) => {
+    if (option.resource === 'configuration') {
+      return configurationDiff(option.oldIdentifier, option.newIdentifier);
+    }
+
+    throw new TwilioError(`Diff resource must be 'configuration'`);
+  };
+}

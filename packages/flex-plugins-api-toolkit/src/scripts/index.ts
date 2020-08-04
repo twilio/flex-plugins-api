@@ -81,3 +81,4 @@ export {
   DescribeReleaseOption,
   DescribeRelease,
 } from './describeRelease';
+export { default as diffScript, DiffScript, DiffOption, Diff } from './diff';
