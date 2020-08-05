@@ -14,7 +14,7 @@ import * as mockStore from './mockStore';
 import * as diffTool from '../../tools/diff';
 
 describe('Diff', () => {
-  const oldSid = 'FJ0000000000000000000000000000000';
+  const oldSid = mockStore.describeConfiguration.sid;
   const newSid = 'FJ0000000000000000000000000000001';
   const diff = { configuration: [], plugins: {}, activeSid: null, oldSid, newSid };
   const httpClient = new PluginServiceHTTPClient('username', 'password');
@@ -39,7 +39,7 @@ describe('Diff', () => {
 
   it('should find diff between two configs', async () => {
     const config1 = { ...mockStore.describeConfiguration };
-    const config2 = { ...mockStore.describeConfiguration, sid: 'FJ0000000000000000000000000000001' };
+    const config2 = { ...mockStore.describeConfiguration, sid: newSid };
     const script = diffScript(
       pluginsClient,
       versionsClient,
@@ -68,7 +68,7 @@ describe('Diff', () => {
 
   it('should find diff for first config as active', async () => {
     const config1 = { ...mockStore.describeConfiguration };
-    const config2 = { ...mockStore.describeConfiguration, sid: 'FJ0000000000000000000000000000001' };
+    const config2 = { ...mockStore.describeConfiguration, sid: newSid };
     const release = { ...mockStore.release, configuration_sid: config1.sid };
     active.mockResolvedValue(release);
     const script = diffScript(
@@ -99,7 +99,7 @@ describe('Diff', () => {
 
   it('should find diff for second config as active', async () => {
     const config1 = { ...mockStore.describeConfiguration };
-    const config2 = { ...mockStore.describeConfiguration, sid: 'FJ0000000000000000000000000000001' };
+    const config2 = { ...mockStore.describeConfiguration, sid: newSid };
     const release = { ...mockStore.release, configuration_sid: config2.sid };
     active.mockResolvedValue(release);
     const script = diffScript(
