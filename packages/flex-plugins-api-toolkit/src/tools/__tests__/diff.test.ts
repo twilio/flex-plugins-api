@@ -8,7 +8,7 @@ describe('diff', () => {
     description: 'old-description',
     isActive: true,
     plugins: [],
-    dateCreated: 'date-created',
+    dateCreated: 'old-date-created',
   };
 
   const expectConfigurationDiff = (
@@ -16,7 +16,7 @@ describe('diff', () => {
     oldConfig: DescribeConfiguration,
     newConfig: DescribeConfiguration,
   ) => {
-    expect(diffs.configuration).toHaveLength(3);
+    expect(diffs.configuration).toHaveLength(4);
 
     expect(diffs.configuration[0].path).toEqual('name');
     expect(diffs.configuration[0].before).toEqual(oldConfig.name);
@@ -29,6 +29,10 @@ describe('diff', () => {
     expect(diffs.configuration[2].path).toEqual('isActive');
     expect(diffs.configuration[2].before).toEqual(oldConfig.isActive);
     expect(diffs.configuration[2].after).toEqual(newConfig.isActive);
+
+    expect(diffs.configuration[3].path).toEqual('dateCreated');
+    expect(diffs.configuration[3].before).toEqual(oldConfig.dateCreated);
+    expect(diffs.configuration[3].after).toEqual(newConfig.dateCreated);
   };
 
   const findPluginDiff = (diffs: ConfigurationsDiff, name: string, path: string) => {
@@ -58,6 +62,7 @@ describe('diff', () => {
     expect(diffs.configuration[0].before).not.toEqual(diffs.configuration[0].after);
     expect(diffs.configuration[1].before).toEqual(diffs.configuration[1].after);
     expect(diffs.configuration[2].before).toEqual(diffs.configuration[2].after);
+    expect(diffs.configuration[3].before).toEqual(diffs.configuration[3].after);
   });
 
   it('should add diff of description', () => {
@@ -74,6 +79,7 @@ describe('diff', () => {
     expect(diffs.configuration[0].before).toEqual(diffs.configuration[0].after);
     expect(diffs.configuration[1].before).not.toEqual(diffs.configuration[1].after);
     expect(diffs.configuration[2].before).toEqual(diffs.configuration[2].after);
+    expect(diffs.configuration[3].before).toEqual(diffs.configuration[3].after);
   });
 
   it('should add diff of isActive', () => {
@@ -90,6 +96,24 @@ describe('diff', () => {
     expect(diffs.configuration[0].before).toEqual(diffs.configuration[0].after);
     expect(diffs.configuration[1].before).toEqual(diffs.configuration[1].after);
     expect(diffs.configuration[2].before).not.toEqual(diffs.configuration[2].after);
+    expect(diffs.configuration[3].before).toEqual(diffs.configuration[3].after);
+  });
+
+  it('should add diff of dateCreated', () => {
+    const oldConfig: DescribeConfiguration = {
+      ...config,
+    };
+    const newConfig: DescribeConfiguration = {
+      ...config,
+      dateCreated: 'new-date-created',
+    };
+
+    const diffs = findConfigurationsDiff(oldConfig, newConfig);
+    expectConfigurationDiff(diffs, oldConfig, newConfig);
+    expect(diffs.configuration[0].before).toEqual(diffs.configuration[0].after);
+    expect(diffs.configuration[1].before).toEqual(diffs.configuration[1].after);
+    expect(diffs.configuration[2].before).toEqual(diffs.configuration[2].after);
+    expect(diffs.configuration[3].before).not.toEqual(diffs.configuration[3].after);
   });
 
   it('should diff plugin change one way', () => {

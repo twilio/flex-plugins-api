@@ -14,7 +14,9 @@ import * as mockStore from './mockStore';
 import * as diffTool from '../../tools/diff';
 
 describe('Diff', () => {
-  const diff = { configuration: [], plugins: {} };
+  const oldSid = 'FJ0000000000000000000000000000000';
+  const newSid = 'FJ0000000000000000000000000000001';
+  const diff = { configuration: [], plugins: {}, activeSid: null, oldSid, newSid };
   const httpClient = new PluginServiceHTTPClient('username', 'password');
   const pluginsClient = new PluginsClient(httpClient);
   const versionsClient = new PluginVersionsClient(httpClient);
@@ -32,6 +34,7 @@ describe('Diff', () => {
 
     internalDescribeConfiguration.mockImplementation(() => describeConfiguration);
     findConfigurationsDiff.mockReturnValue(diff);
+    active.mockResolvedValue(null);
   });
 
   it('should find diff between two configs', async () => {
@@ -55,7 +58,7 @@ describe('Diff', () => {
     const theDiff = await script({ resource: 'configuration', oldIdentifier: config1.sid, newIdentifier: config2.sid });
 
     expect(theDiff).toEqual(diff);
-    expect(active).not.toHaveBeenCalled();
+    expect(active).toHaveBeenCalledTimes(1);
     expect(describeConfiguration).toHaveBeenCalledTimes(2);
     expect(describeConfiguration).toHaveBeenCalledWith({ sid: config1.sid }, null);
     expect(describeConfiguration).toHaveBeenCalledWith({ sid: config2.sid }, null);
@@ -85,11 +88,11 @@ describe('Diff', () => {
 
     const theDiff = await script({ resource: 'configuration', oldIdentifier: 'active', newIdentifier: config2.sid });
 
-    expect(theDiff).toEqual(diff);
+    expect(theDiff).toEqual({ ...diff, activeSid: release.configuration_sid });
     expect(active).toHaveBeenCalledTimes(1);
     expect(describeConfiguration).toHaveBeenCalledTimes(2);
-    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config1.sid }, null);
-    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config2.sid }, null);
+    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config1.sid }, release);
+    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config2.sid }, release);
     expect(findConfigurationsDiff).toHaveBeenCalledTimes(1);
     expect(findConfigurationsDiff).toHaveBeenCalledWith(config1, config2);
   });
@@ -116,11 +119,11 @@ describe('Diff', () => {
 
     const theDiff = await script({ resource: 'configuration', oldIdentifier: config1.sid, newIdentifier: 'active' });
 
-    expect(theDiff).toEqual(diff);
+    expect(theDiff).toEqual({ ...diff, activeSid: release.configuration_sid });
     expect(active).toHaveBeenCalledTimes(1);
     expect(describeConfiguration).toHaveBeenCalledTimes(2);
-    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config1.sid }, null);
-    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config2.sid }, null);
+    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config1.sid }, release);
+    expect(describeConfiguration).toHaveBeenCalledWith({ sid: config2.sid }, release);
     expect(findConfigurationsDiff).toHaveBeenCalledTimes(1);
     expect(findConfigurationsDiff).toHaveBeenCalledWith(config1, config2);
   });

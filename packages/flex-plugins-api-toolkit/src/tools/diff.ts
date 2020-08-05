@@ -51,6 +51,7 @@ export const findConfigurationsDiff = (
   diffs.configuration.push(buildDiff('name', oldConfig.name, newConfig.name));
   diffs.configuration.push(buildDiff('description', oldConfig.description, newConfig.description));
   diffs.configuration.push(buildDiff('isActive', oldConfig.isActive, newConfig.isActive));
+  diffs.configuration.push(buildDiff('dateCreated', oldConfig.dateCreated, newConfig.dateCreated));
 
   oldConfig.plugins.forEach((oldPlugin) => {
     const newPlugin = newConfig.plugins.find((p) => p.pluginSid === oldPlugin.pluginSid);

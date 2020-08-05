@@ -17,7 +17,11 @@ export interface DiffOption {
   newIdentifier: string;
 }
 
-export type Diff = ConfigurationsDiff;
+export interface Diff extends ConfigurationsDiff {
+  oldSid: string;
+  newSid: string;
+  activeSid: string | undefined | null;
+}
 
 export type DiffScript = Script<DiffOption, Diff>;
 
@@ -49,8 +53,9 @@ export default function diff(
    * @param newIdentifier the new sid of the configuration
    */
   const configurationDiff = async (oldIdentifier: string, newIdentifier: string): Promise<Diff> => {
+    const release = await releasesClient.active();
+
     if (oldIdentifier === 'active' || newIdentifier === 'active') {
-      const release = await releasesClient.active();
       if (!release) {
         throw new TwilioApiError(404, 'No active release exists yet', 404);
       }
@@ -62,10 +67,15 @@ export default function diff(
       }
     }
 
-    const oldConfig = await describeConfiguration({ sid: oldIdentifier }, null);
-    const newConfig = await describeConfiguration({ sid: newIdentifier }, null);
+    const oldConfig = await describeConfiguration({ sid: oldIdentifier }, release);
+    const newConfig = await describeConfiguration({ sid: newIdentifier }, release);
 
-    return findConfigurationsDiff(oldConfig, newConfig);
+    return {
+      ...findConfigurationsDiff(oldConfig, newConfig),
+      oldSid: oldIdentifier,
+      newSid: newIdentifier,
+      activeSid: release && release.configuration_sid,
+    };
   };
 
   return async (option: DiffOption) => {
