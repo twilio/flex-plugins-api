@@ -9,6 +9,7 @@ import {
 import cloneDeep from 'lodash.clonedeep';
 import { Realm } from 'flex-plugins-api-utils/dist/env';
 import { PluginServiceHttpOption } from 'flex-plugins-api-client/dist/clients/client';
+import { OptionalHttpConfig } from 'flex-plugins-api-utils';
 
 import {
   createConfigurationScript,
@@ -38,7 +39,7 @@ import {
   Script,
 } from './scripts';
 
-interface FlexPluginsAPIToolkitOptions {
+interface FlexPluginsAPIToolkitOptions extends OptionalHttpConfig {
   realm?: Realm;
 }
 
@@ -89,6 +90,12 @@ export default class FlexPluginsAPIToolkit {
     const clientOption: PluginServiceHttpOption = {};
     if (options && options.realm) {
       clientOption.realm = options.realm;
+    }
+    if (options && options.caller) {
+      clientOption.caller = options.caller;
+    }
+    if (options && options.packages) {
+      clientOption.packages = options.packages;
     }
 
     const httpClient = new PluginServiceHTTPClient(username, password, clientOption);
