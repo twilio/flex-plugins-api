@@ -44,8 +44,6 @@ export default class Http {
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'I-Twilio-Auth-Account': 'AC663912704f662a231e927fc45ace28f2',
-        'Auth-Bypass': 'true',
         'User-Agent': Http.getUserAgent(config),
       },
       adapter: cache.adapter,
