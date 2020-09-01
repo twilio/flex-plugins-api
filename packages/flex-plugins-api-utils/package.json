@@ -43,12 +43,12 @@
     "test:watch": "cd ../.. && jest packages/flex-plugins-api-utils --watch"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "axios-cache-adapter": "^2.5.0",
     "chalk": "^4.1.0",
-    "flex-plugins-utils-env": "^0.11.1",
-    "flex-plugins-utils-exception": "^0.11.0",
-    "flex-plugins-utils-logger": "^0.11.1",
+    "flex-plugins-utils-env": "^0.14.0",
+    "flex-plugins-utils-exception": "^0.14.0",
+    "flex-plugins-utils-logger": "^0.14.0",
     "qs": "^6.9.4",
     "util": "^0.12.3"
   },

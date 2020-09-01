@@ -43,7 +43,7 @@
     "test:watch": "cd ../.. && jest packages/flex-plugins-api-client --watch"
   },
   "dependencies": {
-    "flex-plugins-api-utils": "^0.15.0",
+    "flex-plugins-api-utils": "^0.17.0",
     "lodash.upperfirst": "^4.3.1"
   },
   "gitHead": "58a29ff6cd88c72561af45c2fe53b4996d3b2ccc",
