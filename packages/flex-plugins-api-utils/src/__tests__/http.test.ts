@@ -19,7 +19,7 @@ describe('HttpClient', () => {
     jest.resetModules();
   });
 
-  describe('getUserAgent', () => {
+  describe('getFlexMetadata', () => {
     // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const pkg = require('../../package.json');
 
@@ -27,7 +27,7 @@ describe('HttpClient', () => {
       const isNode = jest.spyOn(envs, 'isNode').mockReturnValue(true);
 
       // @ts-ignore
-      const userAgent = HttpClient.getUserAgent({});
+      const userAgent = HttpClient.getFlexMetadata({});
 
       expect(isNode).toHaveBeenCalledTimes(1);
       expect(userAgent).toContain('Node.js');
@@ -41,7 +41,7 @@ describe('HttpClient', () => {
       const isNode = jest.spyOn(envs, 'isNode').mockReturnValue(false);
 
       // @ts-ignore
-      const userAgent = HttpClient.getUserAgent({});
+      const userAgent = HttpClient.getFlexMetadata({});
 
       expect(isNode).toHaveBeenCalledTimes(1);
       expect(userAgent).not.toContain('Node.js');
@@ -53,7 +53,7 @@ describe('HttpClient', () => {
       jest.spyOn(envs, 'isNode').mockReturnValue(true);
 
       // @ts-ignore
-      const userAgent = HttpClient.getUserAgent({ caller: 'test-caller' });
+      const userAgent = HttpClient.getFlexMetadata({ caller: 'test-caller' });
       expect(userAgent).toContain(`caller/test-caller`);
     });
 
@@ -61,7 +61,7 @@ describe('HttpClient', () => {
       jest.spyOn(envs, 'isNode').mockReturnValue(true);
 
       // @ts-ignore
-      const userAgent = HttpClient.getUserAgent({
+      const userAgent = HttpClient.getFlexMetadata({
         packages: {
           'package-a': '1.2.3',
           'package-b': '4.5.6',

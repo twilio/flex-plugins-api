@@ -44,7 +44,7 @@ export default class Http {
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': Http.getUserAgent(config),
+        'Flex-Metadata': Http.getFlexMetadata(config),
       },
       adapter: cache.adapter,
     });
@@ -54,10 +54,10 @@ export default class Http {
   }
 
   /**
-   * Calculates and returns the UserAgent
+   * Calculates and returns the Flex-Metadata header
    * @param config
    */
-  private static getUserAgent(config: HttpConfig) {
+  private static getFlexMetadata(config: HttpConfig) {
     const packages = config.packages || {};
     // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const pkg = require('../package.json');
