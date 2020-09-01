@@ -1,6 +1,7 @@
 import qs from 'qs';
 import { setupCache } from 'axios-cache-adapter';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { isNode } from 'flex-plugins-utils-env/dist/lib/env';
 
 import logger from './logger';
 import { TwilioApiError } from './exceptions';
@@ -15,7 +16,14 @@ export interface AuthConfig {
   password: string;
 }
 
-export interface HttpConfig {
+export interface OptionalHttpConfig {
+  caller?: string;
+  packages?: {
+    [key: string]: string;
+  };
+}
+
+export interface HttpConfig extends OptionalHttpConfig {
   baseURL: string;
   auth: AuthConfig;
 }
@@ -36,12 +44,37 @@ export default class Http {
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Flex-Metadata': Http.getFlexMetadata(config),
       },
       adapter: cache.adapter,
     });
 
     this.client.interceptors.request.use(Http.transformRequest);
     this.client.interceptors.response.use(Http.transformResponse, Http.transformResponseError);
+  }
+
+  /**
+   * Calculates and returns the Flex-Metadata header
+   * @param config
+   */
+  private static getFlexMetadata(config: HttpConfig) {
+    const packages = config.packages || {};
+    // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+    const pkg = require('../package.json');
+    packages[pkg.name] = pkg.version;
+
+    const userAgent = [];
+    if (isNode()) {
+      userAgent.push(`Node.js/${process.version.slice(1)}`, `(${process.platform}; ${process.arch})`);
+    } else {
+      userAgent.push(window.navigator.userAgent);
+    }
+    if (config.caller) {
+      userAgent.push(`caller/${config.caller}`);
+    }
+    Object.entries(packages).forEach(([key, value]) => userAgent.push(`${key}/${value}`));
+
+    return userAgent.join(' ');
   }
 
   /**

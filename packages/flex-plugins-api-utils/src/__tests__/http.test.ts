@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { AxiosRequestConfig } from 'axios';
+import * as envs from 'flex-plugins-utils-env/dist/lib/env';
 
 import HttpClient, { HttpConfig } from '../http';
 import { TwilioApiError } from '../exceptions';
@@ -16,6 +17,59 @@ describe('HttpClient', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     jest.resetModules();
+  });
+
+  describe('getFlexMetadata', () => {
+    // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+    const pkg = require('../../package.json');
+
+    it('should return default user-agent for node if nothing is set', () => {
+      const isNode = jest.spyOn(envs, 'isNode').mockReturnValue(true);
+
+      // @ts-ignore
+      const userAgent = HttpClient.getFlexMetadata({});
+
+      expect(isNode).toHaveBeenCalledTimes(1);
+      expect(userAgent).toContain('Node.js');
+      expect(userAgent).toContain(process.version.slice(1));
+      expect(userAgent).toContain(process.platform);
+      expect(userAgent).toContain(process.arch);
+      expect(userAgent).toContain(`${pkg.name}/${pkg.version}`);
+    });
+
+    it('should return default user-agent for windows if nothing is set', () => {
+      const isNode = jest.spyOn(envs, 'isNode').mockReturnValue(false);
+
+      // @ts-ignore
+      const userAgent = HttpClient.getFlexMetadata({});
+
+      expect(isNode).toHaveBeenCalledTimes(1);
+      expect(userAgent).not.toContain('Node.js');
+      expect(userAgent).not.toContain(process.version.slice(1));
+      expect(userAgent).toContain(`${pkg.name}/${pkg.version}`);
+    });
+
+    it('should set caller', () => {
+      jest.spyOn(envs, 'isNode').mockReturnValue(true);
+
+      // @ts-ignore
+      const userAgent = HttpClient.getFlexMetadata({ caller: 'test-caller' });
+      expect(userAgent).toContain(`caller/test-caller`);
+    });
+
+    it('should set packages', () => {
+      jest.spyOn(envs, 'isNode').mockReturnValue(true);
+
+      // @ts-ignore
+      const userAgent = HttpClient.getFlexMetadata({
+        packages: {
+          'package-a': '1.2.3',
+          'package-b': '4.5.6',
+        },
+      });
+      expect(userAgent).toContain(`package-a/1.2.3`);
+      expect(userAgent).toContain(`package-b/4.5.6`);
+    });
   });
 
   describe('get', () => {

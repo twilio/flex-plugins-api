@@ -1,4 +1,4 @@
-import { env, logger, HttpClient } from 'flex-plugins-api-utils';
+import { env, logger, HttpClient, OptionalHttpConfig } from 'flex-plugins-api-utils';
 import { Realm } from 'flex-plugins-api-utils/dist/env';
 import upperFirst from 'lodash.upperfirst';
 
@@ -24,7 +24,7 @@ export interface PaginationMeta {
   meta: Meta;
 }
 
-export interface PluginServiceHttpOption {
+export interface PluginServiceHttpOption extends OptionalHttpConfig {
   realm?: Realm;
 }
 
@@ -37,11 +37,19 @@ export default class PluginServiceHttp extends HttpClient {
   private static version = 'v1';
 
   constructor(username: string, password: string, options?: PluginServiceHttpOption) {
+    // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+    const pkg = require('../../package.json');
+    const caller = (options && options.caller) || pkg.name;
+    const packages = (options && options.packages) || {};
+    packages[pkg.name] = pkg.version;
+
     super({
       baseURL: `https://flex-api${PluginServiceHttp.getRealm(options && options.realm)}.twilio.com/${
         PluginServiceHttp.version
       }/PluginService`,
       auth: { username, password },
+      caller,
+      packages,
     });
   }
 
