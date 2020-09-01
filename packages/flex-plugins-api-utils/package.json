@@ -43,7 +43,7 @@
     "test:watch": "cd ../.. && jest packages/flex-plugins-api-utils --watch"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "axios-cache-adapter": "^2.5.0",
     "chalk": "^4.1.0",
     "flex-plugins-utils-env": "^0.14.0",
