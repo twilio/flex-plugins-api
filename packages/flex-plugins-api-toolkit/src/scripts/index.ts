@@ -54,6 +54,7 @@ export {
   DescribePluginVersionScript,
   DescribePluginVersionOption,
   DescribePluginVersion,
+  PluginVersion,
 } from './describePluginVersion';
 export {
   default as listConfigurationsScript,
