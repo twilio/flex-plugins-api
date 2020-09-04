@@ -54,6 +54,7 @@ export {
   DescribePlugin,
   DescribePluginVersionOption,
   DescribePluginVersion,
+  PluginVersion,
   DescribeConfigurationOption,
   DescribeConfiguration,
   DescribeReleaseOption,
