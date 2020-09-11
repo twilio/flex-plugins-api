@@ -19,6 +19,29 @@ describe('HttpClient', () => {
     jest.resetModules();
   });
 
+  describe('constructor', () => {
+    it('should not set flex-metadata', () => {
+      const http = new HttpClient(config);
+
+      // @ts-ignore
+      expect(http.client.defaults.headers).not.toHaveProperty(HttpClient.FlexMetadata);
+    });
+
+    it('should set flex-metadata', () => {
+      const http = new HttpClient({ ...config, setFlexMetaData: true });
+
+      // @ts-ignore
+      expect(http.client.defaults.headers).toHaveProperty(HttpClient.FlexMetadata);
+    });
+
+    it('should set content-type to url-encoded', () => {
+      const http = new HttpClient({ ...config, setFlexMetaData: true });
+
+      // @ts-ignore
+      expect(http.client.defaults.headers['Content-Type']).toEqual(HttpClient.ContentType);
+    });
+  });
+
   describe('getFlexMetadata', () => {
     // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const pkg = require('../../package.json');

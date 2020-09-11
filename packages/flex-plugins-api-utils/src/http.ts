@@ -30,6 +30,9 @@ export interface HttpConfig extends OptionalHttpConfig {
 }
 
 export default class Http {
+  static ContentType = 'application/x-www-form-urlencoded';
+  static FlexMetadata = 'Flex-Metadata';
+
   protected readonly client: AxiosInstance;
   protected readonly cacheAge: number;
 
@@ -44,12 +47,12 @@ export default class Http {
         password: config.auth.password,
       },
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': Http.ContentType,
       },
       adapter: cache.adapter,
     };
     if (config.setFlexMetaData) {
-      axiosConfig.headers['Flex-Metadata'] = Http.getFlexMetadata(config);
+      axiosConfig.headers[Http.FlexMetadata] = Http.getFlexMetadata(config);
     }
     this.client = axios.create(axiosConfig);
 
