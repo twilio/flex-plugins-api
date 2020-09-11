@@ -76,11 +76,7 @@ export default function createConfiguration(
       const existingPlugins = items.plugins
         .filter(
           (plugin) =>
-            !list.reduce(
-              (a: boolean, p: string) =>
-                a || p.indexOf(`${plugin.unique_name}@`) !== -1 || p.indexOf(`${plugin.plugin_sid}@`) !== -1,
-              false,
-            ),
+            !list.some((p) => p.indexOf(`${plugin.unique_name}@`) !== -1 || p.indexOf(`${plugin.plugin_sid}@`) !== -1),
         )
         .map((p) => `${p.plugin_sid}@${p.plugin_version_sid}`);
       list.push(...existingPlugins);
