@@ -17,6 +17,7 @@ export interface AuthConfig {
 }
 
 export interface OptionalHttpConfig {
+  setFlexMetaData?: boolean;
   caller?: string;
   packages?: {
     [key: string]: string;
@@ -29,6 +30,9 @@ export interface HttpConfig extends OptionalHttpConfig {
 }
 
 export default class Http {
+  static ContentType = 'application/x-www-form-urlencoded';
+  static FlexMetadata = 'Flex-Metadata';
+
   protected readonly client: AxiosInstance;
   protected readonly cacheAge: number;
 
@@ -36,18 +40,21 @@ export default class Http {
     this.cacheAge = 15 * 60 * 1000;
     const cache = setupCache({ maxAge: 0 });
 
-    this.client = axios.create({
+    const axiosConfig: AxiosRequestConfig = {
       baseURL: config.baseURL,
       auth: {
         username: config.auth.username,
         password: config.auth.password,
       },
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Flex-Metadata': Http.getFlexMetadata(config),
+        'Content-Type': Http.ContentType,
       },
       adapter: cache.adapter,
-    });
+    };
+    if (config.setFlexMetaData) {
+      axiosConfig.headers[Http.FlexMetadata] = Http.getFlexMetadata(config);
+    }
+    this.client = axios.create(axiosConfig);
 
     this.client.interceptors.request.use(Http.transformRequest);
     this.client.interceptors.response.use(Http.transformResponse, Http.transformResponseError);
