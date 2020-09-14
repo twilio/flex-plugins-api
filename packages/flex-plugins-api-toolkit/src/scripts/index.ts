@@ -1,6 +1,7 @@
 import { Pagination, PaginationMeta } from 'flex-plugins-api-client/dist/clients/client';
 
 // Plugins API resources
+// eslint-disable-next-line no-shadow
 export enum ResourceNames {
   Plugins = 'plugins',
   PluginVersions = 'plugin_versions',
