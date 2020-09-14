@@ -46,9 +46,9 @@
     "axios": "^0.20.0",
     "axios-cache-adapter": "^2.5.0",
     "chalk": "^4.1.0",
-    "flex-plugins-utils-env": "^0.14.0",
-    "flex-plugins-utils-exception": "^0.14.0",
-    "flex-plugins-utils-logger": "^0.14.0",
+    "flex-plugins-utils-env": "^0.15.0",
+    "flex-plugins-utils-exception": "^0.15.0",
+    "flex-plugins-utils-logger": "^0.15.1",
     "qs": "^6.9.4",
     "util": "^0.12.3"
   },

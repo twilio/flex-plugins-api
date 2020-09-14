@@ -11,7 +11,6 @@
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/ban-types": "off",
-    "camelcase": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "camelcase": "off"
   }
 }
