@@ -74,8 +74,9 @@ export default function createConfiguration(
     if (option.fromConfiguration) {
       const items = await configuredPluginClient.list(option.fromConfiguration);
       const existingPlugins = items.plugins
-        .filter((plugin) =>
-          list.every((p) => p.indexOf(`${plugin.unique_name}@`) === -1 || p.indexOf(`${plugin.plugin_sid}@`) !== -1),
+        .filter(
+          (plugin) =>
+            !list.some((p) => p.indexOf(`${plugin.unique_name}@`) !== -1 || p.indexOf(`${plugin.plugin_sid}@`) !== -1),
         )
         .map((p) => `${p.plugin_sid}@${p.plugin_version_sid}`);
       list.push(...existingPlugins);

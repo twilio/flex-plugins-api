@@ -290,7 +290,7 @@ describe('CreateConfigurationScript', () => {
     // @ts-ignore
     listConfiguredPlugins.mockImplementation(async (configSid: string) => {
       if (configSid === release.configuration_sid) {
-        return Promise.resolve({ plugins: [configuredPlugin2], meta: null });
+        return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
       }
 
       return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
