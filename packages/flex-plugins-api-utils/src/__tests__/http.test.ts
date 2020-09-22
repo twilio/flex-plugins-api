@@ -40,6 +40,20 @@ describe('HttpClient', () => {
       // @ts-ignore
       expect(http.client.defaults.headers['Content-Type']).toEqual(HttpClient.ContentType);
     });
+
+    it('should not set auth when not defined', () => {
+      const http = new HttpClient({ ...config, auth: undefined });
+
+      // @ts-ignore
+      expect(http.client.defaults.auth).toEqual(undefined);
+    });
+
+    it('should set customs headers ', () => {
+      const http = new HttpClient({ ...config, headers: { custom: 'test' } });
+
+      // @ts-ignore
+      expect(http.client.defaults.headers.custom).toEqual('test');
+    });
   });
 
   describe('getFlexMetadata', () => {
@@ -169,13 +183,63 @@ describe('HttpClient', () => {
   });
 
   describe('transformRequest', () => {
-    it('should transform post parameter if json blob', () => {
+    it('should all the callback with unmodified data', () => {
       const req: AxiosRequestConfig = {
         method: 'post',
         data: { payload: 'value' },
       };
+      const mockTransformer = jest.fn();
+
       // @ts-ignore
-      const transformed = HttpClient.transformRequest(req);
+      HttpClient.transformRequest([HttpClient.transformRequestFormData, mockTransformer])(req);
+
+      expect(mockTransformer).toBeCalledTimes(1);
+      expect(mockTransformer).toBeCalledWith(req);
+    });
+
+    it('should all the callback with modified data', () => {
+      const req: AxiosRequestConfig = {
+        method: 'post',
+        data: { payload: 'value' },
+        headers: {
+          'Content-Type': HttpClient.ContentType,
+        },
+      };
+      const mockTransformer = jest.fn();
+
+      // @ts-ignore
+      HttpClient.transformRequest([HttpClient.transformRequestFormData, mockTransformer])(req);
+
+      expect(mockTransformer).toBeCalledTimes(1);
+      expect(mockTransformer).toBeCalledWith({ ...req, data: 'payload=value' });
+    });
+  });
+
+  describe('transformRequestFormData', () => {
+    it('should not transform application/json', () => {
+      const req: AxiosRequestConfig = {
+        method: 'post',
+        data: { payload: 'value' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      // @ts-ignore
+      const transformed = HttpClient.transformRequestFormData(req);
+
+      expect(transformed.data).toEqual(req.data);
+    });
+
+    it('should transform post parameter if json blob', () => {
+      const req: AxiosRequestConfig = {
+        method: 'post',
+        data: { payload: 'value' },
+        headers: {
+          'Content-Type': HttpClient.ContentType,
+        },
+      };
+      // @ts-ignore
+      const transformed = HttpClient.transformRequestFormData(req);
 
       expect(transformed.data).toEqual('payload=value');
     });
@@ -184,9 +248,12 @@ describe('HttpClient', () => {
       const req: AxiosRequestConfig = {
         method: 'post',
         data: 'payload=value',
+        headers: {
+          'Content-Type': HttpClient.ContentType,
+        },
       };
       // @ts-ignore
-      const transformed = HttpClient.transformRequest(req);
+      const transformed = HttpClient.transformRequestFormData(req);
 
       expect(transformed.data).toEqual('payload=value');
     });
@@ -194,6 +261,9 @@ describe('HttpClient', () => {
     it('should transform nested array of object', () => {
       const req: AxiosRequestConfig = {
         method: 'post',
+        headers: {
+          'Content-Type': HttpClient.ContentType,
+        },
         data: {
           payload: 'value',
           arr: ['item1', 'item2'],
@@ -205,7 +275,7 @@ describe('HttpClient', () => {
       };
 
       // @ts-ignore
-      const transformed = HttpClient.transformRequest(req);
+      const transformed = HttpClient.transformRequestFormData(req);
 
       expect(transformed.data).toEqual(
         'payload=value&arr=item1&arr=item2&objArr={"name":"item1","phase":0}&objArr={"name":"item2","phase":1}',

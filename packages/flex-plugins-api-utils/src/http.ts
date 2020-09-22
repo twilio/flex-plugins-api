@@ -22,11 +22,15 @@ export interface OptionalHttpConfig {
   packages?: {
     [key: string]: string;
   };
+  auth?: AuthConfig;
+  headers?: {
+    [key: string]: string;
+  };
+  requestInterceptors?: [(req: AxiosRequestConfig) => AxiosRequestConfig];
 }
 
 export interface HttpConfig extends OptionalHttpConfig {
   baseURL: string;
-  auth: AuthConfig;
 }
 
 export default class Http {
@@ -42,21 +46,26 @@ export default class Http {
 
     const axiosConfig: AxiosRequestConfig = {
       baseURL: config.baseURL,
-      auth: {
-        username: config.auth.username,
-        password: config.auth.password,
-      },
       headers: {
         'Content-Type': Http.ContentType,
+        ...config.headers,
       },
       adapter: cache.adapter,
     };
+    if (config.auth) {
+      axiosConfig.auth = {
+        username: config.auth.username,
+        password: config.auth.password,
+      };
+    }
     if (config.setFlexMetaData) {
       axiosConfig.headers[Http.FlexMetadata] = Http.getFlexMetadata(config);
     }
     this.client = axios.create(axiosConfig);
 
-    this.client.interceptors.request.use(Http.transformRequest);
+    this.client.interceptors.request.use(
+      Http.transformRequest([Http.transformRequestFormData].concat(config.requestInterceptors || [])),
+    );
     this.client.interceptors.response.use(Http.transformResponse, Http.transformResponseError);
   }
 
@@ -105,12 +114,16 @@ export default class Http {
    * Transforms the POST param if provided as object
    * @param req
    */
-  private static transformRequest(req: AxiosRequestConfig): AxiosRequestConfig {
+  private static transformRequestFormData(req: AxiosRequestConfig): AxiosRequestConfig {
     const method = req.method ? req.method : 'GET';
     logger.debug(`Making a ${method.toUpperCase()} to ${req.baseURL}/${req.url}`);
 
     // Transform data to urlencoded
-    if (method.toLocaleLowerCase() === 'post' && typeof req.data === 'object') {
+    if (
+      method.toLocaleLowerCase() === 'post' &&
+      req.headers?.['Content-Type'] === Http.ContentType &&
+      typeof req.data === 'object'
+    ) {
       // This is formatting array of objects into a format Twilio Public API can consume
       const data = Object.keys(req.data).map((key) => {
         if (!Array.isArray(req.data[key])) {
@@ -133,6 +146,10 @@ export default class Http {
     }
 
     return req;
+  }
+
+  private static transformRequest(transformMethods: ((req: AxiosRequestConfig) => AxiosRequestConfig)[]) {
+    return (req: AxiosRequestConfig): AxiosRequestConfig => transformMethods.reduce((r, m) => m(r), req);
   }
 
   /**

@@ -1,4 +1,4 @@
-import PluginServiceHttpClient, { Pagination, PaginationMeta } from './client';
+import ServiceHttpClient, { Pagination, PaginationMeta } from './serviceHttpClient';
 
 export interface PluginVersionResource {
   sid: string;
@@ -10,6 +10,8 @@ export interface PluginVersionResource {
   changelog: string;
   date_created: string;
 }
+
+const RESPONSE_KEY = 'plugin_versions';
 
 export interface PluginVersionResourcePage extends PaginationMeta {
   plugin_versions: PluginVersionResource[];
@@ -27,9 +29,9 @@ export interface CreatePluginVersionResource {
  * @link https://www.twilio.com/docs/flex/plugins/api/plugin-version
  */
 export default class PluginVersionsClient {
-  private readonly client: PluginServiceHttpClient;
+  private readonly client: ServiceHttpClient;
 
-  constructor(client: PluginServiceHttpClient) {
+  constructor(client: ServiceHttpClient) {
     this.client = client;
   }
 
@@ -53,7 +55,7 @@ export default class PluginVersionsClient {
    * @param pagination the pagination meta data
    */
   public async list(pluginId: string, pagination?: Pagination): Promise<PluginVersionResourcePage> {
-    return this.client.list<PluginVersionResourcePage>(PluginVersionsClient.getUrl(pluginId), pagination);
+    return this.client.list<PluginVersionResourcePage>(PluginVersionsClient.getUrl(pluginId), RESPONSE_KEY, pagination);
   }
 
   /**

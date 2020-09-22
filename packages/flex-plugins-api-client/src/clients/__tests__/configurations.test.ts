@@ -20,7 +20,7 @@ describe('ConfigurationsClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Configurations', undefined);
+    expect(list).toHaveBeenCalledWith('Configurations', 'configurations', undefined);
   });
 
   it('should list configurations with pagination', async () => {
@@ -31,7 +31,7 @@ describe('ConfigurationsClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Configurations', { page: 1 });
+    expect(list).toHaveBeenCalledWith('Configurations', 'configurations', { page: 1 });
   });
 
   it('should get configurations', async () => {
@@ -63,6 +63,6 @@ describe('ConfigurationsClient', () => {
 
     expect(result).toEqual('config1');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Configurations', undefined);
+    expect(list).toHaveBeenCalledWith('Configurations', 'configurations', undefined);
   });
 });
