@@ -1,1 +1,1 @@
-export { logger as default } from 'flex-plugins-utils-logger';
+export { default } from 'flex-plugins-utils-logger/dist/lib/logger';
