@@ -1,4 +1,4 @@
-import { Pagination, PaginationMeta } from 'flex-plugins-api-client/dist/clients/client';
+import { Pagination, PaginationMeta } from 'flex-plugins-api-client';
 
 // Plugins API resources
 // eslint-disable-next-line no-shadow

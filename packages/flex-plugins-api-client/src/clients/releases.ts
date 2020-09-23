@@ -1,4 +1,4 @@
-import PluginServiceHttpClient, { Pagination, PaginationMeta } from './client';
+import ServiceHttpClient, { Pagination, PaginationMeta } from './serviceHttpClient';
 
 export interface ReleaseResource {
   sid: string;
@@ -7,8 +7,10 @@ export interface ReleaseResource {
   date_created: string;
 }
 
+const RESPONSE_KEY = 'releases';
+
 export interface ReleaseResourcePage extends PaginationMeta {
-  releases: ReleaseResource[];
+  [RESPONSE_KEY]: ReleaseResource[];
 }
 
 export interface CreateReleaseResource {
@@ -20,9 +22,9 @@ export interface CreateReleaseResource {
  * @url https://www.twilio.com/docs/flex/plugins/api/release
  */
 export default class ReleasesClient {
-  private readonly client: PluginServiceHttpClient;
+  private readonly client: ServiceHttpClient;
 
-  constructor(client: PluginServiceHttpClient) {
+  constructor(client: ServiceHttpClient) {
     this.client = client;
   }
 
@@ -43,7 +45,7 @@ export default class ReleasesClient {
    * @param pagination the pagination meta data
    */
   public async list(pagination?: Pagination): Promise<ReleaseResourcePage> {
-    return this.client.list<ReleaseResourcePage>(ReleasesClient.getUrl(), pagination);
+    return this.client.list<ReleaseResourcePage>(ReleasesClient.getUrl(), RESPONSE_KEY, pagination);
   }
 
   /**

@@ -1,4 +1,4 @@
-import PluginServiceHttpClient, { PaginationMeta } from './client';
+import ServiceHttpClient, { PaginationMeta } from './serviceHttpClient';
 
 export interface ConfiguredPluginResource {
   plugin_sid: string;
@@ -12,8 +12,10 @@ export interface ConfiguredPluginResource {
   date_created: string;
 }
 
+const RESPONSE_KEY = 'plugins';
+
 export interface ConfiguredPluginResourcePage extends PaginationMeta {
-  plugins: ConfiguredPluginResource[];
+  [RESPONSE_KEY]: ConfiguredPluginResource[];
 }
 
 /**
@@ -21,9 +23,9 @@ export interface ConfiguredPluginResourcePage extends PaginationMeta {
  * @link https://www.twilio.com/docs/flex/plugins/api/plugin-configuration
  */
 export default class ConfiguredPluginsClient {
-  private readonly client: PluginServiceHttpClient;
+  private readonly client: ServiceHttpClient;
 
-  constructor(client: PluginServiceHttpClient) {
+  constructor(client: ServiceHttpClient) {
     this.client = client;
   }
 
@@ -46,7 +48,7 @@ export default class ConfiguredPluginsClient {
    * @param configId the config identifier
    */
   public async list(configId: string): Promise<ConfiguredPluginResourcePage> {
-    return this.client.get<ConfiguredPluginResourcePage>(ConfiguredPluginsClient.getUrl(configId), { cacheable: true });
+    return this.client.list<ConfiguredPluginResourcePage>(ConfiguredPluginsClient.getUrl(configId), RESPONSE_KEY);
   }
 
   /**

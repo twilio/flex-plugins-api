@@ -21,7 +21,7 @@ describe('PluginVersionsClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', undefined);
+    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', 'plugin_versions', undefined);
   });
 
   it('should list plugin versions with pagination', async () => {
@@ -32,7 +32,7 @@ describe('PluginVersionsClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', { page: 1 });
+    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', 'plugin_versions', { page: 1 });
   });
 
   it('should get the latest version', async () => {
@@ -43,7 +43,7 @@ describe('PluginVersionsClient', () => {
 
     expect(result).toEqual('version1');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', undefined);
+    expect(list).toHaveBeenCalledWith('Plugins/pluginId/Versions', 'plugin_versions', undefined);
   });
 
   it('should get plugin versions', async () => {

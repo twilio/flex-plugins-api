@@ -20,7 +20,7 @@ describe('ReleasesClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Releases', undefined);
+    expect(list).toHaveBeenCalledWith('Releases', 'releases', undefined);
   });
 
   it('should list releases with pagination', async () => {
@@ -31,7 +31,7 @@ describe('ReleasesClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Releases', { page: 1 });
+    expect(list).toHaveBeenCalledWith('Releases', 'releases', { page: 1 });
   });
 
   it('should get the active release', async () => {
@@ -42,7 +42,7 @@ describe('ReleasesClient', () => {
 
     expect(result).toEqual('release1');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Releases', undefined);
+    expect(list).toHaveBeenCalledWith('Releases', 'releases', undefined);
   });
 
   it('should get a release', async () => {

@@ -22,7 +22,7 @@ describe('PluginsClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Plugins', undefined);
+    expect(list).toHaveBeenCalledWith('Plugins', 'plugins', undefined);
   });
 
   it('should list plugins with pagination', async () => {
@@ -33,7 +33,7 @@ describe('PluginsClient', () => {
 
     expect(result).toEqual('list');
     expect(list).toHaveBeenCalledTimes(1);
-    expect(list).toHaveBeenCalledWith('Plugins', { page: 1 });
+    expect(list).toHaveBeenCalledWith('Plugins', 'plugins', { page: 1 });
   });
 
   it('should get plugin', async () => {
