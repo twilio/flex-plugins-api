@@ -1,10 +1,25 @@
-import { ConfiguredPluginsClient, PluginsClient, PluginVersionsClient, ReleasesClient } from 'flex-plugins-api-client';
+import {
+  ConfiguredPluginResourcePage,
+  ConfiguredPluginsClient,
+  PluginResource,
+  PluginsClient,
+  PluginVersionsClient,
+  ReleaseResource,
+  ReleasesClient,
+} from 'flex-plugins-api-client';
 
 import { Script } from '.';
 import { PluginVersion } from './describePluginVersion';
 
+interface OptionalResources {
+  plugin?: PluginResource;
+  release?: ReleaseResource;
+  configuredPlugins: ConfiguredPluginResourcePage;
+}
+
 export interface DescribePluginOption {
   name: string;
+  resources?: OptionalResources;
 }
 
 export interface Plugin {
@@ -37,10 +52,12 @@ export default function describePlugin(
   releasesClient: ReleasesClient,
 ): DescribePluginScript {
   return async (option: DescribePluginOption) => {
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+
     const [plugin, versions, release] = await Promise.all([
-      pluginClient.get(option.name),
+      resources.plugin ? Promise.resolve(resources.plugin) : pluginClient.get(option.name),
       pluginVersionClient.list(option.name),
-      releasesClient.active(),
+      resources.release ? Promise.resolve(resources.release) : releasesClient.active(),
     ]);
 
     let isPluginActive = false;
@@ -55,10 +72,12 @@ export default function describePlugin(
     }));
 
     if (release) {
-      const installedPlugins = (await configuredPluginClient.list(release.configuration_sid)).plugins;
-      isPluginActive = installedPlugins.some((p) => p.plugin_sid === plugin.sid);
+      const list = await (resources.configuredPlugins
+        ? Promise.resolve(resources.configuredPlugins)
+        : configuredPluginClient.list(release.configuration_sid));
+      isPluginActive = list.plugins.some((p) => p.plugin_sid === plugin.sid);
       formattedVersions.forEach((v) => {
-        v.isActive = installedPlugins.some((p) => p.plugin_version_sid === v.sid);
+        v.isActive = list.plugins.some((p) => p.plugin_version_sid === v.sid);
       });
     }
 

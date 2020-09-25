@@ -30,7 +30,7 @@ export default abstract class ServiceHttpClient extends HttpClient {
   /**
    * Returns the realm if provided
    */
-  protected static getRealm = (realm?: Realm) => {
+  protected static getRealm = (realm?: Realm): string => {
     if (realm && ServiceHttpClient.realms.includes(realm)) {
       return `.${realm}`;
     }
