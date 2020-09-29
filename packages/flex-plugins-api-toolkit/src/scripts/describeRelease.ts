@@ -2,15 +2,20 @@ import {
   ConfigurationsClient,
   ConfiguredPluginsClient,
   PluginsClient,
-  PluginVersionsClient,
+  PluginVersionsClient, ReleaseResource,
   ReleasesClient,
 } from 'flex-plugins-api-client';
 
 import { Script } from '.';
 import { DescribeConfiguration, internalDescribeConfiguration } from './describeConfiguration';
 
+interface OptionalResources {
+  activeRelease?: ReleaseResource;
+}
+
 export interface DescribeReleaseOption {
   sid: string;
+  resources?: OptionalResources;
 }
 
 interface Release {
@@ -42,8 +47,10 @@ export default function describeRelease(
   releasesClient: ReleasesClient,
 ): DescribeReleaseScript {
   return async (option: DescribeReleaseOption) => {
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+
     const release = await releasesClient.get(option.sid);
-    const active = await releasesClient.active();
+    const active = await (resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active());
 
     const configuration = await internalDescribeConfiguration(
       pluginClient,

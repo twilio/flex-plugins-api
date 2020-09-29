@@ -13,7 +13,7 @@ import { PluginVersion } from './describePluginVersion';
 
 interface OptionalResources {
   plugin?: PluginResource;
-  release?: ReleaseResource;
+  activeRelease?: ReleaseResource;
   configuredPlugins: ConfiguredPluginResourcePage;
 }
 
@@ -57,7 +57,7 @@ export default function describePlugin(
     const [plugin, versions, release] = await Promise.all([
       resources.plugin ? Promise.resolve(resources.plugin) : pluginClient.get(option.name),
       pluginVersionClient.list(option.name),
-      resources.release ? Promise.resolve(resources.release) : releasesClient.active(),
+      resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active(),
     ]);
 
     let isPluginActive = false;
