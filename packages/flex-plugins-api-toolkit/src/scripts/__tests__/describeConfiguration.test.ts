@@ -79,6 +79,18 @@ describe('DescribeConfigurationScript', () => {
     jest.resetAllMocks();
   });
 
+  it('should use activeRelease from optional', async () => {
+    getConfig.mockResolvedValue(configuration);
+    listInstalledPlugins.mockResolvedValue({ plugins: [], meta });
+
+    await script({
+      ...option,
+      resources: { activeRelease: release },
+    });
+
+    expect(getActiveRelease).not.toHaveBeenCalled();
+  });
+
   it('should fail if configuration is not found', async (done) => {
     getConfig.mockRejectedValue('something went wrong');
     try {
