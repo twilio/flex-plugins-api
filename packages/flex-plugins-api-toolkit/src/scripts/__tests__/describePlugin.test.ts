@@ -59,6 +59,48 @@ describe('DescribePlugin', () => {
     }
   };
 
+  const setupActiveRelease = () => {
+    getPlugin.mockResolvedValue(plugin);
+    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
+    getActiveRelease.mockResolvedValue(release);
+    listInstalledPlugins.mockResolvedValue({ plugins: [], meta });
+  };
+
+  it('should use plugin from optional', async () => {
+    listVersions.mockResolvedValue({ plugin_versions: [], meta });
+
+    await script({
+      ...option,
+      resources: { plugin },
+    });
+
+    expect(getPlugin).not.toHaveBeenCalled();
+  });
+
+  it('should use activeRelease from optional', async () => {
+    setupActiveRelease();
+    await script({
+      ...option,
+      resources: {
+        activeRelease: release,
+      },
+    });
+
+    expect(getActiveRelease).not.toHaveBeenCalled();
+  });
+
+  it('should use configuredPlugins from optional', async () => {
+    setupActiveRelease();
+    await script({
+      ...option,
+      resources: {
+        configuredPlugins: { plugins: [], meta },
+      },
+    });
+
+    expect(listInstalledPlugins).not.toHaveBeenCalled();
+  });
+
   it('should throw an error if plugin is not found', async (done) => {
     getPlugin.mockRejectedValue('something went wrong');
 
@@ -95,9 +137,7 @@ describe('DescribePlugin', () => {
   });
 
   it('should have active release, but no active plugin/version', async () => {
-    getPlugin.mockResolvedValue(plugin);
-    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
-    getActiveRelease.mockResolvedValue(release);
+    setupActiveRelease();
     listInstalledPlugins.mockResolvedValue({ plugins: [], meta });
 
     const result = await script(option);
@@ -110,9 +150,7 @@ describe('DescribePlugin', () => {
   });
 
   it('should have active release and active plugin/version', async () => {
-    getPlugin.mockResolvedValue(plugin);
-    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
-    getActiveRelease.mockResolvedValue(release);
+    setupActiveRelease();
     listInstalledPlugins.mockResolvedValue({ plugins: [installedPlugin], meta });
 
     const result = await script(option);

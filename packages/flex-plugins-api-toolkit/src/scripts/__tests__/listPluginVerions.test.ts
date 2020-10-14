@@ -42,9 +42,26 @@ describe('ListPluginsScript', () => {
 
   it('should use activeRelease from optional', async () => {
     listVersions.mockResolvedValue({ plugin_versions: [version], meta });
-    const result = await script({
+    listConfiguredPlugins.mockResolvedValue({ plugins: [installedPlugin], meta });
+
+    await script({
       ...option,
+      resources: { activeRelease: release },
     });
+
+    expect(active).not.toHaveBeenCalled();
+  });
+
+  it('should use configuredPlugin from optional', async () => {
+    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
+    active.mockResolvedValue(release);
+
+    await script({
+      ...option,
+      resources: { configuredPlugins: { plugins: [installedPlugin], meta } },
+    });
+
+    expect(listConfiguredPlugins).not.toHaveBeenCalled();
   });
 
   it('should list versions with no release and pagination', async () => {
