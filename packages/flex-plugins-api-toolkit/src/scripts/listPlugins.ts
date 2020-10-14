@@ -1,8 +1,21 @@
-import { ConfiguredPluginsClient, PluginsClient, ReleasesClient } from 'flex-plugins-api-client';
+import {
+  ConfiguredPluginResourcePage,
+  ConfiguredPluginsClient,
+  PluginsClient,
+  ReleaseResource,
+  ReleasesClient,
+} from 'flex-plugins-api-client';
 
 import { ListResource, Page, ResourceNames, Script } from '.';
 
-export type ListPluginsOption = Page;
+interface OptionalResources {
+  activeRelease?: ReleaseResource;
+  configuredPlugins?: ConfiguredPluginResourcePage;
+}
+
+export interface ListPluginsOption extends Page {
+  resources?: OptionalResources;
+}
 
 export interface ListPlugins {
   sid: string;
@@ -29,7 +42,12 @@ export default function listPlugins(
   releasesClient: ReleasesClient,
 ): ListPluginsScripts {
   return async (option) => {
-    const [result, release] = await Promise.all([pluginsClient.list(option.page), releasesClient.active()]);
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+
+    const [result, release] = await Promise.all([
+      pluginsClient.list(option.page),
+      resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active(),
+    ]);
 
     const plugins = result.plugins.map((plugin) => ({
       sid: plugin.sid,
@@ -42,8 +60,10 @@ export default function listPlugins(
     }));
 
     if (release && plugins.length) {
-      const installedPlugins = (await configuredPluginsClient.list(release.configuration_sid)).plugins;
-      plugins.forEach((plugin) => (plugin.isActive = installedPlugins.some((p) => p.plugin_sid === plugin.sid)));
+      const list = await (resources.configuredPlugins
+        ? Promise.resolve(resources.configuredPlugins)
+        : configuredPluginsClient.list(release.configuration_sid));
+      plugins.forEach((plugin) => (plugin.isActive = list.plugins.some((p) => p.plugin_sid === plugin.sid)));
     }
 
     return {

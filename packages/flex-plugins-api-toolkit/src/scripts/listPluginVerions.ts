@@ -1,9 +1,21 @@
-import { ConfiguredPluginsClient, PluginVersionsClient, ReleasesClient } from 'flex-plugins-api-client';
+import {
+  ConfiguredPluginResourcePage,
+  ConfiguredPluginsClient,
+  PluginVersionsClient,
+  ReleaseResource,
+  ReleasesClient,
+} from 'flex-plugins-api-client';
 
 import { ListResource, Page, ResourceNames, Script } from '.';
 
+interface OptionalResources {
+  configuredPlugins?: ConfiguredPluginResourcePage;
+  activeRelease?: ReleaseResource;
+}
+
 export interface ListPluginVersionsOption extends Page {
   name: string;
+  resources?: OptionalResources;
 }
 
 export interface ListPluginVersions {
@@ -32,9 +44,11 @@ export default function listPluginVersions(
   releasesClient: ReleasesClient,
 ): ListPluginVersionsScripts {
   return async (option) => {
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+
     const [result, release] = await Promise.all([
       pluginVersionsClient.list(option.name, option.page),
-      releasesClient.active(),
+      resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active(),
     ]);
 
     const versions = result.plugin_versions.map((version) => ({
@@ -49,9 +63,12 @@ export default function listPluginVersions(
     }));
 
     if (release && versions.length) {
-      const installedPlugins = (await configuredPluginsClient.list(release.configuration_sid)).plugins;
+      const list = await (resources.configuredPlugins
+        ? Promise.resolve(resources.configuredPlugins)
+        : configuredPluginsClient.list(release.configuration_sid));
+
       versions.forEach(
-        (version) => (version.isActive = installedPlugins.some((p) => p.plugin_version_sid === version.sid)),
+        (version) => (version.isActive = list.plugins.some((p) => p.plugin_version_sid === version.sid)),
       );
     }
 

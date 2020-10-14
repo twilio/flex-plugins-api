@@ -14,7 +14,7 @@ import { PluginVersion } from './describePluginVersion';
 interface OptionalResources {
   plugin?: PluginResource;
   activeRelease?: ReleaseResource;
-  configuredPlugins: ConfiguredPluginResourcePage;
+  configuredPlugins?: ConfiguredPluginResourcePage;
 }
 
 export interface DescribePluginOption {
@@ -42,13 +42,13 @@ export type DescribePluginScript = Script<DescribePluginOption, DescribePlugin>;
  * The .describePlugin script. This script describes a plugin
  * @param pluginClient        the Public API {@link PluginsClient}
  * @param pluginVersionClient the Public API {@link PluginVersionsClient}
- * @param configuredPluginClient the Public API {@link ConfiguredPluginsClient}
+ * @param configuredPluginsClient the Public API {@link ConfiguredPluginsClient}
  * @param releasesClient the Public API {@link ReleasesClient}
  */
 export default function describePlugin(
   pluginClient: PluginsClient,
   pluginVersionClient: PluginVersionsClient,
-  configuredPluginClient: ConfiguredPluginsClient,
+  configuredPluginsClient: ConfiguredPluginsClient,
   releasesClient: ReleasesClient,
 ): DescribePluginScript {
   return async (option: DescribePluginOption) => {
@@ -74,7 +74,7 @@ export default function describePlugin(
     if (release) {
       const list = await (resources.configuredPlugins
         ? Promise.resolve(resources.configuredPlugins)
-        : configuredPluginClient.list(release.configuration_sid));
+        : configuredPluginsClient.list(release.configuration_sid));
       isPluginActive = list.plugins.some((p) => p.plugin_sid === plugin.sid);
       formattedVersions.forEach((v) => {
         v.isActive = list.plugins.some((p) => p.plugin_version_sid === v.sid);

@@ -1,11 +1,24 @@
-import { ConfiguredPluginsClient, PluginsClient, PluginVersionsClient, ReleasesClient } from 'flex-plugins-api-client';
+import {
+  ConfiguredPluginsClient,
+  PluginResource,
+  PluginsClient,
+  PluginVersionsClient,
+  ReleaseResource,
+  ReleasesClient,
+} from 'flex-plugins-api-client';
 
 import { Script } from '.';
 import { Plugin } from './describePlugin';
 
+interface OptionalResources {
+  plugin?: PluginResource;
+  activeRelease?: ReleaseResource;
+}
+
 export interface DescribePluginVersionOption {
   name: string;
   version: string;
+  resources?: OptionalResources;
 }
 
 export interface PluginVersion {
@@ -38,10 +51,12 @@ export default function describePluginVersion(
   releasesClient: ReleasesClient,
 ): DescribePluginVersionScript {
   return async (option: DescribePluginVersionOption) => {
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+
     const [plugin, version, release] = await Promise.all([
-      pluginClient.get(option.name),
+      resources.plugin ? Promise.resolve(resources.plugin) : pluginClient.get(option.name),
       pluginVersionClient.get(option.name, option.version),
-      releasesClient.active(),
+      resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active(),
     ]);
 
     let isActive = false;

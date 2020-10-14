@@ -8,7 +8,7 @@ import {
 import listPluginVersionsScript, { ListPluginVersionsResource } from '../listPluginVerions';
 import { installedPlugin, meta, version, release } from './mockStore';
 
-describe('ListPluginsScriipt', () => {
+describe('ListPluginsScript', () => {
   const httpClient = new PluginServiceHTTPClient('username', 'password');
   const pluginVersionsClient = new PluginVersionsClient(httpClient);
   const configuredPluginsClient = new ConfiguredPluginsClient(httpClient);
@@ -39,6 +39,13 @@ describe('ListPluginsScriipt', () => {
     });
     expect(result.meta).toEqual(meta);
   };
+
+  it('should use activeRelease from optional', async () => {
+    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
+    const result = await script({
+      ...option,
+    });
+  });
 
   it('should list versions with no release and pagination', async () => {
     listVersions.mockResolvedValue({ plugin_versions: [version], meta });

@@ -113,7 +113,9 @@ export default function describeConfiguration(
 ): DescribeConfigurationScript {
   return async (option: DescribeConfigurationOption) => {
     const resources = option.resources ? option.resources : ({} as OptionalResources);
-    const release = await (resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active());
+    const release = await (resources.activeRelease
+      ? Promise.resolve(resources.activeRelease)
+      : releasesClient.active());
 
     return internalDescribeConfiguration(
       pluginClient,

@@ -2,7 +2,8 @@ import {
   ConfigurationsClient,
   ConfiguredPluginsClient,
   PluginsClient,
-  PluginVersionsClient, ReleaseResource,
+  PluginVersionsClient,
+  ReleaseResource,
   ReleasesClient,
 } from 'flex-plugins-api-client';
 
