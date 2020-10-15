@@ -8,7 +8,7 @@ import {
 import listPluginVersionsScript, { ListPluginVersionsResource } from '../listPluginVerions';
 import { installedPlugin, meta, version, release } from './mockStore';
 
-describe('ListPluginsScriipt', () => {
+describe('ListPluginsScript', () => {
   const httpClient = new PluginServiceHTTPClient('username', 'password');
   const pluginVersionsClient = new PluginVersionsClient(httpClient);
   const configuredPluginsClient = new ConfiguredPluginsClient(httpClient);
@@ -39,6 +39,30 @@ describe('ListPluginsScriipt', () => {
     });
     expect(result.meta).toEqual(meta);
   };
+
+  it('should use activeRelease from optional', async () => {
+    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
+    listConfiguredPlugins.mockResolvedValue({ plugins: [installedPlugin], meta });
+
+    await script({
+      ...option,
+      resources: { activeRelease: release },
+    });
+
+    expect(active).not.toHaveBeenCalled();
+  });
+
+  it('should use configuredPlugin from optional', async () => {
+    listVersions.mockResolvedValue({ plugin_versions: [version], meta });
+    active.mockResolvedValue(release);
+
+    await script({
+      ...option,
+      resources: { configuredPlugins: { plugins: [installedPlugin], meta } },
+    });
+
+    expect(listConfiguredPlugins).not.toHaveBeenCalled();
+  });
 
   it('should list versions with no release and pagination', async () => {
     listVersions.mockResolvedValue({ plugin_versions: [version], meta });

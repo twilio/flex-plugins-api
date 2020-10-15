@@ -11,8 +11,13 @@ import { TwilioError } from 'flex-plugins-api-utils';
 import { Script } from '.';
 import { DeployPlugin } from './deploy';
 
+interface OptionalResources {
+  activeRelease?: ReleaseResource;
+}
+
 export interface DescribeConfigurationOption {
   sid: string;
+  resources?: OptionalResources;
 }
 
 export interface ConfiguredPlugins extends DeployPlugin {
@@ -107,7 +112,10 @@ export default function describeConfiguration(
   releasesClient: ReleasesClient,
 ): DescribeConfigurationScript {
   return async (option: DescribeConfigurationOption) => {
-    const release = await releasesClient.active();
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+    const release = await (resources.activeRelease
+      ? Promise.resolve(resources.activeRelease)
+      : releasesClient.active());
 
     return internalDescribeConfiguration(
       pluginClient,

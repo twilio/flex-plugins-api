@@ -1,8 +1,14 @@
-import { ConfigurationsClient, ReleasesClient } from 'flex-plugins-api-client';
+import { ConfigurationsClient, ReleaseResource, ReleasesClient } from 'flex-plugins-api-client';
 
 import { ListResource, Page, ResourceNames, Script } from '.';
 
-export type ListConfigurationsOption = Page;
+interface OptionalResources {
+  activeRelease?: ReleaseResource;
+}
+
+export interface ListConfigurationsOption extends Page {
+  resources?: OptionalResources;
+}
 
 export interface ListConfigurations {
   sid: string;
@@ -25,7 +31,12 @@ export default function listConfigurations(
   releasesClient: ReleasesClient,
 ): ListConfigurationsScript {
   return async (option) => {
-    const [result, release] = await Promise.all([configurationsClient.list(option.page), releasesClient.active()]);
+    const resources = option.resources ? option.resources : ({} as OptionalResources);
+
+    const [result, release] = await Promise.all([
+      configurationsClient.list(option.page),
+      resources.activeRelease ? Promise.resolve(resources.activeRelease) : releasesClient.active(),
+    ]);
 
     const configurations = result.configurations.map((configuration) => ({
       sid: configuration.sid,

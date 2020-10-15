@@ -29,6 +29,15 @@ describe('ListConfigurationsScript', () => {
     expect(result.meta).toEqual(meta);
   };
 
+  it('should use activeRelease from optional', async () => {
+    list.mockResolvedValue({ configurations: [configuration], meta });
+    await script({
+      resources: { activeRelease: release },
+    });
+
+    expect(active).not.toHaveBeenCalled();
+  });
+
   it('should list configurations with no release and pagination', async () => {
     list.mockResolvedValue({ configurations: [configuration], meta });
     active.mockResolvedValue(null);

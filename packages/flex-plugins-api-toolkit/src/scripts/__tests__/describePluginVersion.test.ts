@@ -51,6 +51,30 @@ describe('DescribePluginVersion', () => {
     expect(result.plugin.dateUpdated).toEqual(plugin.date_updated);
   };
 
+  it('should get plugin from optional', async () => {
+    getVersion.mockResolvedValue(version);
+
+    await script({
+      ...option,
+      resources: { plugin },
+    });
+
+    expect(getPlugin).not.toHaveBeenCalled();
+  });
+
+  it('should get activeReelase from optional', async () => {
+    getPlugin.mockResolvedValue(plugin);
+    getVersion.mockResolvedValue(version);
+    listInstalledPlugins.mockResolvedValue({ plugins: [], meta });
+
+    await script({
+      ...option,
+      resources: { activeRelease: release },
+    });
+
+    expect(getActiveRelease).not.toHaveBeenCalled();
+  });
+
   it('should throw an error if plugin is not found', async (done) => {
     getPlugin.mockRejectedValue('something went wrong');
 
