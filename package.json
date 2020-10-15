@@ -26,8 +26,9 @@
     "postinstall": "npm run bootstrap",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
-    "publish:next": "bin/publish",
-    "publish:public": "bin/publish public",
+    "publish:alpha": "lerna-publish alpha",
+    "publish:beta": "lerna-publish beta",
+    "publish:public": "lerna-publish public",
     "test": "jest --color",
     "test:ci": "jest --clearCache && jest --coverage --color",
     "test:watch": "jest --watchAll --color"
@@ -40,6 +41,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@k88/lerna-publish": "1.0.1",
     "@types/jest": "^26.0.13",
     "@types/node": "^14.10.1",
     "codecov": "^3.7.2",
