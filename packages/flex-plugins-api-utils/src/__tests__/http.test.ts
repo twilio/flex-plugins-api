@@ -20,22 +20,15 @@ describe('HttpClient', () => {
   });
 
   describe('constructor', () => {
-    it('should not set flex-metadata', () => {
-      const http = new HttpClient(config);
+    it('should set user-agent', () => {
+      const http = new HttpClient({ ...config });
 
       // @ts-ignore
-      expect(http.client.defaults.headers).not.toHaveProperty(HttpClient.FlexMetadata);
-    });
-
-    it('should set flex-metadata', () => {
-      const http = new HttpClient({ ...config, setFlexMetaData: true });
-
-      // @ts-ignore
-      expect(http.client.defaults.headers).toHaveProperty(HttpClient.FlexMetadata);
+      expect(http.client.defaults.headers).toHaveProperty(HttpClient.UserAgent);
     });
 
     it('should set content-type to url-encoded', () => {
-      const http = new HttpClient({ ...config, setFlexMetaData: true });
+      const http = new HttpClient({ ...config });
 
       // @ts-ignore
       expect(http.client.defaults.headers['Content-Type']).toEqual(HttpClient.ContentType);
@@ -56,7 +49,7 @@ describe('HttpClient', () => {
     });
   });
 
-  describe('getFlexMetadata', () => {
+  describe('getUserAgent', () => {
     // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const pkg = require('../../package.json');
 
@@ -64,7 +57,7 @@ describe('HttpClient', () => {
       const isNode = jest.spyOn(envs, 'isNode').mockReturnValue(true);
 
       // @ts-ignore
-      const userAgent = HttpClient.getFlexMetadata({});
+      const userAgent = HttpClient.getUserAgent({});
 
       expect(isNode).toHaveBeenCalledTimes(1);
       expect(userAgent).toContain('Node.js');
@@ -78,7 +71,7 @@ describe('HttpClient', () => {
       const isNode = jest.spyOn(envs, 'isNode').mockReturnValue(false);
 
       // @ts-ignore
-      const userAgent = HttpClient.getFlexMetadata({});
+      const userAgent = HttpClient.getUserAgent({});
 
       expect(isNode).toHaveBeenCalledTimes(1);
       expect(userAgent).not.toContain('Node.js');
@@ -90,7 +83,7 @@ describe('HttpClient', () => {
       jest.spyOn(envs, 'isNode').mockReturnValue(true);
 
       // @ts-ignore
-      const userAgent = HttpClient.getFlexMetadata({ caller: 'test-caller' });
+      const userAgent = HttpClient.getUserAgent({ caller: 'test-caller' });
       expect(userAgent).toContain(`caller/test-caller`);
     });
 
@@ -98,7 +91,7 @@ describe('HttpClient', () => {
       jest.spyOn(envs, 'isNode').mockReturnValue(true);
 
       // @ts-ignore
-      const userAgent = HttpClient.getFlexMetadata({
+      const userAgent = HttpClient.getUserAgent({
         packages: {
           'package-a': '1.2.3',
           'package-b': '4.5.6',

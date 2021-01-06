@@ -17,7 +17,6 @@ export interface AuthConfig {
 }
 
 export interface OptionalHttpConfig {
-  setFlexMetaData?: boolean;
   caller?: string;
   packages?: {
     [key: string]: string;
@@ -35,7 +34,7 @@ export interface HttpConfig extends OptionalHttpConfig {
 
 export default class Http {
   static ContentType = 'application/x-www-form-urlencoded';
-  static FlexMetadata = 'Flex-Metadata';
+  static UserAgent = 'User-Agent';
 
   protected readonly client: AxiosInstance;
   protected readonly cacheAge: number;
@@ -58,9 +57,7 @@ export default class Http {
         password: config.auth.password,
       };
     }
-    if (config.setFlexMetaData) {
-      axiosConfig.headers[Http.FlexMetadata] = Http.getFlexMetadata(config);
-    }
+    axiosConfig.headers[Http.UserAgent] = Http.getUserAgent(config);
     this.client = axios.create(axiosConfig);
 
     this.client.interceptors.request.use(
@@ -70,10 +67,10 @@ export default class Http {
   }
 
   /**
-   * Calculates and returns the Flex-Metadata header
+   * Calculates and returns the User-Agent header
    * @param config
    */
-  private static getFlexMetadata(config: HttpConfig) {
+  private static getUserAgent(config: HttpConfig) {
     const packages = config.packages || {};
     // eslint-disable-next-line  global-require, @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     const pkg = require('../package.json');
@@ -187,7 +184,7 @@ export default class Http {
   }
 
   /**
-   * Makes a GET request to return an instance
+   * Makes a GET request
    * @param uri   the uri endpoint
    * @param option  the request option
    */
