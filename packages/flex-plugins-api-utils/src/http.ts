@@ -184,7 +184,7 @@ export default class Http {
   }
 
   /**
-   * Makes a GET request to return an instance
+   * Makes a GET request
    * @param uri   the uri endpoint
    * @param option  the request option
    */
