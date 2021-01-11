@@ -20,7 +20,7 @@ describe('HttpClient', () => {
   });
 
   describe('constructor', () => {
-    it('should not  user-agent', () => {
+    it('should not user-agent', () => {
       const http = new HttpClient({ ...config });
 
       // @ts-ignore
