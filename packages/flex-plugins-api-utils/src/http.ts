@@ -18,6 +18,7 @@ export interface AuthConfig {
 
 export interface OptionalHttpConfig {
   caller?: string;
+  setUserAgent?: boolean;
   packages?: {
     [key: string]: string;
   };
@@ -57,7 +58,9 @@ export default class Http {
         password: config.auth.password,
       };
     }
-    axiosConfig.headers[Http.UserAgent] = Http.getUserAgent(config);
+    if (config.setUserAgent) {
+      axiosConfig.headers[Http.UserAgent] = Http.getUserAgent(config);
+    }
     this.client = axios.create(axiosConfig);
 
     this.client.interceptors.request.use(
