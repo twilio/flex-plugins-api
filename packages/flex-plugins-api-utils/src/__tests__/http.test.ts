@@ -20,8 +20,15 @@ describe('HttpClient', () => {
   });
 
   describe('constructor', () => {
-    it('should set user-agent', () => {
+    it('should not  user-agent', () => {
       const http = new HttpClient({ ...config });
+
+      // @ts-ignore
+      expect(http.client.defaults.headers).not.toHaveProperty(HttpClient.UserAgent);
+    });
+
+    it('should set user-agent', () => {
+      const http = new HttpClient({ ...config, setUserAgent: true });
 
       // @ts-ignore
       expect(http.client.defaults.headers).toHaveProperty(HttpClient.UserAgent);
