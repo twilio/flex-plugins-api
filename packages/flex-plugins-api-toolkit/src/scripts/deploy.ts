@@ -27,6 +27,7 @@ export interface DeployPlugin {
   description: string;
   changelog: string;
   isPrivate: boolean;
+  isArchived: boolean;
 }
 
 export type DeployScript = Script<DeployOption, DeployPlugin>;
@@ -69,6 +70,7 @@ export default function deploy(pluginClient: PluginsClient, pluginVersionClient:
       description: plugin.description,
       changelog: version.changelog,
       isPrivate: version.private,
+      isArchived: plugin.archived,
     };
   };
 }

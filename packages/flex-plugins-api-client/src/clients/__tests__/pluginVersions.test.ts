@@ -66,4 +66,14 @@ describe('PluginVersionsClient', () => {
     expect(post).toHaveBeenCalledTimes(1);
     expect(post).toHaveBeenCalledWith('Plugins/pluginId/Versions', payload);
   });
+
+  it('should archive plugin version', async () => {
+    post.mockResolvedValue('item');
+
+    const result = await client.archive('pluginId', 'versionId');
+
+    expect(result).toEqual('item');
+    expect(post).toHaveBeenCalledTimes(1);
+    expect(post).toHaveBeenCalledWith('Plugins/pluginId/Versions/versionId/Archive', {});
+  });
 });

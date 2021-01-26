@@ -27,11 +27,12 @@ export interface PluginVersion {
   url: string;
   changelog: string;
   isPrivate: boolean;
-  isActive: boolean;
+  isArchived: boolean;
   dateCreated: string;
 }
 
 export interface DescribePluginVersion extends PluginVersion {
+  isActive: boolean;
   plugin: Plugin;
 }
 
@@ -72,12 +73,14 @@ export default function describePluginVersion(
       changelog: version.changelog,
       isPrivate: version.private,
       isActive,
+      isArchived: version.archived,
       dateCreated: version.date_created,
       plugin: {
         sid: plugin.sid,
         name: plugin.unique_name,
         friendlyName: plugin.friendly_name,
         description: plugin.description,
+        isArchived: plugin.archived,
         dateCreated: plugin.date_created,
         dateUpdated: plugin.date_updated,
       },

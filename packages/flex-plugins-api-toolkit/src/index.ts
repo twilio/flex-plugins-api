@@ -5,10 +5,6 @@ import { OptionalHttpConfig } from 'flex-plugins-api-utils';
 
 import FlexPluginsAPIToolkitBase from './flexPluginsAPIToolkitBase';
 
-interface FlexPluginsAPIToolkitOptions extends OptionalHttpConfig {
-  realm?: Realm;
-}
-
 export {
   DeployOption,
   DeployPlugin,
@@ -18,6 +14,7 @@ export {
   Release,
   DescribePluginOption,
   DescribePlugin,
+  Plugin,
   DescribePluginVersionOption,
   DescribePluginVersion,
   PluginVersion,
@@ -25,6 +22,7 @@ export {
   DescribeConfiguration,
   DescribeReleaseOption,
   DescribeRelease,
+  Configuration,
   InstalledPlugin,
   ListPluginsOption,
   ListPluginsResource,
@@ -34,9 +32,16 @@ export {
   ListConfigurationsResource,
   ListReleasesOption,
   ListReleasesResource,
+  ArchivePluginOption,
+  ArchivePluginVersionOption,
+  ArchiveConfigurationOption,
   DiffOption,
   Diff,
 } from './scripts';
+
+interface FlexPluginsAPIToolkitOptions extends OptionalHttpConfig {
+  realm?: Realm;
+}
 
 export { default as FlexPluginsAPIToolkitBase } from './flexPluginsAPIToolkitBase';
 

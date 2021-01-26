@@ -1,3 +1,4 @@
+import urlJoin from 'url-join';
 import { TwilioApiError } from 'flex-plugins-api-utils';
 
 import ServiceHttpClient, { Pagination, PaginationMeta } from './serviceHttpClient';
@@ -8,6 +9,7 @@ export interface PluginResource {
   unique_name: string;
   description: string;
   friendly_name: string;
+  archived: boolean;
   date_created: string;
   date_updated: string;
 }
@@ -104,5 +106,13 @@ export default class PluginsClient {
 
       throw e;
     }
+  }
+
+  /**
+   * Archives the {@link PluginResource}
+   * @param id  the plugin identifier to archive
+   */
+  public async archive(id: string): Promise<PluginResource> {
+    return this.client.post<PluginResource>(urlJoin(PluginsClient.getUrl(id), 'Archive'), {});
   }
 }

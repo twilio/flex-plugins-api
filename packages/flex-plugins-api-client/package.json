@@ -44,10 +44,12 @@
   },
   "dependencies": {
     "flex-plugins-api-utils": "^0.21.2",
-    "lodash.upperfirst": "^4.3.1"
+    "lodash.upperfirst": "^4.3.1",
+    "url-join": "^4.0.1"
   },
   "gitHead": "58a29ff6cd88c72561af45c2fe53b4996d3b2ccc",
   "devDependencies": {
-    "@types/lodash.upperfirst": "^4.3.6"
+    "@types/lodash.upperfirst": "^4.3.6",
+    "@types/url-join": "^4.0.0"
   }
 }

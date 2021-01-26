@@ -28,6 +28,7 @@ export interface Configuration {
   sid: string;
   name: string;
   description: string;
+  isArchived: boolean;
   dateCreated: string;
 }
 
@@ -84,6 +85,7 @@ export function internalDescribeConfiguration(
         description: plugin.description,
         changelog: version.changelog,
         isPrivate: p.private,
+        isArchived: plugin.archived,
         phase: p.phase,
       };
     });
@@ -93,6 +95,7 @@ export function internalDescribeConfiguration(
       name: configuration.name,
       description: configuration.description,
       isActive,
+      isArchived: configuration.archived,
       plugins: installedPlugins,
       dateCreated: configuration.date_created,
     };

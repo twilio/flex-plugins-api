@@ -1,3 +1,5 @@
+import urlJoin from 'url-join';
+
 import ServiceHttpClient, { Pagination, PaginationMeta } from './serviceHttpClient';
 
 export interface PluginVersionResource {
@@ -8,6 +10,7 @@ export interface PluginVersionResource {
   plugin_url: string;
   private: boolean;
   changelog: string;
+  archived: boolean;
   date_created: string;
 }
 
@@ -84,5 +87,14 @@ export default class PluginVersionsClient {
    */
   public async create(pluginId: string, object: CreatePluginVersionResource): Promise<PluginVersionResource> {
     return this.client.post<PluginVersionResource>(PluginVersionsClient.getUrl(pluginId), object);
+  }
+
+  /**
+   * Archives the {@link PluginVersionResource}
+   * @param pluginId the plugin identifier
+   * @param id the plugin version identifier to archive
+   */
+  public async archive(pluginId: string, id: string): Promise<PluginVersionResource> {
+    return this.client.post<PluginVersionResource>(urlJoin(PluginVersionsClient.getUrl(pluginId, id), 'Archive'), {});
   }
 }

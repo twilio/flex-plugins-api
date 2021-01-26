@@ -35,6 +35,7 @@ describe('DeployScript', () => {
       unique_name: requiredFields.name,
       description: '',
       friendly_name: '',
+      archived: false,
       date_created: 'some-date',
       date_updated: 'some-date',
     });
@@ -45,6 +46,7 @@ describe('DeployScript', () => {
       plugin_url: requiredFields.url,
       version: requiredFields.version,
       private: false,
+      archived: false,
       changelog: '',
       date_created: 'some-date',
     });
@@ -72,6 +74,7 @@ describe('DeployScript', () => {
       unique_name: requiredFields.name,
       description: optionalFields.description as string,
       friendly_name: optionalFields.friendlyName as string,
+      archived: false,
       date_created: 'some-date',
       date_updated: 'some-date',
     });
@@ -82,6 +85,7 @@ describe('DeployScript', () => {
       plugin_url: requiredFields.url,
       version: requiredFields.version,
       private: true,
+      archived: false,
       changelog: optionalFields.changelog as string,
       date_created: 'some-date',
     });
@@ -100,5 +104,6 @@ describe('DeployScript', () => {
     expect(plugin.changelog).toEqual(options.changelog);
     expect(plugin.description).toEqual(options.description);
     expect(plugin.isPrivate).toEqual(true);
+    expect(plugin.isArchived).toEqual(false);
   });
 });

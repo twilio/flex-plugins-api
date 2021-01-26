@@ -65,4 +65,14 @@ describe('ConfigurationsClient', () => {
     expect(list).toHaveBeenCalledTimes(1);
     expect(list).toHaveBeenCalledWith('Configurations', 'configurations', undefined);
   });
+
+  it('should archive configuration', async () => {
+    post.mockResolvedValue('item');
+
+    const result = await client.archive('configId');
+
+    expect(result).toEqual('item');
+    expect(post).toHaveBeenCalledTimes(1);
+    expect(post).toHaveBeenCalledWith('Configurations/configId/Archive', {});
+  });
 });
