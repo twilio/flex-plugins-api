@@ -42,6 +42,7 @@ export {
   DescribePluginScript,
   DescribePluginOption,
   DescribePlugin,
+  Plugin,
 } from './describePlugin';
 export {
   default as listPluginVersionsScript,
@@ -69,6 +70,7 @@ export {
   DescribeConfigurationScript,
   DescribeConfigurationOption,
   DescribeConfiguration,
+  Configuration,
 } from './describeConfiguration';
 export {
   default as listReleasesScript,
@@ -83,4 +85,15 @@ export {
   DescribeReleaseOption,
   DescribeRelease,
 } from './describeRelease';
+export { default as archivePlugin, ArchivePluginScript, ArchivePluginOption } from './archivePlugin';
+export {
+  default as archivePluginVersion,
+  ArchivePluginVersionScript,
+  ArchivePluginVersionOption,
+} from './archivePluginVersion';
+export {
+  default as archiveConfiguration,
+  ArchiveConfigurationScript,
+  ArchiveConfigurationOption,
+} from './archiveConfiguration';
 export { default as diffScript, DiffScript, DiffOption, Diff } from './diff';

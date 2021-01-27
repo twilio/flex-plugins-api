@@ -1,3 +1,5 @@
+import urlJoin from 'url-join';
+
 import ServiceHttpClient, { Pagination, PaginationMeta } from './serviceHttpClient';
 
 export interface ConfigurationResource {
@@ -5,6 +7,7 @@ export interface ConfigurationResource {
   account_sid: string;
   name: string;
   description: string;
+  archived: boolean;
   date_created: string;
 }
 
@@ -80,5 +83,13 @@ export default class ConfigurationsClient {
    */
   public async create(object: CreateConfigurationResource): Promise<ConfigurationResource> {
     return this.client.post<ConfigurationResource>(ConfigurationsClient.getUrl(), object);
+  }
+
+  /**
+   * Archives the {@link ConfigurationResource}
+   * @param configId  the configuration identifier to archive
+   */
+  public async archive(configId: string): Promise<ConfigurationResource> {
+    return this.client.post<ConfigurationResource>(urlJoin(ConfigurationsClient.getUrl(configId), 'Archive'), {});
   }
 }

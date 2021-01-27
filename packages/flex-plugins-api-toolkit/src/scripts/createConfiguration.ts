@@ -42,6 +42,7 @@ export type CreateConfigurationScript = Script<CreateConfigurationOption, Create
  * @param pluginVersionClient the Public API {@link PluginVersionsClient}
  * @param configurationClient the Public API {@link ConfigurationsClient}
  * @param configuredPluginClient the Public API {@link ConfiguredPluginsClient}
+ * @param releasesClient the Public API {@link ReleasesClient}
  */
 export default function createConfiguration(
   pluginClient: PluginsClient,
@@ -138,6 +139,7 @@ export default function createConfiguration(
           description: plugin.description,
           changelog: version.changelog,
           isPrivate: installedPlugin.private,
+          isArchived: plugin.archived || version.archived,
         };
       }),
     );

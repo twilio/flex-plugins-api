@@ -7,6 +7,7 @@ describe('diff', () => {
     name: 'old-name',
     description: 'old-description',
     isActive: true,
+    isArchived: false,
     plugins: [],
     dateCreated: 'old-date-created',
   };
@@ -130,6 +131,7 @@ describe('diff', () => {
           description: 'plugin one description',
           changelog: 'changelog one',
           isPrivate: true,
+          isArchived: false,
           phase: 3,
         },
       ],
@@ -147,6 +149,7 @@ describe('diff', () => {
           description: 'plugin one description',
           changelog: 'changelog one change',
           isPrivate: true,
+          isArchived: true,
           phase: 4,
         },
       ],
@@ -156,7 +159,7 @@ describe('diff', () => {
 
     expectConfigurationDiff(diffs, oldConfig, newConfig);
     expect(diffs.plugins).toHaveProperty('plugin-1');
-    expect(diffs.plugins['plugin-1']).toHaveLength(10);
+    expect(diffs.plugins['plugin-1']).toHaveLength(11);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').hasDiff).toEqual(false);
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').before).toEqual('FP00000000000000000000000000000000');
@@ -194,6 +197,10 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').before).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').after).toEqual(true);
 
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').hasDiff).toEqual(true);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').before).toEqual(false);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').after).toEqual(true);
+
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').before).toEqual(3);
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').after).toEqual(4);
@@ -213,6 +220,7 @@ describe('diff', () => {
           description: 'plugin one description',
           changelog: 'changelog one',
           isPrivate: true,
+          isArchived: false,
           phase: 3,
         },
       ],
@@ -230,6 +238,7 @@ describe('diff', () => {
           description: 'plugin one description',
           changelog: 'changelog one change',
           isPrivate: true,
+          isArchived: false,
           phase: 4,
         },
       ],
@@ -239,7 +248,7 @@ describe('diff', () => {
 
     expectConfigurationDiff(diffs, newConfig, oldConfig);
     expect(diffs.plugins).toHaveProperty('plugin-1');
-    expect(diffs.plugins['plugin-1']).toHaveLength(10);
+    expect(diffs.plugins['plugin-1']).toHaveLength(11);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').hasDiff).toEqual(false);
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').after).toEqual('FP00000000000000000000000000000000');
@@ -277,6 +286,10 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').after).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').before).toEqual(true);
 
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').hasDiff).toEqual(false);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').before).toEqual(false);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').after).toEqual(false);
+
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').after).toEqual(3);
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').before).toEqual(4);
@@ -299,6 +312,7 @@ describe('diff', () => {
           description: 'plugin one description',
           changelog: 'changelog one change',
           isPrivate: true,
+          isArchived: false,
           phase: 4,
         },
       ],
@@ -308,7 +322,7 @@ describe('diff', () => {
 
     expectConfigurationDiff(diffs, oldConfig, newConfig);
     expect(diffs.plugins).toHaveProperty('plugin-1');
-    expect(diffs.plugins['plugin-1']).toHaveLength(10);
+    expect(diffs.plugins['plugin-1']).toHaveLength(11);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').before).toBeUndefined();
@@ -346,6 +360,10 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').before).toBeUndefined();
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').after).toEqual(true);
 
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').hasDiff).toEqual(true);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').before).toBeUndefined();
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').after).toEqual(false);
+
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').before).toBeUndefined();
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').after).toEqual(4);
@@ -365,6 +383,7 @@ describe('diff', () => {
           description: 'plugin one description',
           changelog: 'changelog one',
           isPrivate: true,
+          isArchived: false,
           phase: 3,
         },
       ],
@@ -377,7 +396,7 @@ describe('diff', () => {
 
     expectConfigurationDiff(diffs, oldConfig, newConfig);
     expect(diffs.plugins).toHaveProperty('plugin-1');
-    expect(diffs.plugins['plugin-1']).toHaveLength(10);
+    expect(diffs.plugins['plugin-1']).toHaveLength(11);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'pluginSid').before).toEqual('FP00000000000000000000000000000000');
@@ -414,6 +433,10 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').before).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').after).toBeUndefined();
+
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').hasDiff).toEqual(true);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').before).toEqual(false);
+    expect(findPluginDiff(diffs, 'plugin-1', 'isArchived').after).toBeUndefined();
 
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'phase').before).toEqual(3);

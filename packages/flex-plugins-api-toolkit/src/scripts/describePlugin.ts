@@ -1,15 +1,17 @@
 import {
   ConfiguredPluginResourcePage,
+  ConfiguredPluginResource,
   ConfiguredPluginsClient,
   PluginResource,
   PluginsClient,
+  PluginVersionResource,
   PluginVersionsClient,
   ReleaseResource,
   ReleasesClient,
 } from 'flex-plugins-api-client';
 
 import { Script } from '.';
-import { PluginVersion } from './describePluginVersion';
+import { DescribePluginVersion } from './describePluginVersion';
 
 interface OptionalResources {
   plugin?: PluginResource;
@@ -22,11 +24,14 @@ export interface DescribePluginOption {
   resources?: OptionalResources;
 }
 
+type PluginVersion = Omit<DescribePluginVersion, 'plugin'>;
+
 export interface Plugin {
   sid: string;
   name: string;
   friendlyName: string;
   description: string;
+  isArchived: boolean;
   dateCreated: string;
   dateUpdated: string;
 }
@@ -61,13 +66,14 @@ export default function describePlugin(
     ]);
 
     let isPluginActive = false;
-    const formattedVersions: PluginVersion[] = versions.plugin_versions.map((version) => ({
+    const formattedVersions: PluginVersion[] = versions.plugin_versions.map((version: PluginVersionResource) => ({
       sid: version.sid,
       version: version.version,
       url: version.plugin_url,
       changelog: version.changelog,
       isPrivate: version.private,
       isActive: false,
+      isArchived: version.archived,
       dateCreated: version.date_created,
     }));
 
@@ -75,9 +81,9 @@ export default function describePlugin(
       const list = await (resources.configuredPlugins
         ? Promise.resolve(resources.configuredPlugins)
         : configuredPluginsClient.list(release.configuration_sid));
-      isPluginActive = list.plugins.some((p) => p.plugin_sid === plugin.sid);
+      isPluginActive = list.plugins.some((p: ConfiguredPluginResource) => p.plugin_sid === plugin.sid);
       formattedVersions.forEach((v) => {
-        v.isActive = list.plugins.some((p) => p.plugin_version_sid === v.sid);
+        v.isActive = list.plugins.some((p: ConfiguredPluginResource) => p.plugin_version_sid === v.sid);
       });
     }
 
@@ -87,6 +93,7 @@ export default function describePlugin(
       friendlyName: plugin.friendly_name,
       description: plugin.description,
       isActive: isPluginActive,
+      isArchived: plugin.archived,
       versions: formattedVersions,
       dateCreated: plugin.date_created,
       dateUpdated: plugin.date_updated,

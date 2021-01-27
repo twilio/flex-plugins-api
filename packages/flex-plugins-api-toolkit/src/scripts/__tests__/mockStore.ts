@@ -23,6 +23,7 @@ export const plugin: PluginResource = {
   unique_name: 'test-plugin',
   description: '',
   friendly_name: '',
+  archived: false,
   date_created: 'some-date',
   date_updated: 'some-date',
 };
@@ -35,6 +36,7 @@ export const version: PluginVersionResource = {
   version: '1.2.3',
   private: false,
   changelog: '',
+  archived: false,
   date_created: 'some-date',
 };
 
@@ -43,6 +45,7 @@ export const configuration: ConfigurationResource = {
   account_sid: 'AC123',
   name: 'some name',
   description: 'the-description',
+  archived: false,
   date_created: 'some-date',
 };
 
@@ -70,6 +73,7 @@ export const describeConfiguration: DescribeConfiguration = {
   name: 'configuration-name',
   description: 'description',
   isActive: true,
+  isArchived: false,
   plugins: [],
   dateCreated: 'some-date',
 };

@@ -68,6 +68,16 @@ describe('PluginsClient', () => {
     expect(post).toHaveBeenCalledWith('Plugins', payload);
   });
 
+  it('should archive plugin', async () => {
+    post.mockResolvedValue('item');
+
+    const result = await client.archive('pluginId');
+
+    expect(result).toEqual('item');
+    expect(post).toHaveBeenCalledTimes(1);
+    expect(post).toHaveBeenCalledWith('Plugins/pluginId/Archive', {});
+  });
+
   describe('upsert', () => {
     it('should fetch existing plugin without update', async () => {
       get.mockResolvedValue('existing-plugin');

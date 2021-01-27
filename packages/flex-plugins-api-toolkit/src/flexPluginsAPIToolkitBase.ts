@@ -15,10 +15,16 @@ import {
   DeployScript,
   describeConfigurationScript,
   DescribeConfigurationScript,
+  archiveConfiguration,
+  ArchiveConfigurationScript,
   describePluginScript,
   DescribePluginScript,
+  archivePlugin,
+  ArchivePluginScript,
   describePluginVersionScript,
   DescribePluginVersionScript,
+  archivePluginVersion,
+  ArchivePluginVersionScript,
   describeReleaseScript,
   DescribeReleaseScript,
   diffScript,
@@ -42,10 +48,13 @@ export default class FlexPluginsAPIToolkitBase {
   public readonly release: ReleaseScript;
   public readonly listPlugins: ListPluginsScripts;
   public readonly describePlugin: DescribePluginScript;
+  public readonly archivePlugin: ArchivePluginScript;
   public readonly listPluginVersions: ListPluginVersionsScripts;
   public readonly describePluginVersion: DescribePluginVersionScript;
+  public readonly archivePluginVersion: ArchivePluginVersionScript;
   public readonly listConfigurations: ListConfigurationsScript;
   public readonly describeConfiguration: DescribeConfigurationScript;
+  public readonly archiveConfiguration: ArchiveConfigurationScript;
   public readonly listReleases: ListReleasesScript;
   public readonly describeRelease: DescribeReleaseScript;
   public readonly diff: DiffScript;
@@ -73,6 +82,7 @@ export default class FlexPluginsAPIToolkitBase {
     this.describePlugin = this.cloneArgs(
       describePluginScript(pluginClient, pluginVersionsClient, configuredPluginsClient, releasesClient),
     );
+    this.archivePlugin = this.cloneArgs(archivePlugin(pluginClient));
 
     this.listPluginVersions = this.cloneArgs(
       listPluginVersionsScript(pluginVersionsClient, configuredPluginsClient, releasesClient),
@@ -80,6 +90,7 @@ export default class FlexPluginsAPIToolkitBase {
     this.describePluginVersion = this.cloneArgs(
       describePluginVersionScript(pluginClient, pluginVersionsClient, configuredPluginsClient, releasesClient),
     );
+    this.archivePluginVersion = this.cloneArgs(archivePluginVersion(pluginVersionsClient));
 
     this.listConfigurations = this.cloneArgs(listConfigurationsScript(configurationsClient, releasesClient));
     this.describeConfiguration = this.cloneArgs(
@@ -91,6 +102,7 @@ export default class FlexPluginsAPIToolkitBase {
         releasesClient,
       ),
     );
+    this.archiveConfiguration = this.cloneArgs(archiveConfiguration(configurationsClient));
 
     this.listReleases = this.cloneArgs(listReleasesScript(releasesClient));
     this.describeRelease = this.cloneArgs(

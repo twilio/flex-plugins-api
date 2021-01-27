@@ -36,6 +36,7 @@ describe('CreateConfigurationScript', () => {
     unique_name: 'plugin1',
     friendly_name: '',
     description: '',
+    archived: false,
     date_created: '',
     date_updated: '',
   };
@@ -46,6 +47,7 @@ describe('CreateConfigurationScript', () => {
     version: '1.0.0',
     plugin_url: 'https://twilio.com/plugin1',
     private: true,
+    archived: false,
     changelog: '',
     date_created: '',
   };
@@ -55,6 +57,7 @@ describe('CreateConfigurationScript', () => {
     unique_name: 'plugin2',
     friendly_name: '',
     description: '',
+    archived: false,
     date_created: '',
     date_updated: '',
   };
@@ -66,12 +69,14 @@ describe('CreateConfigurationScript', () => {
     plugin_url: 'https://twilio.com/plugin2',
     private: true,
     changelog: '',
+    archived: false,
     date_created: '',
   };
   const configuration: ConfigurationResource = {
     sid: 'FJ00000000000000000000000000000001',
     account_sid: 'AC00000000000000000000000000000000',
     name: 'some name',
+    archived: false,
     description: '',
     date_created: '',
   };
@@ -259,6 +264,7 @@ describe('CreateConfigurationScript', () => {
           description: plugin1.description,
           changelog: pluginVersion1.changelog,
           isPrivate: configuredPlugin1.private,
+          isArchived: plugin1.archived,
         },
       ],
       dateCreated: configuration.date_created,
@@ -337,6 +343,7 @@ describe('CreateConfigurationScript', () => {
           description: plugin1.description,
           changelog: pluginVersion1.changelog,
           isPrivate: configuredPlugin1.private,
+          isArchived: plugin1.archived,
         },
         {
           pluginSid: configuredPlugin2.plugin_sid,
@@ -349,6 +356,7 @@ describe('CreateConfigurationScript', () => {
           description: plugin2.description,
           changelog: pluginVersion2.changelog,
           isPrivate: configuredPlugin2.private,
+          isArchived: plugin2.archived,
         },
       ],
       dateCreated: configuration.date_created,
@@ -427,6 +435,7 @@ describe('CreateConfigurationScript', () => {
           description: plugin1.description,
           changelog: pluginVersion1.changelog,
           isPrivate: configuredPlugin1.private,
+          isArchived: plugin1.archived,
         },
         {
           pluginSid: configuredPlugin2.plugin_sid,
@@ -439,6 +448,7 @@ describe('CreateConfigurationScript', () => {
           description: plugin2.description,
           changelog: pluginVersion2.changelog,
           isPrivate: configuredPlugin2.private,
+          isArchived: plugin2.archived,
         },
       ],
       dateCreated: configuration.date_created,
@@ -509,6 +519,7 @@ describe('CreateConfigurationScript', () => {
           description: plugin1.description,
           changelog: pluginVersion1.changelog,
           isPrivate: configuredPlugin1.private,
+          isArchived: plugin1.archived,
         },
       ],
       dateCreated: configuration.date_created,
