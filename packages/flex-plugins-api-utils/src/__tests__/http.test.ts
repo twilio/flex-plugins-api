@@ -14,6 +14,8 @@ describe('HttpClient', () => {
     },
   };
 
+  const payloadStr = 'payload=value';
+
   beforeEach(() => {
     jest.resetAllMocks();
     jest.resetModules();
@@ -114,11 +116,11 @@ describe('HttpClient', () => {
       const httpClient = new HttpClient(config);
       // @ts-ignore
       const client = httpClient.client;
-      const get = jest.spyOn(client, 'get').mockResolvedValue('the-result');
+      const get = jest.spyOn(client, 'get').mockResolvedValue('get-result');
 
       const response = await httpClient.get('the-uri');
 
-      expect(response).toEqual('the-result');
+      expect(response).toEqual('get-result');
       expect(get).toHaveBeenCalledTimes(1);
       expect(get).toHaveBeenCalledWith('the-uri', {});
     });
@@ -129,11 +131,11 @@ describe('HttpClient', () => {
       const httpClient = new HttpClient(config);
       // @ts-ignore
       const client = httpClient.client;
-      const post = jest.spyOn(client, 'post').mockResolvedValue('the-result');
+      const post = jest.spyOn(client, 'post').mockResolvedValue('post-result');
 
       const response = await httpClient.post('the-uri', { payload: 'the-payload' });
 
-      expect(response).toEqual('the-result');
+      expect(response).toEqual('post-result');
       expect(post).toHaveBeenCalledTimes(1);
       expect(post).toHaveBeenCalledWith('the-uri', { payload: 'the-payload' });
     });
@@ -211,7 +213,7 @@ describe('HttpClient', () => {
       HttpClient.transformRequest([HttpClient.transformRequestFormData, mockTransformer])(req);
 
       expect(mockTransformer).toBeCalledTimes(1);
-      expect(mockTransformer).toBeCalledWith({ ...req, data: 'payload=value' });
+      expect(mockTransformer).toBeCalledWith({ ...req, data: payloadStr });
     });
   });
 
@@ -241,13 +243,13 @@ describe('HttpClient', () => {
       // @ts-ignore
       const transformed = HttpClient.transformRequestFormData(req);
 
-      expect(transformed.data).toEqual('payload=value');
+      expect(transformed.data).toEqual(payloadStr);
     });
 
     it('should transform not transform data-blob', () => {
       const req: AxiosRequestConfig = {
         method: 'post',
-        data: 'payload=value',
+        data: payloadStr,
         headers: {
           'Content-Type': HttpClient.ContentType,
         },
@@ -255,7 +257,7 @@ describe('HttpClient', () => {
       // @ts-ignore
       const transformed = HttpClient.transformRequestFormData(req);
 
-      expect(transformed.data).toEqual('payload=value');
+      expect(transformed.data).toEqual(payloadStr);
     });
 
     it('should transform nested array of object', () => {

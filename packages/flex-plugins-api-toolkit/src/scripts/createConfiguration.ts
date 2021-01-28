@@ -60,7 +60,7 @@ export default function createConfiguration(
       throw new TwilioError('Plugins must be of the format pluginName@version');
     }
 
-    const removeList: string[] = (option.removePlugins && option.removePlugins) || [];
+    const removeList: string[] = option.removePlugins || [];
     const list: string[] = option.addPlugins;
     if (option.fromConfiguration === 'active') {
       const release = await releasesClient.active();
