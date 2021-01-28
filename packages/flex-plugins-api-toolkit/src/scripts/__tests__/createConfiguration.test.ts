@@ -118,6 +118,26 @@ describe('CreateConfigurationScript', () => {
     releasesClient,
   );
 
+  const defaultGetVersionMock = () => {
+    getVersion.mockImplementation(async (id) => {
+      if (id === plugin1.sid || id === plugin1.unique_name) {
+        return Promise.resolve(pluginVersion1);
+      }
+
+      return Promise.resolve(pluginVersion2);
+    });
+  };
+
+  const defaultGetPluginMock = () => {
+    getPlugin.mockImplementation(async (id) => {
+      if (id === plugin1.sid || id === plugin1.unique_name) {
+        return Promise.resolve(plugin1);
+      }
+
+      return Promise.resolve(plugin2);
+    });
+  };
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -277,21 +297,9 @@ describe('CreateConfigurationScript', () => {
       fromConfiguration: 'active',
       ...requestObject,
     };
-    getVersion.mockImplementation(async (id) => {
-      if (id === plugin1.sid || id === plugin1.unique_name) {
-        return Promise.resolve(pluginVersion1);
-      }
-
-      return Promise.resolve(pluginVersion2);
-    });
+    defaultGetVersionMock();
     create.mockResolvedValue(configuration);
-    getPlugin.mockImplementation(async (id) => {
-      if (id === plugin1.sid || id === plugin1.unique_name) {
-        return Promise.resolve(plugin1);
-      }
-
-      return Promise.resolve(plugin2);
-    });
+    defaultGetPluginMock();
     activeRelease.mockResolvedValue(release);
     // @ts-ignore
     listConfiguredPlugins.mockImplementation(async (configSid: string) => {
@@ -369,21 +377,9 @@ describe('CreateConfigurationScript', () => {
       fromConfiguration: release.configuration_sid,
       ...requestObject,
     };
-    getVersion.mockImplementation(async (id) => {
-      if (id === plugin1.sid || id === plugin1.unique_name) {
-        return Promise.resolve(pluginVersion1);
-      }
-
-      return Promise.resolve(pluginVersion2);
-    });
+    defaultGetVersionMock();
     create.mockResolvedValue(configuration);
-    getPlugin.mockImplementation(async (id) => {
-      if (id === plugin1.sid || id === plugin1.unique_name) {
-        return Promise.resolve(plugin1);
-      }
-
-      return Promise.resolve(plugin2);
-    });
+    defaultGetPluginMock();
     activeRelease.mockResolvedValue(release);
     // @ts-ignore
     listConfiguredPlugins.mockImplementation(async (configSid: string) => {
@@ -461,21 +457,10 @@ describe('CreateConfigurationScript', () => {
       addPlugins: [`${plugin1.unique_name}@version1`],
       fromConfiguration: 'active',
     };
-    getVersion.mockImplementation(async (id) => {
-      if (id === plugin1.sid || id === plugin1.unique_name) {
-        return Promise.resolve(pluginVersion1);
-      }
 
-      return Promise.resolve(pluginVersion2);
-    });
+    defaultGetVersionMock();
     create.mockResolvedValue(configuration);
-    getPlugin.mockImplementation(async (id) => {
-      if (id === plugin1.sid || id === plugin1.unique_name) {
-        return Promise.resolve(plugin1);
-      }
-
-      return Promise.resolve(plugin2);
-    });
+    defaultGetPluginMock();
     activeRelease.mockResolvedValue(null);
     // @ts-ignore
     listConfiguredPlugins.mockImplementation(async (configSid: string) => {

@@ -10,6 +10,8 @@ describe('PluginsClient', () => {
   const post = jest.spyOn(httpClient, 'post');
   const client = new PluginsClient(httpClient);
 
+  const pluginInstanceUri = 'Plugins/the-name';
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -80,14 +82,14 @@ describe('PluginsClient', () => {
 
   describe('upsert', () => {
     it('should fetch existing plugin without update', async () => {
-      get.mockResolvedValue('existing-plugin');
+      get.mockResolvedValue('existing-pluginA');
 
       const payload = { UniqueName: 'the-name' };
       const result = await client.upsert(payload);
 
-      expect(result).toEqual('existing-plugin');
+      expect(result).toEqual('existing-pluginA');
       expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith('Plugins/the-name', { cacheable: true });
+      expect(get).toHaveBeenCalledWith(pluginInstanceUri, { cacheable: true });
       expect(post).not.toHaveBeenCalled();
     });
 
@@ -101,9 +103,9 @@ describe('PluginsClient', () => {
 
       expect(result).toEqual('updated-existing-plugin');
       expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith('Plugins/the-name', { cacheable: true });
+      expect(get).toHaveBeenCalledWith(pluginInstanceUri, { cacheable: true });
       expect(post).toHaveBeenCalledTimes(1);
-      expect(post).toHaveBeenCalledWith('Plugins/the-name', updatePayload);
+      expect(post).toHaveBeenCalledWith(pluginInstanceUri, updatePayload);
     });
 
     it('should create a new plugin', async () => {
@@ -115,7 +117,7 @@ describe('PluginsClient', () => {
 
       expect(result).toEqual('created-plugin');
       expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith('Plugins/the-name', { cacheable: true });
+      expect(get).toHaveBeenCalledWith(pluginInstanceUri, { cacheable: true });
       expect(post).toHaveBeenCalledTimes(1);
       expect(post).toHaveBeenCalledWith('Plugins', payload);
     });
@@ -132,7 +134,7 @@ describe('PluginsClient', () => {
         expect(err).toEqual(exception);
 
         expect(get).toHaveBeenCalledTimes(1);
-        expect(get).toHaveBeenCalledWith('Plugins/the-name', { cacheable: true });
+        expect(get).toHaveBeenCalledWith(pluginInstanceUri, { cacheable: true });
         expect(post).not.toHaveBeenCalled();
         done();
       }

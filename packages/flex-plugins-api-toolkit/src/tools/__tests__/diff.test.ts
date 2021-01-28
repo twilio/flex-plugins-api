@@ -11,6 +11,12 @@ describe('diff', () => {
     plugins: [],
     dateCreated: 'old-date-created',
   };
+  const pluginUrl100 = 'https://twilio.com/1.0.0';
+  const pluginUrl110 = 'https://twilio.com/1.1.0';
+  const pluginOneFriendlyName = 'plugin one';
+  const pluginOneDescription = 'plugin one description';
+  const versionChangelog = 'changelog one';
+  const newVersionChangelog = 'changelog one change';
 
   const expectConfigurationDiff = (
     diffs: ConfigurationsDiff,
@@ -126,10 +132,10 @@ describe('diff', () => {
           pluginVersionSid: 'FV00000000000000000000000000000000',
           name: 'plugin-1',
           version: '1.0.0',
-          url: 'https://twilio.com/1.0.0',
-          friendlyName: 'plugin one',
-          description: 'plugin one description',
-          changelog: 'changelog one',
+          url: pluginUrl100,
+          friendlyName: pluginOneFriendlyName,
+          description: pluginOneDescription,
+          changelog: versionChangelog,
           isPrivate: true,
           isArchived: false,
           phase: 3,
@@ -144,10 +150,10 @@ describe('diff', () => {
           pluginVersionSid: 'FV00000000000000000000000000000001',
           name: 'plugin-1',
           version: '1.1.0',
-          url: 'https://twilio.com/1.1.0',
-          friendlyName: 'plugin one',
-          description: 'plugin one description',
-          changelog: 'changelog one change',
+          url: pluginUrl110,
+          friendlyName: pluginOneFriendlyName,
+          description: pluginOneDescription,
+          changelog: newVersionChangelog,
           isPrivate: true,
           isArchived: true,
           phase: 4,
@@ -178,20 +184,20 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'version').after).toEqual('1.1.0');
 
     expect(findPluginDiff(diffs, 'plugin-1', 'url').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toEqual('https://twilio.com/1.0.0');
-    expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toEqual('https://twilio.com/1.1.0');
+    expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toEqual(pluginUrl100);
+    expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toEqual(pluginUrl110);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').hasDiff).toEqual(false);
-    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toEqual('plugin one');
-    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toEqual('plugin one');
+    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toEqual(pluginOneFriendlyName);
+    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toEqual(pluginOneFriendlyName);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'description').hasDiff).toEqual(false);
-    expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toEqual('plugin one description');
-    expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toEqual('plugin one description');
+    expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toEqual(pluginOneDescription);
+    expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toEqual(pluginOneDescription);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'changelog').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toEqual('changelog one');
-    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toEqual('changelog one change');
+    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toEqual(versionChangelog);
+    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toEqual(newVersionChangelog);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').hasDiff).toEqual(false);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').before).toEqual(true);
@@ -215,10 +221,10 @@ describe('diff', () => {
           pluginVersionSid: 'FV00000000000000000000000000000000',
           name: 'plugin-1',
           version: '1.0.0',
-          url: 'https://twilio.com/1.0.0',
-          friendlyName: 'plugin one',
-          description: 'plugin one description',
-          changelog: 'changelog one',
+          url: pluginUrl100,
+          friendlyName: pluginOneFriendlyName,
+          description: pluginOneDescription,
+          changelog: versionChangelog,
           isPrivate: true,
           isArchived: false,
           phase: 3,
@@ -233,10 +239,10 @@ describe('diff', () => {
           pluginVersionSid: 'FV00000000000000000000000000000001',
           name: 'plugin-1',
           version: '1.1.0',
-          url: 'https://twilio.com/1.1.0',
-          friendlyName: 'plugin one',
-          description: 'plugin one description',
-          changelog: 'changelog one change',
+          url: pluginUrl110,
+          friendlyName: pluginOneFriendlyName,
+          description: pluginOneDescription,
+          changelog: newVersionChangelog,
           isPrivate: true,
           isArchived: false,
           phase: 4,
@@ -267,20 +273,20 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'version').before).toEqual('1.1.0');
 
     expect(findPluginDiff(diffs, 'plugin-1', 'url').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toEqual('https://twilio.com/1.0.0');
-    expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toEqual('https://twilio.com/1.1.0');
+    expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toEqual(pluginUrl100);
+    expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toEqual(pluginUrl110);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').hasDiff).toEqual(false);
-    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toEqual('plugin one');
-    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toEqual('plugin one');
+    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toEqual(pluginOneFriendlyName);
+    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toEqual(pluginOneFriendlyName);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'description').hasDiff).toEqual(false);
-    expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toEqual('plugin one description');
-    expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toEqual('plugin one description');
+    expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toEqual(pluginOneDescription);
+    expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toEqual(pluginOneDescription);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'changelog').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toEqual('changelog one');
-    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toEqual('changelog one change');
+    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toEqual(versionChangelog);
+    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toEqual(newVersionChangelog);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').hasDiff).toEqual(false);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').after).toEqual(true);
@@ -307,10 +313,10 @@ describe('diff', () => {
           pluginVersionSid: 'FV00000000000000000000000000000001',
           name: 'plugin-1',
           version: '1.1.0',
-          url: 'https://twilio.com/1.1.0',
-          friendlyName: 'plugin one',
-          description: 'plugin one description',
-          changelog: 'changelog one change',
+          url: pluginUrl110,
+          friendlyName: pluginOneFriendlyName,
+          description: pluginOneDescription,
+          changelog: newVersionChangelog,
           isPrivate: true,
           isArchived: false,
           phase: 4,
@@ -342,19 +348,19 @@ describe('diff', () => {
 
     expect(findPluginDiff(diffs, 'plugin-1', 'url').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toBeUndefined();
-    expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toEqual('https://twilio.com/1.1.0');
+    expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toEqual(pluginUrl110);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toBeUndefined();
-    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toEqual('plugin one');
+    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toEqual(pluginOneFriendlyName);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'description').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toBeUndefined();
-    expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toEqual('plugin one description');
+    expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toEqual(pluginOneDescription);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'changelog').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toBeUndefined();
-    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toEqual('changelog one change');
+    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toEqual(newVersionChangelog);
 
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').hasDiff).toEqual(true);
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').before).toBeUndefined();
@@ -378,10 +384,10 @@ describe('diff', () => {
           pluginVersionSid: 'FV00000000000000000000000000000000',
           name: 'plugin-1',
           version: '1.0.0',
-          url: 'https://twilio.com/1.0.0',
-          friendlyName: 'plugin one',
-          description: 'plugin one description',
-          changelog: 'changelog one',
+          url: pluginUrl100,
+          friendlyName: pluginOneFriendlyName,
+          description: pluginOneDescription,
+          changelog: versionChangelog,
           isPrivate: true,
           isArchived: false,
           phase: 3,
@@ -415,19 +421,19 @@ describe('diff', () => {
     expect(findPluginDiff(diffs, 'plugin-1', 'version').after).toBeUndefined();
 
     expect(findPluginDiff(diffs, 'plugin-1', 'url').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toEqual('https://twilio.com/1.0.0');
+    expect(findPluginDiff(diffs, 'plugin-1', 'url').before).toEqual(pluginUrl100);
     expect(findPluginDiff(diffs, 'plugin-1', 'url').after).toBeUndefined();
 
     expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toEqual('plugin one');
+    expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').before).toEqual(pluginOneFriendlyName);
     expect(findPluginDiff(diffs, 'plugin-1', 'friendlyName').after).toBeUndefined();
 
     expect(findPluginDiff(diffs, 'plugin-1', 'description').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toEqual('plugin one description');
+    expect(findPluginDiff(diffs, 'plugin-1', 'description').before).toEqual(pluginOneDescription);
     expect(findPluginDiff(diffs, 'plugin-1', 'description').after).toBeUndefined();
 
     expect(findPluginDiff(diffs, 'plugin-1', 'changelog').hasDiff).toEqual(true);
-    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toEqual('changelog one');
+    expect(findPluginDiff(diffs, 'plugin-1', 'changelog').before).toEqual(versionChangelog);
     expect(findPluginDiff(diffs, 'plugin-1', 'changelog').after).toBeUndefined();
 
     expect(findPluginDiff(diffs, 'plugin-1', 'isPrivate').hasDiff).toEqual(true);

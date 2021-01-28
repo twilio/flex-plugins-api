@@ -29,6 +29,19 @@ describe('Diff', () => {
   const internalDescribeConfiguration = jest.spyOn(describeConfigurationScript, 'internalDescribeConfiguration');
   const findConfigurationsDiff = jest.spyOn(diffTool, 'findConfigurationsDiff');
 
+  const defaultDescribeConfigurationMock = (
+    config1: describeConfigurationScript.DescribeConfiguration,
+    config2: describeConfigurationScript.DescribeConfiguration,
+  ) => {
+    describeConfiguration.mockImplementation((opt) => {
+      if (opt.sid === config1.sid) {
+        return config1;
+      }
+
+      return config2;
+    });
+  };
+
   beforeEach(() => {
     jest.resetAllMocks();
 
@@ -47,13 +60,7 @@ describe('Diff', () => {
       configuredPluginsClient,
       releasesClient,
     );
-    describeConfiguration.mockImplementation((opt) => {
-      if (opt.sid === config1.sid) {
-        return config1;
-      }
-
-      return config2;
-    });
+    defaultDescribeConfigurationMock(config1, config2);
 
     const theDiff = await script({ resource: 'configuration', oldIdentifier: config1.sid, newIdentifier: config2.sid });
 
@@ -78,13 +85,7 @@ describe('Diff', () => {
       configuredPluginsClient,
       releasesClient,
     );
-    describeConfiguration.mockImplementation((opt) => {
-      if (opt.sid === config1.sid) {
-        return config1;
-      }
-
-      return config2;
-    });
+    defaultDescribeConfigurationMock(config1, config2);
 
     const theDiff = await script({ resource: 'configuration', oldIdentifier: 'active', newIdentifier: config2.sid });
 
@@ -109,13 +110,7 @@ describe('Diff', () => {
       configuredPluginsClient,
       releasesClient,
     );
-    describeConfiguration.mockImplementation((opt) => {
-      if (opt.sid === config1.sid) {
-        return config1;
-      }
-
-      return config2;
-    });
+    defaultDescribeConfigurationMock(config1, config2);
 
     const theDiff = await script({ resource: 'configuration', oldIdentifier: config1.sid, newIdentifier: 'active' });
 
