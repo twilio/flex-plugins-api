@@ -1,4 +1,4 @@
-import { TwilioError } from 'flex-plugins-api-utils';
+import { looksLikeSid, TwilioError } from 'flex-plugins-api-utils';
 import {
   ConfigurationsClient,
   ConfiguredPluginsClient,
@@ -60,7 +60,22 @@ export default function createConfiguration(
       throw new TwilioError('Plugins must be of the format pluginName@version');
     }
 
-    const removeList: string[] = option.removePlugins || [];
+    const removeList: string[] = await Promise.all(
+      (option.removePlugins || [])
+        .map(async (name) => {
+          if (looksLikeSid(name)) {
+            return name;
+          }
+
+          const plugin = await pluginClient.get(name);
+          if (plugin.unique_name === name) {
+            return plugin.sid;
+          }
+
+          return '';
+        })
+        .filter(Boolean),
+    );
     const list: string[] = option.addPlugins;
     if (option.fromConfiguration === 'active') {
       const release = await releasesClient.active();
