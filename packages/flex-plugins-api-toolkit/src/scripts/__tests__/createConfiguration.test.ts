@@ -138,6 +138,17 @@ describe('CreateConfigurationScript', () => {
     });
   };
 
+  const defaultListConfigurationsMock = () => {
+    // @ts-ignore
+    listConfiguredPlugins.mockImplementation(async (configSid: string) => {
+      if (configSid === release.configuration_sid) {
+        return Promise.resolve({ plugins: [configuredPlugin2], meta: null });
+      }
+
+      return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
+    });
+  };
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -301,14 +312,7 @@ describe('CreateConfigurationScript', () => {
     create.mockResolvedValue(configuration);
     defaultGetPluginMock();
     activeRelease.mockResolvedValue(release);
-    // @ts-ignore
-    listConfiguredPlugins.mockImplementation(async (configSid: string) => {
-      if (configSid === release.configuration_sid) {
-        return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
-      }
-
-      return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
-    });
+    defaultListConfigurationsMock();
 
     const result = await script(option);
     expect(activeRelease).toHaveBeenCalledTimes(1);
@@ -381,14 +385,7 @@ describe('CreateConfigurationScript', () => {
     create.mockResolvedValue(configuration);
     defaultGetPluginMock();
     activeRelease.mockResolvedValue(release);
-    // @ts-ignore
-    listConfiguredPlugins.mockImplementation(async (configSid: string) => {
-      if (configSid === release.configuration_sid) {
-        return Promise.resolve({ plugins: [configuredPlugin2], meta: null });
-      }
-
-      return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
-    });
+    defaultListConfigurationsMock();
 
     const result = await script(option);
     expect(activeRelease).not.toHaveBeenCalled();
@@ -546,14 +543,7 @@ describe('CreateConfigurationScript', () => {
     create.mockResolvedValue(configuration);
     defaultGetPluginMock();
     activeRelease.mockResolvedValue(release);
-    // @ts-ignore
-    listConfiguredPlugins.mockImplementation(async (configSid: string) => {
-      if (configSid === release.configuration_sid) {
-        return Promise.resolve({ plugins: [configuredPlugin2], meta: null });
-      }
-
-      return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
-    });
+    defaultListConfigurationsMock();
 
     await script(option);
     expect(getPlugin).toHaveBeenCalledWith(plugin2.unique_name);
