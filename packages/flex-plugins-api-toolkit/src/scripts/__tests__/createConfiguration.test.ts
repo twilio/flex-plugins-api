@@ -533,4 +533,34 @@ describe('CreateConfigurationScript', () => {
       done();
     }
   });
+
+  it('should fetch plugin by name to find sid for removing them', async () => {
+    const option = {
+      ...requestObject,
+      addPlugins: [`${plugin1.unique_name}@version1`],
+      removePlugins: [plugin2.unique_name],
+      fromConfiguration: 'active',
+    };
+
+    defaultGetVersionMock();
+    create.mockResolvedValue(configuration);
+    defaultGetPluginMock();
+    activeRelease.mockResolvedValue(release);
+    // @ts-ignore
+    listConfiguredPlugins.mockImplementation(async (configSid: string) => {
+      if (configSid === release.configuration_sid) {
+        return Promise.resolve({ plugins: [configuredPlugin2], meta: null });
+      }
+
+      return Promise.resolve({ plugins: [configuredPlugin1, configuredPlugin2], meta: null });
+    });
+
+    await script(option);
+    expect(getPlugin).toHaveBeenCalledWith(plugin2.unique_name);
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(create).toHaveBeenCalledWith({
+      Name: requestObject.name,
+      Plugins: [{ plugin_version: pluginVersion1.sid, phase: 3 }],
+    });
+  });
 });
