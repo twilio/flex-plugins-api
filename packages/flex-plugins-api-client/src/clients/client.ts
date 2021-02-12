@@ -21,6 +21,7 @@ export default class PluginServiceHttp extends ServiceHttpClient {
     packages[pkg.name] = pkg.version;
 
     super({
+      ...options,
       baseURL: `https://flex-api${PluginServiceHttp.getRealm(options && options.realm)}.twilio.com/${
         PluginServiceHttp.version
       }/PluginService`,
