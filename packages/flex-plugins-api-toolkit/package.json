@@ -1,6 +1,6 @@
 {
   "name": "flex-plugins-api-toolkit",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "description": "Flex Plugins API Toolkit",
   "keywords": [
     "flex",
@@ -43,8 +43,8 @@
     "test:watch": "cd ../.. && jest packages/flex-plugins-api-toolkit --watch"
   },
   "dependencies": {
-    "flex-plugins-api-client": "^0.23.0",
-    "flex-plugins-api-utils": "^0.23.0",
+    "flex-plugins-api-client": "^0.23.1",
+    "flex-plugins-api-utils": "^0.23.1",
     "lodash.clonedeep": "^4.5.0"
   },
   "devDependencies": {
